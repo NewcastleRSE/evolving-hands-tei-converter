@@ -1,61 +1,60 @@
-# Standard Project
-A template repo for the standard RSE project
+# Evolving Hands: TEI Converter
+A custom web component built in svelte designed to take a path to a TEI file and display it as HTML.
 
 ## About
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sollicitudin ante at eleifend eleifend. Sed non vestibulum nisi. Aliquam vel condimentum quam. Donec fringilla et purus at auctor. Praesent euismod vitae metus non consectetur. Sed interdum aliquet nisl at efficitur. Nulla urna quam, gravida eget elementum eget, mattis nec tortor. Fusce ut neque tellus. Integer at magna feugiat lacus porta posuere eget vitae metus.
-
-Curabitur a tempus arcu. Maecenas blandit risus quam, quis convallis justo pretium in. Suspendisse rutrum, elit at venenatis cursus, dolor ligula iaculis dui, ut dignissim enim justo at ligula. Donec interdum dignissim egestas. Nullam nec ultrices enim. Nam quis arcu tincidunt, auctor purus sit amet, aliquam libero. Fusce rhoncus lectus ac imperdiet varius. Sed gravida urna eros, ac luctus justo condimentum nec. Integer ultrices nibh in neque sagittis, at pretium erat pretium. Praesent feugiat purus id iaculis laoreet. Proin in tellus tristique, congue ante in, sodales quam. Sed imperdiet est tortor, eget vestibulum tortor pulvinar volutpat. In et pretium nisl.
+This repository contains the source code for a custom web component built with Svelte that takes in a path to a TEI file and transforms it into HTML using CETEIcean. The component is designed specifically for Evolving Hands, but is meant to be reusable in other applications by the Newcastle University Library.
 
 ### Project Team
-Dr L. Ipsum, Newcastle University  ([lorem.ipsum@newcastle.ac.uk](mailto:lorem.ipsum@newcastle.ac.uk))  
-Professor D. Sit Amet, XY University  ([d.sit.amet@newcastle.ac.uk](mailto:d.sit.amet@example.com))  
+Ian Johnson, Head of Special Collections and Archives, Newcastle University  ([ian.johnson@ncl.ac.uk](mailto:ian.johnson@ncl.ac.uk))  
+Valentina Flex, Special Collections and Archives, Newcastle University ([valentina.flex@newcastle.ac.uk](mailto:valentina.flex@newcastle.ac.uk))
+Alexandra Healey, Philip Robinson Library, Newcastle University ([alexandra.healey@newcastle.ac.uk](mailto:alexandra.healey@newcastle.ac.uk))
+Scott Bradley, Library systems developer, Philip Robinson Library, Newcastle University ([scott.bradley@newcastle.ac.uk](mailto:scott.bradley@newcastle.ac.uk))
+Maciej Dudek, Digital Content Developer Academic Services, Newcastle University ([maciej.dudek@newcastle.ac.uk](mailto:maciej.dudek@newcastle.ac.uk))
+John Schoneboom, Research Software Engineer, Newcastle University ([john.schoneboom@newcastle.ac.uk](mailto:john.schoneboom@newcastle.ac.uk))
+Tiago Sousa Garcia, Research Software Engineer, Newcastle University ([tiago.sousa-garcia@newcastle.ac.uk](mailto:tiago.sousa-garcia@newcastle.ac.uk))
 
 ### RSE Contact
-C. Adipiscing  
+Tiago Sousa Garcia
 RSE Team  
 Newcastle University  
-([consectetur.adpiscing@newcastle.ac.uk](mailto:consectetur.adpiscing@newcastle.ac.uk))  
+([tiago.sousa-garcia@newcastle.ac.uk](mailto:tiago.sousa-garcia@newcastle.ac.uk))  
 
 ## Built With
 
-This section is intended to list the frameworks and tools you're using to develop this software. Please link to the home page or documentation in each case.
-
-[Framework 1](https://something.com)  
-[Framework 2](https://something.com)  
-[Framework 3](https://something.com)  
-
+[Svelte](https://svelte.dev/)  
+[CETEIcean](https://github.com/TEIC/CETEIcean)  
 ## Getting Started
 
 ### Prerequisites
 
-Any tools or versions of languages needed to run code. For example, specific Python or Node versions. Minimum hardware requirements also go here.
+TBD
 
 ### Installation
 
-How to build or install the application.
+TBD
 
 ### Running Locally
 
-How to run the application on your local system.
+TBD
 
 ### Running Tests
 
-How to run tests on your local system.
+TBD
 
 ## Deployment
 
 ### Local
 
-Deploying to a production-style setup but on the local system. Examples of this would include `venv`, `anaconda`, `Docker` or `minikube`. 
+TDB
 
 ### Production
 
-Deploying to the production system. Examples of this would include cloud, HPC or virtual machine. 
+TDB
 
 ## Usage
 
-Any links to the production environment, video demos and screenshots.
+TBD
 
 ## Roadmap
 
@@ -81,17 +80,4 @@ https://nvie.com/posts/a-successful-git-branching-model/
 
 ## Citation
 
-Please cite the associated papers for this work if you use this code:
-
-```
-@article{xxx2023paper,
-  title={Title},
-  author={Author},
-  journal={arXiv},
-  year={2023}
-}
-```
-
-
 ## Acknowledgements
-This work was funded by a grant from the UK Research Councils, EPSRC grant ref. EP/L012345/1, “Example project title, please update”.
