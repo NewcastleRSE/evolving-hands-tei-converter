@@ -8,4 +8,19 @@ export default defineConfig({
       customElement: true,
     }
   })],
+  build: {
+    target: "esnext",
+    rollupOptions: {
+      input: {
+        index: "./src/main.js",
+      },
+      // single
+      output: {
+        format: "umd",
+        chunkFileNames: `[name].[hash].js`,
+        entryFileNames: "test-component.umd.js",
+        dir: "dist",
+      },
+    },
+  }
 })
