@@ -21,6 +21,6 @@ export default defineConfig({
         entryFileNames: "test-component.umd.js",
         dir: "dist",
       },
-    },
+    }
   }
 })
