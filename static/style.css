@@ -1119,7 +1119,8 @@ tei-witdetail {
 }
 
 /* styles for HTML shell and HTML elements in TEI (e.g.,<a> and <img>) */
-html>body {
+/* html and body formatting removed from component (i.e., component is likely to be used inside a container that should restrict its outer dimensions) */
+/* html>body {
     margin: 0;
     padding: 0;
 }
@@ -1140,4 +1141,4 @@ html {
     font-size: 12pt;
     background-color: white;
     color: #292929;
-}
+} */

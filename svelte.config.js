@@ -5,6 +5,7 @@ export default {
   // for more information about preprocessors
   preprocess: vitePreprocess(),
   compilerOptions: {
+    // this silences the linter warnings about exporting custom elements
     customElement: true
   }
 }
