@@ -18,7 +18,7 @@ export default defineConfig({
       output: {
         format: "umd",
         chunkFileNames: `[name].[hash].js`,
-        entryFileNames: "test-component.umd.js",
+        entryFileNames: "tei-converter.umd.js",
         dir: "dist",
       },
     }

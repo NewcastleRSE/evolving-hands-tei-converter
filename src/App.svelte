@@ -1,4 +1,4 @@
-<svelte:options customElement={{ tag: "test-component", shadow: "none" }} />
+<svelte:options customElement={{ tag: "tei-converter", shadow: "none" }} />
 
 <script>
     import { onMount } from "svelte";
