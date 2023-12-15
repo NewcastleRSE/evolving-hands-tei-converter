@@ -3,6 +3,7 @@
 <script>
     import { onMount } from "svelte";
     import CETEI from "CETEIcean";
+    import { teiBehaviours } from '../static/teiBehaviours'
 
     export let path = "";
     let error = undefined;
@@ -15,7 +16,7 @@
             }
             var cetei = new CETEI();
             console.log(cetei);
-            // cetei.addBehaviors(teiBehaviours);
+            cetei.addBehaviors(teiBehaviours);
             cetei.getHTML5(path, function (data) {
                 document.getElementById("TEI-container").appendChild(data);
             });
