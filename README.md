@@ -32,11 +32,52 @@ TBD
 
 ### Installation
 
-TBD
+Copy `dist/tei-converter.umd.js` to the root of your project (or a suitable folder in the project directory).
 
 ### Running Locally
 
-TBD
+1. Load `tei-converter.umd.js` as a script in your HTML:
+
+```html
+<script src="./tei-converter.umd.js"></script>
+```
+
+2. Place the custom element `<tei-converter>` anywhere in the `<body>` of your HTML with a `@path` attribute pointing to the location of the TEI file you want to convert:
+
+```html
+<tei-converter path="PATH/TO/TEI/FILE.xml"/>
+```
+
+3. Start any http server on the root of your project and visit the local address to see the results.
+
+#### Example:
+
+##### file structure:
+```
+├── project_root
+│   ├── index.html
+│   └── tei-converter.umd.js
+```
+
+##### index.html:
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="./tei-converter.umd.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEI Converter test</title>
+</head>
+
+<body>
+    <tei-converter path="https://raw.githubusercontent.com/NewcastleRSE/beeing-human-tei-data/dev/1623_consolidated.xml"/>
+</body>
+
+</html>
+```
+
 
 ### Running Tests
 

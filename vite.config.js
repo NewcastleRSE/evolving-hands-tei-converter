@@ -4,10 +4,12 @@ import { svelte } from '@sveltejs/vite-plugin-svelte'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [svelte({
+    // this tells the compiler that we are exporting a custom element
     compilerOptions: {
       customElement: true,
     }
   })],
+  // build options that take main.js as input and bundle everything into a single output file in UMD format
   build: {
     target: "esnext",
     rollupOptions: {
@@ -18,9 +20,9 @@ export default defineConfig({
       output: {
         format: "umd",
         chunkFileNames: `[name].[hash].js`,
-        entryFileNames: "test-component.umd.js",
+        entryFileNames: "tei-converter.umd.js",
         dir: "dist",
       },
-    },
+    }
   }
 })
