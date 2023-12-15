@@ -50,16 +50,16 @@ Copy `dist/tei-converter.umd.js` to the root of your project (or a suitable fold
 
 3. Start any http server on the root of your project and visit the local address to see the results.
 
-Example:
+#### Example:
 
-file structure:
+##### file structure:
 ```
 ├── project_root
 │   ├── index.html
 │   └── tei-converter.umd.js
 ```
 
-index.html:
+##### index.html:
 ```html
 <!DOCTYPE html>
 <html lang="en">
