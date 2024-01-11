@@ -12,6 +12,11 @@
     let error = undefined;
     let loaded = false;
 
+    // events can be captured here
+    addEventListener('drawBox', (event) => {
+        console.log('This was captured in the custom component');
+      })
+
     onMount(async () => {
         try {
             if (path === "") {

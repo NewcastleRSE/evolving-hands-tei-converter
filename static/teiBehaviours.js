@@ -81,7 +81,8 @@ export let teiBehaviours = {
                 return document.createElement('hr')
             }]
         ],
-        "head": function (elt) {
+        "ab": function (elt) {
+            //  creates a custom element
             let event = new CustomEvent('drawBox', {detail: {text: 'this has been sent from the element!', content: elt.innerHTML}})
             elt.onmouseenter = function () {
                 dispatchEvent(event)
