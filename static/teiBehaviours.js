@@ -80,6 +80,12 @@ export let teiBehaviours = {
             ["[type=horizontalRule]", function (elt) {
                 return document.createElement('hr')
             }]
-        ]
+        ],
+        "head": function (elt) {
+            let event = new CustomEvent('drawBox', {detail: {text: 'this has been sent from the element!', content: elt.innerHTML}})
+            elt.onmouseenter = function () {
+                dispatchEvent(event)
+            }
+        }
     }
 }
