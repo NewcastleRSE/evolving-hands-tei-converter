@@ -1,3 +1,5 @@
+import { formatPagePoints, formatPoints } from "../src/utils/auxFunctions";
+
 export let teiBehaviours = {
     "tei": {
         "note": [
@@ -82,11 +84,6 @@ export let teiBehaviours = {
             }]
         ],
         "ab": function (elt) {
-            // //  creates a custom element
-            // let event = new CustomEvent('drawBox', {detail: {text: 'this has been sent from the element!', content: elt.innerHTML}})
-            // elt.onmouseenter = function () {
-            //     dispatchEvent(event)
-            // }
 
             // according to the structure of the GB files, physical lines are encased in an ab and preceded by a lb with line information in order to create an event that will give the coordinates, each of these lines will need to be encompassed by a new element that can then be used to trigger the custom event
             let children = elt.childNodes;
@@ -105,18 +102,56 @@ export let teiBehaviours = {
                     newSpan = document.createElement('span');
                     newSpan.appendChild(child.cloneNode(true));
 
-                    // get points from zone id
+                    // get points from zone id (i.e., line)
+                    let lineObj = {}
                     let lineID = child.getAttribute('facs');
                     let zoneElement = document.getElementById(lineID.slice(1));
                     let coordinatesString = zoneElement.getAttribute('points');
-                    coordinatesString = coordinatesString.split(' ');
-                    let points = []
-                    for (let coord of coordinatesString) {
-                        points.push(coord.split(',').map((x) => parseInt(x)))
+                    let points = formatPoints(coordinatesString);
+                    let elementRend = zoneElement.getAttribute('rendition');
+                    lineObj[elementRend] = {
+                        id: zoneElement.id,
+                        points: points
                     }
+
+                    // get parent element (i.e., page)
+                    let parentObj = {}
+                    const parentEl = zoneElement.parentElement;
+                    let pPoints = formatPoints(parentEl.getAttribute('points'));
+                    parentObj[parentEl.getAttribute('rendition')] = {
+                        points: pPoints,
+                        id: parentEl.id
+                    };
+
+                    // get grandParent element (i.e., imgfile) -- element should contain id, coordinate information and at least one tei-graphic child element
+                    let grandParentObj = {}
+                    const grandParentEl = parentEl.parentElement;
+                    let imgFiles = [];
+                    // get graphic information
+                    for (child of grandParentEl.children) {
+                        if (child.tagName === 'TEI-GRAPHIC') {
+                            imgFiles.push({
+                                url: child.getAttribute('url'),
+                                width: child.getAttribute('width'),
+                                height: child.getAttribute('height')
+                            })
+                        }
+                    }
+                    grandParentObj['facsimile'] = {
+                        id: grandParentEl.id,
+                        imgFiles: imgFiles,
+                        points: formatPagePoints(grandParentEl)
+                    }
+
+                    // create event object
+                    let eventObject = {detail: {
+                        ...lineObj,
+                        ...parentObj,
+                        ...grandParentObj
+                    }}
                     
-                    //  creates a custom element
-                    let event = new CustomEvent('drawBox', {detail: {points: points}})
+                    //  creates a custom event
+                    let event = new CustomEvent('drawBox', eventObject)
                     newSpan.onmouseenter = function () {
                         dispatchEvent(event)
                     }
