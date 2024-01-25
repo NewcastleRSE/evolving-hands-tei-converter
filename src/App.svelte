@@ -11,8 +11,16 @@
     export let path = "";
     let error = undefined;
     let loaded = false;
+    let config = undefined;
 
     onMount(async () => {
+        try {
+            config = await fetch('./dist/TeiConverter.config.json').then(
+                (response) => response.json()
+            )
+        } catch (err) {
+            console.log(err)
+        }
         try {
             if (path === "") {
                 throw "No path specified";
@@ -28,6 +36,8 @@
             loaded = true;
             return;
         }
+
+        console.log(config);
     });
 </script>
 
