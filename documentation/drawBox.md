@@ -53,7 +53,7 @@ event.detail: object {
 ```
 
 Here is an example from the first line of `GB-LET-GB-FB-1921-01.xml`:
-```json
+```
 {
     "Line": {
         "id": "facs_1_r1l1",
