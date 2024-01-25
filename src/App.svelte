@@ -18,7 +18,6 @@
                 throw "No path specified";
             }
             var cetei = new CETEI();
-            console.log(cetei);
             cetei.addBehaviors(teiBehaviours);
             cetei.getHTML5(path, function (data) {
                 document.getElementById("TEI-container").appendChild(data);
