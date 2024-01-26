@@ -9,13 +9,14 @@
     import { teiBehaviours } from '../static/teiBehaviours'
 
     export let path = "";
+    export let configPath = 'TeiConverter/TeiConverter.config.json'
     let error = undefined;
     let loaded = false;
     let config = undefined;
 
     onMount(async () => {
         try {
-            config = await fetch('./dist/TeiConverter.config.json').then(
+            config = await fetch(configPath).then(
                 (response) => response.json()
             )
         } catch (err) {
@@ -37,7 +38,7 @@
             return;
         }
 
-        console.log(config);
+        console.log(config.test);
     });
 </script>
 
