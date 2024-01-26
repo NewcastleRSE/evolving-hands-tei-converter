@@ -1,3 +1,4 @@
 {
-    "test": "Ive changed the config file"
+    "useCustomBehaviours": true,
+    "testObject": true
 }
