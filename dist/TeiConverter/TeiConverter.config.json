@@ -1,4 +1,23 @@
 {
     "useCustomBehaviours": true,
-    "testObject": true
+    "displayInlineGraphics": false,
+    "teiFileStructure": "EvolvingHands",
+    "facsimileCoordinates": {
+        "customEvents": true,
+        "elementAttribute": false
+    },
+    "elementsSelected": {
+        "ab" : {
+            "include": true,
+            "options": {
+            }
+        },
+        "graphic" : {
+            "include": true,
+            "options": {
+                "showLogs": false
+            }
+        },
+        "note": {"include": false}
+    }
 }
