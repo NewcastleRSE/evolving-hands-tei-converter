@@ -19,5 +19,11 @@
             }
         },
         "note": {"include": false}
+    },
+    "addCustomBehaviours": {
+        "applyCustomBehaviours": false,
+        "applyAll": false,
+        "applyElements" : "['persName', 'placeName', 'seg']",
+        "showLogs": true
     }
 }

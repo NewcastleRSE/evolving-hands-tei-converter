@@ -47,3 +47,28 @@ Defines whether or not to include the default `TEIConverter` behaviour for *elem
 ### type: `object`
 ### scope: `element`
 An object with additional options for the *element* behaviour implementation. All options available for each element exist in the default `config`.
+
+## addCustomBehaviours
+### type: `object`
+### scope: `global`
+An object containing options relating to additional custom behaviours. Custom behaviours must be loaded by the client independently an be an object named `customBehaviours`
+
+## addCustomBehaviours.applyCustomBehaviours
+### type: `boolean`
+### scope: `global`
+Defines whether or not to apply any loaded custom behaviours
+
+## addCustomBehaviours.applyAll
+### type: `boolean`
+### scope: `global`
+Defines whether or not to apply *all* custom behaviours defined in the loaded script
+
+## addCustomBehaviours.applyElements
+### type: `array[string]`
+### scope: `global`
+If `addCustomBehaviours.applyAll` is `false`, only elements included here will be applied. It should be an array of strings in which each string is the name of the *TEI* element that will have a custom behaviour applied. If `addCustomBehavious.applyAll` is `true`, all custom behaviours in the script will be applied regardless of what is included in the list.
+
+## addCustomBehaviours.showLogs
+### type: `boolean`
+### scope: `customBehaviours`
+Defines wheter or not a log message is shown in the console when custom behaviours were added successfully. Errors and warnings will always show in the console regardless of this option.

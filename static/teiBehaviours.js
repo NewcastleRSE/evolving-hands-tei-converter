@@ -31,5 +31,28 @@ export let teiBehaviours = function (config) {
         behavioursObject['tei']['graphic'] = behaviours(options)['graphic'];
     }
 
+    // Add custom behaviours
+    // Custom behaviours must be imported by the client app as text/javascript before loading the converter code
+    // Custom behaviours must be an object named `customBehaviours`
+    if (config.addCustomBehaviours.applyCustomBehaviours) {
+        try {
+            for (const [element, code] of Object.entries(customBehaviours)) {
+                try {
+                    // or element is part of the list
+                    if (config.addCustomBehaviours.applyAll || config.addCustomBehaviours.applyElements.includes(element)) {
+                        behavioursObject['tei'][element] = code
+                        if (config.addCustomBehaviours.showLogs) {
+                            console.log(`Added ${element} behaviour`);
+                        }
+                    }
+                } catch(err) {
+                    console.warn(`Could not add custom behaviour for element ${element}`)
+                }
+            }
+        } catch (err) {
+            console.error('Error: custom behaviours must be in a variable called customBehaviours')
+        }
+    }
+
     return behavioursObject
 }
