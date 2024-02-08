@@ -32,20 +32,20 @@ TBD
 
 ### Installation
 
-Copy `dist/tei-converter.umd.js` to the root of your project (or a suitable folder in the project directory).
+Copy the entire `dist/TeiConverter` folder to the root of your project (or a suitable folder in the project directory).
 
 ### Running Locally
 
-1. Load `tei-converter.umd.js` as a script in your HTML:
+1. Load `TeiConverter/tei-converter.umd.js` as a script in your HTML:
 
 ```html
 <script src="./tei-converter.umd.js"></script>
 ```
 
-2. Place the custom element `<tei-converter>` anywhere in the `<body>` of your HTML with a `@path` attribute pointing to the location of the TEI file you want to convert:
+2. Place the custom element `<tei-converter>` anywhere in the `<body>` of your HTML with a `@path` attribute pointing to the location of the TEI file you want to convert, and a `@configPath` attribute pointing to the location of the configuration file you want to use. (the distribution folder includes an example to use as a base). More details on the config file are available [here](/documentation/TeiConverter.config.md).
 
 ```html
-<tei-converter path="PATH/TO/TEI/FILE.xml"/>
+<tei-converter path="PATH/TO/TEI/FILE.xml" configPath="TeiConverter/TeiConverter.config.json"/>
 ```
 
 3. Start any http server on the root of your project and visit the local address to see the results.
@@ -56,7 +56,9 @@ Copy `dist/tei-converter.umd.js` to the root of your project (or a suitable fold
 ```
 ├── project_root
 │   ├── index.html
-│   └── tei-converter.umd.js
+|   └──  TeiConverter
+│       ├── tei-converter.umd.js
+│       └── TeiConverter.config.json
 ```
 
 ##### index.html:
@@ -65,19 +67,23 @@ Copy `dist/tei-converter.umd.js` to the root of your project (or a suitable fold
 <html lang="en">
 
 <head>
-    <script src="./tei-converter.umd.js"></script>
+    <script src="./TeiConverter/tei-converter.umd.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TEI Converter test</title>
 </head>
 
 <body>
-    <tei-converter path="https://raw.githubusercontent.com/NewcastleRSE/beeing-human-tei-data/dev/1623_consolidated.xml"/>
+    <tei-converter path="https://raw.githubusercontent.com/NewcastleRSE/beeing-human-tei-data/dev/1623_consolidated.xml" configPath="TeiConverter/TeiConverter.config.json"/>
 </body>
 
 </html>
 ```
 
+#### Documentation
+- [Configuration object](/documentation/TeiConverter.config.md);
+- [Adding custom behaviours]
+- [Facsimile coordinates](/documentation/drawBox.md);
 
 ### Running Tests
 
@@ -100,7 +106,7 @@ TBD
 ## Roadmap
 
 - [x] Initial Research  
-- [ ] Minimum viable product <-- You are Here  
+- [x] Minimum viable product <-- You are Here  
 - [ ] Alpha Release  
 - [ ] Feature-Complete Release  
 

@@ -21,7 +21,7 @@
         "note": {"include": false}
     },
     "addCustomBehaviours": {
-        "applyCustomBehaviours": true,
+        "applyCustomBehaviours": false,
         "applyAll": false,
         "applyElements" : "['persName', 'placeName', 'seg']",
         "showLogs": false
