@@ -24,6 +24,6 @@
         "applyCustomBehaviours": false,
         "applyAll": false,
         "applyElements" : "['persName', 'placeName', 'seg']",
-        "showLogs": false
+        "showLogs": true
     }
 }
