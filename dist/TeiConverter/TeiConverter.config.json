@@ -1,0 +1,29 @@
+{
+    "useCustomBehaviours": true,
+    "displayInlineGraphics": false,
+    "teiFileStructure": "EvolvingHands",
+    "facsimileCoordinates": {
+        "customEvents": true,
+        "elementAttribute": false
+    },
+    "elementsSelected": {
+        "ab" : {
+            "include": true,
+            "options": {
+            }
+        },
+        "graphic" : {
+            "include": true,
+            "options": {
+                "showLogs": false
+            }
+        },
+        "note": {"include": false}
+    },
+    "addCustomBehaviours": {
+        "applyCustomBehaviours": false,
+        "applyAll": false,
+        "applyElements" : "['persName', 'placeName', 'seg']",
+        "showLogs": true
+    }
+}
