@@ -137,6 +137,34 @@ export let behaviours = function (options) {
             if (options.showLogs) {
                 console.log("ignoring graphics");
             }
+        },
+
+        "listPerson": function (elt) {
+            // hide or show the listPerson element
+            if (!options.showPeople) {
+                elt.hidden = true;
+            }
+        },
+
+        "listPlace": function (elt) {
+            // hide or show the listPlaces element
+            if (!options.showPlaces) {
+                elt.hidden = true;
+            }
+        },
+
+        "standOff": function (elt) {
+            const legalPositions = ['top', 'bottom']
+            
+            // hide or show the standOff element
+            if (!options.showStandOffMetadata) {
+                elt.hidden = true;
+            }
+
+            // check whether the selected position is valid
+            if (!legalPositions.includes(options.standOffPosition)) {
+                throw new Error(`${options.standOffPosition} is not a valid position for the standOff element`);
+            }
         }
     }
 }

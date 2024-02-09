@@ -6,6 +6,12 @@
         "customEvents": true,
         "elementAttribute": false
     },
+    "standOffMetadata": {
+        "showStandOffMetadata": false,
+        "showPeople": false,
+        "showPlaces": false,
+        "standOffPosition": "bottom"
+    },
     "elementsSelected": {
         "ab" : {
             "include": true,
@@ -18,7 +24,16 @@
                 "showLogs": false
             }
         },
-        "note": {"include": false}
+        "listPerson": {
+            "include": true
+        },
+        "listPlace": {
+            "include": true
+        },
+        "note": {"include": false},
+        "standOff": {
+            "include": true
+        }
     },
     "addCustomBehaviours": {
         "applyCustomBehaviours": false,
