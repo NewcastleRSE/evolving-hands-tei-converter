@@ -59,7 +59,7 @@ function (elt) {
 The resulting HTML would be:
 
 ```html
-<p>The quick brown <span>🦊</span> jumps over the lazy <span>🐶</span>.</p>
+<tei-p>The quick brown <span>🦊</span> jumps over the lazy <span>🐶</span>.</tei-p>
 ```
 
 There are two main differences from the previous example: 1) this time, the custom behaviour *returns* a new element (which you added to the `document`) rather than change the properties of the existing element -- this element will replace the default behaviour and there will be *no* `tei-name` elements; 2) As implied, the new function will be applied to the `name` TEI element, not the `p`. 
@@ -97,7 +97,86 @@ Because `TEIConverter` does not expose the `CETEIcean` API directly, adding cust
 
 There are three steps to use custom behaviours with `TEIconverter`:
 1. [Write the behaviours into a script](#the-custom-behaviours-script) -- the script **must** contain a variable named `customBehaviours`, that's the variable `TEIconverter` will be looking for;
-2. Load that script in the client independently (and **before**) of `TEIconverter`;
-3. Change `TEIConverter.config.json` to [apply custom behaviours](./TeiConverter.config.md#addcustombehaviours) -- more granular options (i.e., add only a selection of custom behaviours) are also available.
+2. [Load that script in the client](#load-the-script-in-the-client) independently (and **before**) of `TEIconverter`;
+3. [Change `TEIConverter.config.json`](#activate-custom-behaviours-in-the-config) to [apply custom behaviours](./TeiConverter.config.md#addcustombehaviours) -- more granular options (i.e., add only a selection of custom behaviours) are also available.
 
 ## The custom behaviours script
+The custom behaviours script is a simple JS script that creates a single global object called `customBehaviours`. `customBehaviours` should include all the behaviours you want to add; `TEIConverter` will look for its existence when transforming the TEI document and, if it finds it and custom behaviours are activated in the config file, it will add them to processing. You can name this script anything, and place them anywhere in the project structure, as long as you are able to load it directly from the client; the object **must** be named `customBehaviours` and be exposed as a global variable, as that is what `TEIConverter` is expecting. The included example `exampleCustoms.js` gives you a skeleton structure of the object, and a few examples of how to apply custom behaviours:
+
+```javascript
+// Example of how to add custom behaviours
+
+let customBehaviours = {
+    // transform the entire element
+    "persName": function(elt) {
+        let newName = document.createElement('span');
+        const text = document.createTextNode("HEY THERE");
+        newName.appendChild(text)
+        return newName
+    },
+
+    // wrap the element in another tag
+    "placeName": ["<em>", "</em>"],
+
+    // further specify element selector by css
+    "seg": [
+        ["[type=bibliographicNote-target-text]", function (el) {
+            let newBibl = document.createElement('span');
+            const text = document.createTextNode("THIS IS A NOTE");
+            newBibl.appendChild(text)
+            return newBibl
+        }]
+    ]
+}
+```
+
+For more on how to write custom behaviours, see the [`CETEIcean` documentation](https://github.com/TEIC/CETEIcean/wiki/Anatomy-of-a-behaviors-object).
+
+## Load the script in the client
+In order for the `customBehaviours` object to be accessible to `TEIConverter`, you must load your custom behaviours script independently in the client, and **before** you load the `TEIConverter` script. Do it as you would any other JS script, for example:
+
+```html
+<!-- ... -->
+<head>
+    <!-- Import custom behaviours (OPTIONAL) before the converter -->
+    <script type="text/javascript" src="./dist/TeiConverter/exampleCustoms.js"></script>
+
+    <!-- Import converter -->
+    <script src="./dist/TeiConverter/tei-converter.umd.js"></script>
+    <!-- ... -->
+</head>
+<!-- ... -->
+```
+
+As long as neither script is loaded asynchronously or deferred, the order in which they are declared in the HTML corresponds to the order in which they are loaded, so in a simple approach this should be enough.
+
+## Activate custom behaviours in the config
+Even if the script is loaded correctly and the `customBehaviours` object is available to the `TEIConverter`, custom behaviours are not applied unless they are explicitly called for in the config object. The options related to custom behaviours are in [`addCustomBehaviours`](./TeiConverter.config.md#addcustombehaviours). Specifically you will need to activate `addCustomBehaviours.applyCustomBehaviours` and either activate `addCustomBehaviours.applyAll` or include an array of at least one custom behaviour key in `addCustomBehaviours.applyElements`. A final option (`addCustomBehaviours.showLogs`) will allow you to log successful additions to the console -- errors will always be shown, even if the `showLogs` option is not active.
+
+The following config object would load **all** custom behaviours in `customBehaviours`:
+
+```json
+{
+    ...
+    "addCustomBehaviours": {
+        "applyCustomBehaviours": true,
+        "applyAll": true,
+        "applyElements" : "",
+        "showLogs": true
+    }
+}
+```
+
+while the following config object would only load the custom behaviour for `name`, even if there are other custom behaviours defined in the `customBehaviours` object:
+
+```json
+{
+    ...
+    "addCustomBehaviours": {
+        "applyCustomBehaviours": true,
+        "applyAll": false,
+        "applyElements" : "['name']",
+        "showLogs": true
+    }
+}
+```
