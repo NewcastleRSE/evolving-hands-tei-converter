@@ -24,12 +24,27 @@ An object containing two options about facsimile coordinates. These options are 
 ## facsimileCoordinates.customEvents
 ### type: `boolean`
 ### scope: `global`
-Defines whether the facsimile coordinate information is passed to the client as a custom event. The client must subscribe to an event called `drawBox` -- full instructions on how to do this [here](./drawBox.md).
+Defines whether the facsimile coordinate information is passed to the client as a custom event. The client must subscribe to an event called `drawBox` -- full instructions on how to do this [here](./customEvents/drawBox.md).
 
 ## facsimileCoordinates.elementAttribute
 ### type: `boolean`
 ### scope: `global`
 Defines whether the facsimile coordinate information is passed to the client as an attribute of the element that it refers to. Useful if the client prefers to control the firing of the event or needs to add additional information. The information is a JSON string included in the `line-data` attribute.
+
+## placeData
+## type: `object`
+## scope: `global`
+An object containing two options about how to pass place data. These options are independent of each other, meaning that the client can receive the information in both ways simultaneously (or neither way).
+
+## placeData.customEvents
+### type: `boolean`
+### scope: `global`
+Defines whether the place data is passed to the client as a custom event. The client must subscribe to an event called `placeHover` -- full instructions on how to do this [here](./customEvents/placeHover.md).
+
+## placeData.elementAttribute
+### type: `boolean`
+### scope: `global`
+Defines whether the place data is passed to the client as an attribute of the element that it refers to. Useful if the client prefers to control the firing of the event or needs to add additional information. The information is a JSON string included in the `place-data` attribute.
 
 ## standOffMetadata
 ### type: `boolean`

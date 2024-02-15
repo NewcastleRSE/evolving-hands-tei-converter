@@ -153,6 +153,37 @@ export let behaviours = function (options) {
             }
         },
 
+        "placeName": [
+            // this selects only placenames that reference another, ignoring the ones in the standOff metadata
+            ["tei-placename[ref]", function (elt) {
+
+                // get data and build object
+                let dataObject = {}
+                const ref = elt.getAttribute('ref').substring(1);
+                const placeData = document.getElementById(ref);
+                for (const data of placeData.children) {
+                    if (data.getAttribute('data-origname') === 'ptr') {
+                        dataObject['authority'] = {'provider': data.getAttribute('type'), 'url': data.getAttribute('target')}
+                    } else {
+                        dataObject[data.getAttribute('data-origname')] = data.innerHTML
+                    }
+                }
+                
+                // pass data as custom event
+                if (options.customEvents) {
+                    let event = new CustomEvent('placeHover', {detail: {...dataObject}})
+                    elt.onmouseenter = function () {
+                        dispatchEvent(event)
+                    }
+                }
+
+                // pass data as element attribute
+                if (options.elementAttribute) {
+                    elt.setAttribute('place-data', JSON.stringify(dataObject))
+                }
+            }]
+        ],
+
         "standOff": function (elt) {
             const legalPositions = ['top', 'bottom']
             
