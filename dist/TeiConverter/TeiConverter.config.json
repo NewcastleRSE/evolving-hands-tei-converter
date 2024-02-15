@@ -10,7 +10,7 @@
         "showStandOffMetadata": false,
         "showPeople": false,
         "showPlaces": false,
-        "standOffPosition": "bottom"
+        "standOffPosition": "top"
     },
     "elementsSelected": {
         "ab" : {

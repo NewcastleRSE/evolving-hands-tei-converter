@@ -163,8 +163,13 @@ export let behaviours = function (options) {
 
             // check whether the selected position is valid
             if (!legalPositions.includes(options.standOffPosition)) {
-                throw new Error(`${options.standOffPosition} is not a valid position for the standOff element`);
+                // if the position is not valid, hides the elements
+                elt.hidden = true
+                throw new Error(`${options.standOffPosition} is not a valid position for the standOff element. Valid positions are 'top' and 'bottom'.`);
+            } else if (options.standOffPosition === 'bottom') {
+                elt.parentNode.appendChild(elt);
             }
+            // else if top, nothing needs to be done
         }
     }
 }
