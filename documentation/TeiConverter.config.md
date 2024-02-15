@@ -31,6 +31,32 @@ Defines whether the facsimile coordinate information is passed to the client as 
 ### scope: `global`
 Defines whether the facsimile coordinate information is passed to the client as an attribute of the element that it refers to. Useful if the client prefers to control the firing of the event or needs to add additional information. The information is a JSON string included in the `line-data` attribute.
 
+## standOffMetadata
+### type: `boolean`
+### scope: `global`
+Gives a set of options for the display of the metadata included in the `<standOff>` element, such as a list of peoples or places mentioned in the document.
+
+## standOffMetadata.showStandOffMetadata
+### type: `boolean`
+### scope: `global`
+Defines whether to display *any* of the data stored in the `<standOff>` element; specific metadata to display needs to be active in the options below;
+
+## standOffMetadata.showPeople
+### type: `boolean`
+### scope: `global`
+Defines whether to display any list of people information included in the metadata. [`standOffMetadata.showStandOffMetadata`](#standoffmetadatashowstandoffmetadata) must be true for the information to be displayed.
+
+## standOffMetadata.showPlaces
+### type: `boolean`
+### scope: `global`
+Defines whether to display any list of place information included in the metadata. [`standOffMetadata.showStandOffMetadata`](#standoffmetadatashowstandoffmetadata) must be true for the information to be displayed.
+
+## standOffMetadata.standOffPosition
+### type: `string`
+### values: `'top' | 'bottom'`
+### scope: `global`
+Defines whether to append the metadata in the `<standOff>` element to the top or the bottom of the TEI container. If any other value is set for this option, the `<standOff>` element will not be rendered and an error will be thrown in the console.
+
 # Element options
 
 ## elementsSelected

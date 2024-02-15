@@ -17,6 +17,9 @@ export let teiBehaviours = function (config) {
                     options = {...options, customEvents: false, elementAttribute: false}
                 }
             }
+            if (choice === 'standOff' || choice == 'listPerson' || choice == 'listPlace') {
+                options = {...options, ...config.standOffMetadata}
+            }
             behavioursObject['tei'][choice] = behaviours(options)[choice];
         }
     }
