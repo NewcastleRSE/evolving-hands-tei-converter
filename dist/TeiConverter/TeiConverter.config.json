@@ -35,7 +35,12 @@
             "include": true
         },
         "note": {"include": false},
-        "placeName": {"include":true},
+        "placeName": {
+            "include":true,
+            "options": {
+                "addLink": "authority"
+            }
+        },
         "standOff": {
             "include": true
         }

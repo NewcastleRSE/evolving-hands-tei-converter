@@ -181,6 +181,22 @@ export let behaviours = function (options) {
                 if (options.elementAttribute) {
                     elt.setAttribute('place-data', JSON.stringify(dataObject))
                 }
+
+                // add link
+                if (options.addLink != '') {
+                    let linkedPlace = document.createElement('a');
+                    if (options.addLink === 'authority') {
+                        linkedPlace.setAttribute('href', dataObject.authority.url);
+                    } else if (options.addLink === 'document') {
+                        linkedPlace.setAttribute('href', `/#${ref}`);
+                    } else {
+                        throw new Error('Invalid option: addLink must be either "authority" or "document"');
+                    }
+                    for (let chld of elt.childNodes) {
+                        linkedPlace.appendChild(chld.cloneNode());
+                    }
+                    return linkedPlace;
+                }
             }]
         ],
 
