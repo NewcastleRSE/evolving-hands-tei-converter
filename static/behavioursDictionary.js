@@ -77,13 +77,13 @@ export let behaviours = function (options) {
                             let event = new CustomEvent('drawBox', eventObject)
                             newSpan.onmouseenter = function () {
                                 dispatchEvent(event)
-                            }   
+                            }
                         }
 
                         if (options.elementAttribute) {
                             // newSpan.setAttribute('line-id', `#${lineObj.Line.id}`);
                             // newSpan.setAttribute('line-points', `${lineObj.Line.points}`);
-                            newSpan.setAttribute('line-data', JSON.stringify({...lineObj, ...parentObj, ...grandParentObj}));
+                            newSpan.setAttribute('line-data', JSON.stringify({ ...lineObj, ...parentObj, ...grandParentObj }));
                         }
 
                     } else if (newSpan != '') {
@@ -158,20 +158,32 @@ export let behaviours = function (options) {
             ["tei-placename[ref]", function (elt) {
 
                 // get data and build object
-                let dataObject = {}
-                const ref = elt.getAttribute('ref').substring(1);
+                let dataObject = {};
+                let ref = undefined;
+                if (!elt.getAttribute('ref').includes('#')) {
+                    console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
+                    ref = elt.getAttribute('ref');
+                } else {
+                    ref = elt.getAttribute('ref').substring(1);
+                }
+
                 const placeData = document.getElementById(ref);
+
+                if (placeData === null) {
+                    throw new Error(`Could not find metadata for placeName with reference ${ref}`)
+                }
+
                 for (const data of placeData.children) {
                     if (data.getAttribute('data-origname') === 'ptr') {
-                        dataObject['authority'] = {'provider': data.getAttribute('type'), 'url': data.getAttribute('target')}
+                        dataObject['authority'] = { 'provider': data.getAttribute('type'), 'url': data.getAttribute('target') }
                     } else {
                         dataObject[data.getAttribute('data-origname')] = data.innerHTML
                     }
                 }
-                
+
                 // pass data as custom event
                 if (options.customEvents) {
-                    let event = new CustomEvent('placeHover', {detail: {...dataObject}})
+                    let event = new CustomEvent('placeHover', { detail: { ...dataObject } })
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }
@@ -202,7 +214,7 @@ export let behaviours = function (options) {
 
         "standOff": function (elt) {
             const legalPositions = ['top', 'bottom']
-            
+
             // hide or show the standOff element
             if (!options.showStandOffMetadata) {
                 elt.hidden = true;
