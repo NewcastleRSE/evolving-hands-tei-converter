@@ -82,6 +82,7 @@ Copy the entire `dist/TeiConverter` folder to the root of your project (or a sui
 
 #### Documentation
 - [Configuration object](/documentation/TeiConverter.config.md);
+  - [Element level options](/documentation/ElementOptions.config.md);
 - [Adding custom behaviours](/documentation/customBehaviours.md);
 - Custom events:
   - [Facsimile coordinates](/documentation/customEvents/drawBox.md);
