@@ -183,14 +183,14 @@ export let behaviours = function (options) {
                 }
 
                 // add link
-                if (options.addLink != '') {
+                if (options.addLink != '' && options.addLink != false && options.addLink != 'none') {
                     let linkedPlace = document.createElement('a');
                     if (options.addLink === 'authority') {
                         linkedPlace.setAttribute('href', dataObject.authority.url);
                     } else if (options.addLink === 'document') {
                         linkedPlace.setAttribute('href', `/#${ref}`);
                     } else {
-                        throw new Error('Invalid option: addLink must be either "authority" or "document"');
+                        throw new Error('Invalid option: addLink must be either "authority", "document", "none", or false (boolean)');
                     }
                     for (let chld of elt.childNodes) {
                         linkedPlace.appendChild(chld.cloneNode());

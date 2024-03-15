@@ -87,7 +87,7 @@ Defines whether or not to include the default `TEIConverter` behaviour for *elem
 ## elementsSelected.*element*.options
 ### type: `object`
 ### scope: `element`
-An object with additional options for the *element* behaviour implementation. All options available for each element exist in the default `config`.
+An object with additional options for the *element* behaviour implementation. All options available for each element exist in the default `config` and [are listed here](./ElementOptions.config.md).
 
 ## addCustomBehaviours
 ### type: `object`
