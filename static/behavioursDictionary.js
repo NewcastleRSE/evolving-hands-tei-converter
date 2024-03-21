@@ -181,6 +181,15 @@ export let behaviours = function (options) {
                     }
                 }
 
+                // if there is no declared authority, checks to see if the element includes any other available url;
+                if (!Object.keys(dataObject).includes('authority')) {
+                    if (placeData.getAttribute('corresp') != null || placeData.getAttribute('corresp') != '') {
+                        dataObject['otherURL'] = placeData.getAttribute('corresp')
+                    } else {
+                        dataObject['noURL'] = true;
+                    }
+                }
+
                 // pass data as custom event
                 if (options.customEvents) {
                     let event = new CustomEvent('placeHover', { detail: { ...dataObject } })
@@ -195,10 +204,18 @@ export let behaviours = function (options) {
                 }
 
                 // add link
-                if (options.addLink != '' && options.addLink != false && options.addLink != 'none') {
+                // check wether the addLink option in the config is not falsy and whether the data object contains an URL;
+                if (options.addLink != '' && options.addLink != false && options.addLink != 'none' && !dataObject.noURL) {
                     let linkedPlace = document.createElement('a');
+                    // if object contains an authority, use that, if not and it contains another URL, use that.
                     if (options.addLink === 'authority') {
-                        linkedPlace.setAttribute('href', dataObject.authority.url);
+                        if (dataObject.authority) {
+                            linkedPlace.setAttribute('href', dataObject.authority.url);
+                        } else if (dataObject.otherURL) {
+                            linkedPlace.setAttribute('href', dataObject.otherURL);
+                        } else {
+                            throw new Error(`${dataObject.placeName} does not have any authority or authority-like URL`);
+                        }
                     } else if (options.addLink === 'document') {
                         linkedPlace.setAttribute('href', `/#${ref}`);
                     } else {
@@ -208,6 +225,9 @@ export let behaviours = function (options) {
                         linkedPlace.appendChild(chld.cloneNode());
                     }
                     return linkedPlace;
+                } else if (options.addLink != '' && options.addLink != false && options.addLink != 'none' && dataObject.noURL) {
+                    // If addLink option is NOT falsy, but the dataObject claims to have no URLs, throw new error without creating a link
+                    throw new Error(`${dataObject.placeName} does not have any available URL to link to ('dataObject.noURL' === true)`)
                 }
             }]
         ],
