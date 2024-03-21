@@ -13,7 +13,7 @@ addEventListener('persHover', (event) => {
 ```
 
 # Event object
-The data for personal name is included in the `event.detail` object, which you should capture when adding the event listener. The specific strucutre of the object can differ depending on the kind of data encoded on the TEI file, but it should normally be as follows:
+The data for personal name is included in the `event.detail` object, which you should capture when adding the event listener. The specific structure of the object can differ depending on the kind of data encoded on the TEI file, but it should normally be as follows:
 
 ```
 event.detail: object {
