@@ -42,3 +42,33 @@ export function getNamedEntitiesData(entityData) {
 
     return dataObject;
 }
+
+export function transformNamedEntityLink(elt, dataObject, options) {
+    // function takes in the source element, the dataObject, and any options to a named entity type and returns the same element with a link
+
+    let linkedEntity = undefined;
+
+    // check wether the addLink option in the config is not falsy and whether the data object contains an URL;
+    if (options.addLink != '' && options.addLink != false && options.addLink != 'none') {
+        linkedEntity = document.createElement('a');
+        // if object contains an authority, use that, if not and it contains another URL, use that.
+        if (options.addLink === 'authority') {
+            if (dataObject.authority) {
+                linkedEntity.setAttribute('href', dataObject.authority.url);
+            } else if (dataObject.otherURL) {
+                linkedEntity.setAttribute('href', dataObject.otherURL);
+            } else {
+                throw new Error(`${JSON.stringify(dataObject)} does not have any authority or authority-like URL`);
+            }
+        } else if (options.addLink === 'document') {
+            linkedEntity.setAttribute('href', `/${elt.getAttribute('ref')}`);
+        } else {
+            throw new Error('Invalid option: addLink must be either "authority", "document", "none", or false (boolean)');
+        }
+        for (let chld of elt.childNodes) {
+            linkedEntity.appendChild(chld.cloneNode());
+        }
+    }
+
+    return linkedEntity;
+}

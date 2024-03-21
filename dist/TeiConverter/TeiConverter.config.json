@@ -46,7 +46,10 @@
             }
         },
         "persName": {
-            "include": true
+            "include": true,
+            "options": {
+                "addLink": false
+            }
         },
         "standOff": {
             "include": true
