@@ -139,6 +139,12 @@ export let behaviours = function (options) {
             }
         },
 
+        "listOrg": function (elt) {
+            if (!options.showOrgs) {
+                elt.hidden = true;
+            }
+        },
+
         "listPerson": function (elt) {
             // hide or show the listPerson element
             if (!options.showPeople) {

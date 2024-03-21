@@ -16,6 +16,7 @@
     },
     "standOffMetadata": {
         "showStandOffMetadata": false,
+        "showOrgs": false,
         "showPeople": false,
         "showPlaces": false,
         "standOffPosition": "top"
@@ -31,6 +32,9 @@
             "options": {
                 "showLogs": false
             }
+        },
+        "listOrg": {
+            "include": true
         },
         "listPerson": {
             "include": true

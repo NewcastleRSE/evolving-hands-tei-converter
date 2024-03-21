@@ -71,6 +71,11 @@ Gives a set of options for the display of the metadata included in the `<standOf
 ### scope: `global`
 Defines whether to display *any* of the data stored in the `<standOff>` element; specific metadata to display needs to be active in the options below;
 
+## standOffMetadata.showOrgs
+### type: `boolean`
+### scope: `global`
+Defines whether to display any list of organisation information included in the metadata. [`standOffMetadata.showStandOffMetadata`](#standoffmetadatashowstandoffmetadata) must be true for the information to be displayed.
+
 ## standOffMetadata.showPeople
 ### type: `boolean`
 ### scope: `global`
