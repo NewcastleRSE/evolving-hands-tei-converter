@@ -6,6 +6,10 @@
         "customEvents": true,
         "elementAttribute": false
     },
+    "placeData": {
+        "customEvents": true,
+        "elementAttribute": false
+    },
     "standOffMetadata": {
         "showStandOffMetadata": false,
         "showPeople": false,
@@ -31,6 +35,12 @@
             "include": true
         },
         "note": {"include": false},
+        "placeName": {
+            "include":true,
+            "options": {
+                "addLink": "authority"
+            }
+        },
         "standOff": {
             "include": true
         }
