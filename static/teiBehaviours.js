@@ -23,6 +23,9 @@ export let teiBehaviours = function (config) {
             if (choice === 'placeName') {
                 options = {...options, ...config.placeData}
             }
+            if (choice === 'persName') {
+                options = {...options, ...config.persData}
+            }
             behavioursObject['tei'][choice] = behaviours(options)[choice];
         }
     }

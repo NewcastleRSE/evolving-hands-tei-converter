@@ -11,3 +11,9 @@ By default, the `graphic` behaviour ignores any inline images; `showLogs` define
 #### type: `boolean | string`
 #### values: `false | 'none' | 'authority' | 'document'`
 Defines whether to create a link when a place name is marked in the body of the text. `false` (boolean), `'none'` (string), or not including the option will *not* create the link; `'authority'` will link directly to any authority included in the `placeName` (or in the linked `placeName` stand-off element); `document` will link to the stand-off element elsewhere in the text ([`standOffMetada.showStandOffMetadata`](./TeiConverter.config.md#standoffmetadatashowstandoffmetadata) or [`standOffMetada.showPlaces`](./TeiConverter.config.md#standoffmetadatashowplaces) must be `true`)
+
+## `persName`
+### `persName.options.addLink`
+#### type: `boolean | string`
+#### values: `false | 'none' | 'authority' | 'document'`
+Defines whether to create a link when a persnal name is marked in the body of the text. `false` (boolean), `'none'` (string), or not including the option will *not* create the link; `'authority'` will link directly to any authority included in the `persName` (or in the linked `persName` stand-off element); `document` will link to the stand-off element elsewhere in the text ([`standOffMetada.showStandOffMetadata`](./TeiConverter.config.md#standoffmetadatashowstandoffmetadata) or [`standOffMetada.showPlaces`](./TeiConverter.config.md#standoffmetadatashowplaces) must be `true`)
