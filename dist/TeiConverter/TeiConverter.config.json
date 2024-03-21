@@ -10,6 +10,10 @@
         "customEvents": true,
         "elementAttribute": false
     },
+    "persData": {
+        "customEvents": true,
+        "elementAttribute": false
+    },
     "standOffMetadata": {
         "showStandOffMetadata": false,
         "showPeople": false,
@@ -40,6 +44,9 @@
             "options": {
                 "addLink": "authority"
             }
+        },
+        "persName": {
+            "include": true
         },
         "standOff": {
             "include": true

@@ -1,4 +1,4 @@
-import { formatPagePoints, formatPoints } from "../src/utils/auxFunctions";
+import { formatPagePoints, formatPoints, getNamedEntitiesData } from "../src/utils/auxFunctions";
 
 export let behaviours = function (options) {
     return {
@@ -158,7 +158,6 @@ export let behaviours = function (options) {
             ["tei-placename[ref]", function (elt) {
 
                 // get data and build object
-                let dataObject = {};
                 let ref = undefined;
                 if (!elt.getAttribute('ref').includes('#')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
@@ -169,30 +168,70 @@ export let behaviours = function (options) {
 
                 const placeData = document.getElementById(ref);
 
-                if (placeData === null) {
-                    throw new Error(`Could not find metadata for placeName with reference ${ref}`)
-                }
-
-                for (const data of placeData.children) {
-                    if (data.getAttribute('data-origname') === 'ptr') {
-                        dataObject['authority'] = { 'provider': data.getAttribute('type'), 'url': data.getAttribute('target') }
-                    } else {
-                        dataObject[data.getAttribute('data-origname')] = data.innerHTML
-                    }
-                }
-
-                // if there is no declared authority, checks to see if the element includes any other available url;
-                if (!Object.keys(dataObject).includes('authority')) {
-                    if (placeData.getAttribute('corresp') != null || placeData.getAttribute('corresp') != '') {
-                        dataObject['otherURL'] = placeData.getAttribute('corresp')
-                    } else {
-                        dataObject['noURL'] = true;
-                    }
-                }
+                const dataObject = getNamedEntitiesData(placeData);
 
                 // pass data as custom event
                 if (options.customEvents) {
                     let event = new CustomEvent('placeHover', { detail: { ...dataObject } })
+                    elt.onmouseenter = function () {
+                        dispatchEvent(event)
+                    }
+                }
+
+                // pass data as element attribute
+                if (options.elementAttribute) {
+                    elt.setAttribute('place-data', JSON.stringify(dataObject))
+                }
+
+                // add link
+                // check wether the addLink option in the config is not falsy and whether the data object contains an URL;
+                if (options.addLink != '' && options.addLink != false && options.addLink != 'none' && !dataObject.noURL) {
+                    let linkedPlace = document.createElement('a');
+                    // if object contains an authority, use that, if not and it contains another URL, use that.
+                    if (options.addLink === 'authority') {
+                        if (dataObject.authority) {
+                            linkedPlace.setAttribute('href', dataObject.authority.url);
+                        } else if (dataObject.otherURL) {
+                            linkedPlace.setAttribute('href', dataObject.otherURL);
+                        } else {
+                            throw new Error(`${dataObject.placeName} does not have any authority or authority-like URL`);
+                        }
+                    } else if (options.addLink === 'document') {
+                        linkedPlace.setAttribute('href', `/#${ref}`);
+                    } else {
+                        throw new Error('Invalid option: addLink must be either "authority", "document", "none", or false (boolean)');
+                    }
+                    for (let chld of elt.childNodes) {
+                        linkedPlace.appendChild(chld.cloneNode());
+                    }
+                    return linkedPlace;
+                } else if (options.addLink != '' && options.addLink != false && options.addLink != 'none' && dataObject.noURL) {
+                    // If addLink option is NOT falsy, but the dataObject claims to have no URLs, throw new error without creating a link
+                    throw new Error(`${dataObject.placeName} does not have any available URL to link to ('dataObject.noURL' === true)`)
+                }
+            }]
+        ],
+
+        "persName": [
+            // this selects only personal names that reference another, ignoring the ones in the standOff metadata
+            ["tei-persName[ref]", function (elt) {
+
+                // get data and build object
+                let ref = undefined;
+                if (!elt.getAttribute('ref').includes('#')) {
+                    console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
+                    ref = elt.getAttribute('ref');
+                } else {
+                    ref = elt.getAttribute('ref').substring(1);
+                }
+
+                const persData = document.getElementById(ref);
+
+                const dataObject = getNamedEntitiesData(persData);
+
+                // pass data as custom event
+                if (options.customEvents) {
+                    let event = new CustomEvent('persHover', { detail: { ...dataObject } })
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }

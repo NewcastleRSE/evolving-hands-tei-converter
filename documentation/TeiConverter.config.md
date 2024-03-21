@@ -46,6 +46,21 @@ Defines whether the place data is passed to the client as a custom event. The cl
 ### scope: `global`
 Defines whether the place data is passed to the client as an attribute of the element that it refers to. Useful if the client prefers to control the firing of the event or needs to add additional information. The information is a JSON string included in the `place-data` attribute.
 
+## persData
+## type: `object`
+## scope: `global`
+An object containing two options about how to pass names data. These options are independent of each other, meaning that the client can receive the information in both ways simultaneously (or neither way).
+
+## persData.customEvents
+### type: `boolean`
+### scope: `global`
+Defines whether the names data is passed to the client as a custom event. The client must subscribe to an event called `persHover` -- full instructions on how to do this [here](./customEvents/persHover.md).
+
+## persData.elementAttribute
+### type: `boolean`
+### scope: `global`
+Defines whether the names data is passed to the client as an attribute of the element that it refers to. Useful if the client prefers to control the firing of the event or needs to add additional information. The information is a JSON string included in the `pers-data` attribute.
+
 ## standOffMetadata
 ### type: `boolean`
 ### scope: `global`
