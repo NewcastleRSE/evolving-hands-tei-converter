@@ -6,6 +6,10 @@
         "customEvents": true,
         "elementAttribute": false
     },
+    "orgData": {
+        "customEvents": true,
+        "elementAttribute": false
+    },
     "placeData": {
         "customEvents": true,
         "elementAttribute": false
@@ -43,6 +47,12 @@
             "include": true
         },
         "note": {"include": false},
+        "orgName": {
+            "include": true,
+            "options": {
+                "addLink": "authority"
+            }
+        },
         "placeName": {
             "include":true,
             "options": {

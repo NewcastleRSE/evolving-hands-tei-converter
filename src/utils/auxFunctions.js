@@ -26,6 +26,34 @@ export function getNamedEntitiesData(entityData) {
     for (const data of entityData.children) {
         if (data.getAttribute('data-origname') === 'ptr') {
             dataObject['authority'] = { 'provider': data.getAttribute('type'), 'url': data.getAttribute('target') }
+        } else if (data.getAttribute('data-origname') === 'event') {
+            // if it is a structured event
+            
+            // if event has a type, use that as the key name for the data object, if not use generic 'event'
+            let keyName = 'event'
+            if (data.getAttribute('type') != null) {
+                keyName = data.getAttribute('type');
+            }
+            // if event has a date in the attribute use that as the data; if not, use whatever is inside the first child element (i.e., ab inside event);
+            let keyData = data.children[0].innerHTML;
+            if (data.getAttribute('when') != null) {
+                keyData = data.getAttribute('when');
+            }
+            dataObject[keyName] = keyData;
+        } else if (data.getAttribute('data-origname') === 'idno' && data.getAttribute('type') != null) {
+            // if autority information is part of ID
+            let authorityInfo = {}
+            authorityInfo.provider = data.getAttribute('type');
+            authorityInfo.id = data.innerHTML;
+            if (data.getAttribute('target') != null) {
+                // if idno contains an url as an attribute use that
+                authorityInfo.url = data.getAttribute('target');
+            } else if(entityData.getAttribute('corresp') != null) {
+                // if idno does not contain an url, see if the parent org contains a corresp and use that as authority url
+                authorityInfo.url = entityData.getAttribute('corresp');
+            }
+            dataObject['authority'] = authorityInfo;
+
         } else {
             dataObject[data.getAttribute('data-origname')] = data.innerHTML
         }

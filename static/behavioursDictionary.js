@@ -159,6 +159,49 @@ export let behaviours = function (options) {
             }
         },
 
+        "orgName": [
+            // this selects only organisation names that reference another, ignoring the ones in the standOff metadata
+            ["tei-orgname[ref]", function (elt) {
+
+                // get data and build object
+                let ref = undefined;
+                if (!elt.getAttribute('ref').includes('#')) {
+                    console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
+                    ref = elt.getAttribute('ref');
+                } else {
+                    ref = elt.getAttribute('ref').substring(1);
+                }
+
+                const orgData = document.getElementById(ref);
+
+                const dataObject = getNamedEntitiesData(orgData);
+
+                // pass data as custom event
+                if (options.customEvents) {
+                    let event = new CustomEvent('orgHover', { detail: { ...dataObject } })
+                    elt.onmouseenter = function () {
+                        dispatchEvent(event)
+                    }
+                }
+
+                // pass data as element attribute
+                if (options.elementAttribute) {
+                    elt.setAttribute('org-data', JSON.stringify(dataObject))
+                }
+
+                let orgPlace = undefined;
+                try {
+                    orgPlace = transformNamedEntityLink(elt, dataObject, options)
+                } catch (e) {
+                    console.warn(`Could not turn element with ref ${ref} into a link; dataObject has no valid URL`);
+                }
+
+                if (orgPlace != undefined) {
+                    return orgPlace
+                }
+            }]
+        ],
+
         "placeName": [
             // this selects only placenames that reference another, ignoring the ones in the standOff metadata
             ["tei-placename[ref]", function (elt) {
