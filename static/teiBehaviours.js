@@ -17,8 +17,11 @@ export let teiBehaviours = function (config) {
                     options = {...options, customEvents: false, elementAttribute: false}
                 }
             }
-            if (choice === 'standOff' || choice == 'listPerson' || choice == 'listPlace') {
+            if (choice === 'standOff' || choice === 'listOrg' || choice === 'listPerson' || choice === 'listPlace') {
                 options = {...options, ...config.standOffMetadata}
+            }
+            if (choice === 'orgName') {
+                options = {...options, ...config.orgData}
             }
             if (choice === 'placeName') {
                 options = {...options, ...config.placeData}

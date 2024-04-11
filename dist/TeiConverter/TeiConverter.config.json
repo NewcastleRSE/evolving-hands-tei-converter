@@ -6,6 +6,10 @@
         "customEvents": true,
         "elementAttribute": false
     },
+    "orgData": {
+        "customEvents": true,
+        "elementAttribute": false
+    },
     "placeData": {
         "customEvents": true,
         "elementAttribute": false
@@ -16,6 +20,7 @@
     },
     "standOffMetadata": {
         "showStandOffMetadata": false,
+        "showOrgs": false,
         "showPeople": false,
         "showPlaces": false,
         "standOffPosition": "top"
@@ -32,6 +37,9 @@
                 "showLogs": false
             }
         },
+        "listOrg": {
+            "include": true
+        },
         "listPerson": {
             "include": true
         },
@@ -39,6 +47,12 @@
             "include": true
         },
         "note": {"include": false},
+        "orgName": {
+            "include": true,
+            "options": {
+                "addLink": "authority"
+            }
+        },
         "placeName": {
             "include":true,
             "options": {

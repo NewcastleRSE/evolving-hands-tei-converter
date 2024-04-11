@@ -139,6 +139,12 @@ export let behaviours = function (options) {
             }
         },
 
+        "listOrg": function (elt) {
+            if (!options.showOrgs) {
+                elt.hidden = true;
+            }
+        },
+
         "listPerson": function (elt) {
             // hide or show the listPerson element
             if (!options.showPeople) {
@@ -153,12 +159,61 @@ export let behaviours = function (options) {
             }
         },
 
+        "orgName": [
+            // this selects only organisation names that reference another, ignoring the ones in the standOff metadata
+            ["tei-orgname[ref]", function (elt) {
+
+                // get data and build object
+                let ref = undefined;
+                let dataObject = undefined;
+                if (!elt.getAttribute('ref').includes('#')) {
+                    console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
+                    ref = elt.getAttribute('ref');
+                } else {
+                    ref = elt.getAttribute('ref').substring(1);
+                }
+
+                const orgData = document.getElementById(ref);
+
+                try {
+                    dataObject = getNamedEntitiesData(orgData, ref);
+                } catch(e) {
+                    console.warn(e)
+                }
+
+                // pass data as custom event
+                if (options.customEvents) {
+                    let event = new CustomEvent('orgHover', { detail: { ...dataObject } })
+                    elt.onmouseenter = function () {
+                        dispatchEvent(event)
+                    }
+                }
+
+                // pass data as element attribute
+                if (options.elementAttribute) {
+                    elt.setAttribute('org-data', JSON.stringify(dataObject))
+                }
+
+                let orgPlace = undefined;
+                try {
+                    orgPlace = transformNamedEntityLink(elt, dataObject, options)
+                } catch (e) {
+                    console.warn(`Could not turn element with ref ${ref} into a link; dataObject has no valid URL`);
+                }
+
+                if (orgPlace != undefined) {
+                    return orgPlace
+                }
+            }]
+        ],
+
         "placeName": [
             // this selects only placenames that reference another, ignoring the ones in the standOff metadata
             ["tei-placename[ref]", function (elt) {
 
                 // get data and build object
                 let ref = undefined;
+                let dataObject = undefined;
                 if (!elt.getAttribute('ref').includes('#')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
@@ -168,7 +223,11 @@ export let behaviours = function (options) {
 
                 const placeData = document.getElementById(ref);
 
-                const dataObject = getNamedEntitiesData(placeData);
+                try {
+                    dataObject = getNamedEntitiesData(placeData, ref);
+                } catch (e) {
+                    console.warn(e)
+                }
 
                 // pass data as custom event
                 if (options.customEvents) {
@@ -202,6 +261,7 @@ export let behaviours = function (options) {
 
                 // get data and build object
                 let ref = undefined;
+                let dataObject = undefined;
                 if (!elt.getAttribute('ref').includes('#')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
@@ -211,7 +271,11 @@ export let behaviours = function (options) {
 
                 const persData = document.getElementById(ref);
 
-                const dataObject = getNamedEntitiesData(persData);
+                try {
+                    dataObject = getNamedEntitiesData(persData, ref);
+                } catch (e) {
+                    console.warn(e)
+                }
 
                 // pass data as custom event
                 if (options.customEvents) {
