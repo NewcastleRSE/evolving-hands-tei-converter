@@ -31,6 +31,21 @@ Defines whether the facsimile coordinate information is passed to the client as 
 ### scope: `global`
 Defines whether the facsimile coordinate information is passed to the client as an attribute of the element that it refers to. Useful if the client prefers to control the firing of the event or needs to add additional information. The information is a JSON string included in the `line-data` attribute.
 
+## orgData
+## type: `object`
+## scope: `global`
+An object containing two options about how to pass organisation data. These options are independent of each other, meaning that the client can receive the information in both ways simultaneously (or neither way).
+
+## orgData.customEvents
+### type: `boolean`
+### scope: `global`
+Defines whether the organisation data is passed to the client as a custom event. The client must subscribe to an event called `orgHover` -- full instructions on how to do this [here](./customEvents/orgHover.md).
+
+## orgData.elementAttribute
+### type: `boolean`
+### scope: `global`
+Defines whether the organisation data is passed to the client as an attribute of the element that it refers to. Useful if the client prefers to control the firing of the event or needs to add additional information. The information is a JSON string included in the `org-data` attribute.
+
 ## placeData
 ## type: `object`
 ## scope: `global`
