@@ -14,7 +14,7 @@ export function formatPagePoints(element) {
     return [[parseInt(ulx), parseInt(uly)], [parseInt(lrx), parseInt(lry)]]
 }
 
-export function getNamedEntitiesData(entityData) {
+export function getNamedEntitiesData(entityData, ref) {
     // Takes an element that contains a named entity type (persName, placeName, OrgName), extracts the information from it, and returns a dataObject
     let dataObject = {}
     // build object

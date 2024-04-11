@@ -165,6 +165,7 @@ export let behaviours = function (options) {
 
                 // get data and build object
                 let ref = undefined;
+                let dataObject = undefined;
                 if (!elt.getAttribute('ref').includes('#')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
@@ -174,7 +175,11 @@ export let behaviours = function (options) {
 
                 const orgData = document.getElementById(ref);
 
-                const dataObject = getNamedEntitiesData(orgData);
+                try {
+                    dataObject = getNamedEntitiesData(orgData, ref);
+                } catch(e) {
+                    console.warn(e)
+                }
 
                 // pass data as custom event
                 if (options.customEvents) {
@@ -208,6 +213,7 @@ export let behaviours = function (options) {
 
                 // get data and build object
                 let ref = undefined;
+                let dataObject = undefined;
                 if (!elt.getAttribute('ref').includes('#')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
@@ -217,7 +223,11 @@ export let behaviours = function (options) {
 
                 const placeData = document.getElementById(ref);
 
-                const dataObject = getNamedEntitiesData(placeData);
+                try {
+                    dataObject = getNamedEntitiesData(placeData, ref);
+                } catch (e) {
+                    console.warn(e)
+                }
 
                 // pass data as custom event
                 if (options.customEvents) {
@@ -251,6 +261,7 @@ export let behaviours = function (options) {
 
                 // get data and build object
                 let ref = undefined;
+                let dataObject = undefined;
                 if (!elt.getAttribute('ref').includes('#')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
@@ -260,7 +271,11 @@ export let behaviours = function (options) {
 
                 const persData = document.getElementById(ref);
 
-                const dataObject = getNamedEntitiesData(persData);
+                try {
+                    dataObject = getNamedEntitiesData(persData, ref);
+                } catch (e) {
+                    console.warn(e)
+                }
 
                 // pass data as custom event
                 if (options.customEvents) {
