@@ -65,6 +65,9 @@
                 "addLink": false
             }
         },
+        "seg": {
+            "include": true
+        },
         "standOff": {
             "include": true
         }
