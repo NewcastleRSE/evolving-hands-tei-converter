@@ -245,10 +245,12 @@ export let behaviours = function (options) {
 
         "seg": [
             ["[type=bibliographicNote-target-text]", function (elt) {
-                extractNotes(elt);
+                const noteDiv = extractNotes(elt);
+                console.log(noteDiv.innerHTML)
             }],
             ["[type=editorialNote-target-text]", function (elt) {
-                extractNotes(elt);
+                const noteDiv = extractNotes(elt);
+                console.log(noteDiv.innerHTML)
             }],
             ["tei-seg", function (elt) {
                 // this should log segs with types that have not been catered for

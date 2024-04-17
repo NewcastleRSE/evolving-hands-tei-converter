@@ -47,4 +47,11 @@ fileSelectForm.addEventListener('submit', (e) => {
     newTeiConverter.setAttribute('configPath', "dist/TeiConverter/TeiConverter.config.json");
 
     document.getElementById('teiContainer').appendChild(newTeiConverter);
+});
+
+let seeXMLButton = document.getElementById('see-xml');
+
+seeXMLButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.open(document.getElementById('fileNameSelect').value)
 })

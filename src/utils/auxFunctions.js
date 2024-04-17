@@ -103,12 +103,16 @@ export function transformNamedEntityLink(elt, dataObject, options) {
 
 export function extractNotes(elt) {
     // function should return target text and content of the note
+    let noteDiv = document.createElement('div')
     for (const child of elt.childNodes) {
         // if it's a text node, nodeType == 3; second condition checks the textNode is not just empty space
         if (child.nodeType === 3 && child.nodeValue.trim()!='') {
             console.log(child.nodeValue);
+            noteDiv.append(child.nodeValue);
         } else if (child.nodeType != 3) {
             console.log(child.innerHTML);
+            noteDiv.append(child)
         }
     }
+    return noteDiv;
 }
