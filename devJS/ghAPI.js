@@ -38,15 +38,21 @@ fileSelectForm.addEventListener('submit', (e) => {
 
     let selectedFile = document.getElementById('fileNameSelect').value;
 
-    const teiConverter = document.getElementsByTagName('tei-converter')[0];
+    const teiContainer = document.getElementById('teiContainer');
 
-    teiConverter.remove();
+    teiContainer.remove()
 
     let newTeiConverter = document.createElement('tei-converter');
     newTeiConverter.setAttribute('path', selectedFile);
     newTeiConverter.setAttribute('configPath', "dist/TeiConverter/TeiConverter.config.json");
 
-    document.getElementById('teiContainer').appendChild(newTeiConverter);
+    const newTeiContainer = document.createElement('div');
+    newTeiContainer.setAttribute('style', 'width: 85%; margin-right: auto; margin-left: auto;');
+    newTeiContainer.setAttribute('id', 'teiContainer')
+
+    newTeiContainer.appendChild(newTeiConverter);
+
+    document.querySelector('body').appendChild(newTeiContainer);
 });
 
 let seeXMLButton = document.getElementById('see-xml');
