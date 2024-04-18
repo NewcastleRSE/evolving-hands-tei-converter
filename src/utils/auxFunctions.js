@@ -104,26 +104,33 @@ export function transformNamedEntityLink(elt, dataObject, options) {
 export function extractNotes(elt) {
     // function should return target text and content of the note
     let targetNote = {}
-    for (const child of elt.childNodes) {
-        // if it's a text node, nodeType == 3; second condition checks the textNode is not just empty space
-        if (child.nodeType === 3 && child.nodeValue.trim()!='') {
-            // target
-            targetNote.target = child.nodeValue;
-        } else if (child.nodeType != 3) {
-            targetNote.note = child
-        }
+    let noteDiv = document.createElement('span');
+    for (const note of elt.getElementsByTagName('TEI-NOTE')) {
+        noteDiv.append(note);
+        
     }
+    // for (const child of elt.childNodes) {
+    //     // if it's a text node, nodeType == 3; second condition checks the textNode is not just empty space
+    //     if (child.nodeType === 3 && child.nodeValue.trim()!='') {
+    //         // target
+    //         targetDiv.appendChild(child);
+    //     } else if (child.tagName != 'TEI-NOTE') {
+    //         targetDiv.appendChild(child)
+    //     }
+    // }
+
+    targetNote = {note: noteDiv}
     return targetNote;
 }
 
-export function generateNoteLink(targetText, noteIndex, targetId) {
+export function generateNoteLink(elt, noteIndex, targetId) {
     let link = document.createElement('a');
     link.setAttribute('id', `src-note-${noteIndex}`)
     link.setAttribute('href', `#${targetId}`);
     link.innerHTML = noteIndex;
 
     let bodyElement = document.createElement('span');
-    bodyElement.append(targetText);
+    bodyElement.append(elt);
     
     let supEl = document.createElement('sup');
     supEl.append(link);
@@ -132,20 +139,29 @@ export function generateNoteLink(targetText, noteIndex, targetId) {
     return bodyElement
 }
 
-export function addNoteToDiv(noteContent, noteIndex) {
+export function addNoteToDiv(noteContent) {
     let teiContainer = document.getElementById('teiContainer');
     let notesList = teiContainer.querySelector('#document-notes');
+    let noteIndex = 1
     if (!notesList) {
         notesList = document.createElement('ol')
         notesList.setAttribute('id', 'document-notes');
         teiContainer.append(notesList);
+    } else {
+        noteIndex = Array.from(notesList.children).length + 1
     }
     let note = document.createElement('li');
-    const noteId = `target-note-${noteIndex}`
-    note.setAttribute('id', noteId)
+    const targetId = `target-note-${noteIndex}`
+    note.setAttribute('id', targetId)
     note.append(noteContent);
+    
+    let backLink = document.createElement('a')
+    backLink.setAttribute('href', `#src-note-${noteIndex}`)
+    backLink.innerHTML = ' ^ '
+
+    note.append(backLink);
     
     notesList.append(note);
 
-    return noteId
+    return {targetId, noteIndex}
 }

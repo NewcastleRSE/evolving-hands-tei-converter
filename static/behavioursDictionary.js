@@ -1,4 +1,4 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, generateNoteNr, getNamedEntitiesData, transformNamedEntityLink } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, transformNamedEntityLink } from "../src/utils/auxFunctions";
 
 export let behaviours = function (options) {
     return {
@@ -247,37 +247,24 @@ export let behaviours = function (options) {
             ["[type=bibliographicNote-target-text]", function (elt) {
                 // extract and separate the content of the note from the linking text in the body of the document
                 const targetNote = extractNotes(elt);
-                
-                // set index nr
-                if (!this.noteIndex) {
-                    this.noteIndex = 1;
-                } else {
-                    this.noteIndex++;
-                }
 
-                // move the content of the note to a separate div at the end of the document
-                const targetId = addNoteToDiv(targetNote.note, this.noteIndex);
-                
+                // move the content of the note to a separate div at the end of the document and count existing notes to define note index
+                const {targetId, noteIndex} = addNoteToDiv(targetNote.note);
+
                 // add a note index to the body of the text, attached to the written text
-                const bodyElement = generateNoteLink(targetNote.target, this.noteIndex, targetId);
+                const bodyElement = generateNoteLink(elt, noteIndex, targetId);
 
                 return bodyElement;
             }],
             ["[type=editorialNote-target-text]", function (elt) {
+                // extract and separate the content of the note from the linking text in the body of the document
                 const targetNote = extractNotes(elt);
 
-                // set index nr
-                if (!this.noteIndex) {
-                    this.noteIndex = 1;
-                } else {
-                    this.noteIndex++;
-                }
-
-                // move the content of the note to a separate div at the end of the document
-                const targetId = addNoteToDiv(targetNote.note, this.noteIndex);
+                // move the content of the note to a separate div at the end of the document and count existing notes to define note index
+                const {targetId, noteIndex} = addNoteToDiv(targetNote.note);
                 
                 // add a note index to the body of the text, attached to the written text
-                const bodyElement = generateNoteLink(targetNote.target, this.noteIndex, targetId);
+                const bodyElement = generateNoteLink(targetNote.target, noteIndex, targetId);
 
                 return bodyElement;
             }],
