@@ -8,10 +8,12 @@
     },
     "notes": {
         "bibliographicNotes": {
-            "include": true
+            "include": true,
+            "render": "endnote"
         },
         "editorialNotes": {
-            "include": true
+            "include": true,
+            "render": "endnote"
         }
     },
     "orgData": {

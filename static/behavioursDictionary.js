@@ -218,16 +218,23 @@ export let behaviours = function (options) {
             ["[type=bibliographicNote-target-text]", function (elt) {
                 // extract and separate the content of the note from the linking text in the body of the document
                 const targetNote = extractNotes(elt);
+
+                const legalRender = ['endnote']
                 
                 if (options.bibliographicNotes.include){
-
-                    // move the content of the note to a separate div at the end of the document and count existing notes to define note index
-                    const {targetId, noteIndex} = addNoteToDiv(targetNote);
-
-                    // add a note index to the body of the text, attached to the written text
-                    const bodyElement = generateNoteLink(elt, noteIndex, targetId);
-
-                    return bodyElement;
+                    if (legalRender.includes(options.bibliographicNotes.render)) {
+                        if (options.bibliographicNotes.render === 'endnote') {
+                            // move the content of the note to a separate div at the end of the document and count existing notes to define note index
+                            const {targetId, noteIndex} = addNoteToDiv(targetNote);
+    
+                            // add a note index to the body of the text, attached to the written text
+                            const bodyElement = generateNoteLink(elt, noteIndex, targetId);
+    
+                            return bodyElement;
+                        }
+                    } else {
+                        throw new Error(`${options.bibliographicNotes.render} is not a valid rendering option. Valid options are: ${legalRender}`)
+                    }
                 }
             }],
             ["[type=editorialNote-target-text]", function (elt) {
