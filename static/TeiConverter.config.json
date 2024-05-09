@@ -6,6 +6,14 @@
         "customEvents": true,
         "elementAttribute": false
     },
+    "notes": {
+        "bibliographicNotes": {
+            "include": true
+        },
+        "editorialNotes": {
+            "include": true
+        }
+    },
     "orgData": {
         "customEvents": true,
         "elementAttribute": false

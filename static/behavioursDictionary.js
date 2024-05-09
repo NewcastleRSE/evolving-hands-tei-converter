@@ -218,26 +218,31 @@ export let behaviours = function (options) {
             ["[type=bibliographicNote-target-text]", function (elt) {
                 // extract and separate the content of the note from the linking text in the body of the document
                 const targetNote = extractNotes(elt);
+                
+                if (options.bibliographicNotes.include){
 
-                // move the content of the note to a separate div at the end of the document and count existing notes to define note index
-                const {targetId, noteIndex} = addNoteToDiv(targetNote);
+                    // move the content of the note to a separate div at the end of the document and count existing notes to define note index
+                    const {targetId, noteIndex} = addNoteToDiv(targetNote);
 
-                // add a note index to the body of the text, attached to the written text
-                const bodyElement = generateNoteLink(elt, noteIndex, targetId);
+                    // add a note index to the body of the text, attached to the written text
+                    const bodyElement = generateNoteLink(elt, noteIndex, targetId);
 
-                return bodyElement;
+                    return bodyElement;
+                }
             }],
             ["[type=editorialNote-target-text]", function (elt) {
                 // extract and separate the content of the note from the linking text in the body of the document
                 const targetNote = extractNotes(elt);
 
-                // move the content of the note to a separate div at the end of the document and count existing notes to define note index
-                const {targetId, noteIndex} = addNoteToDiv(targetNote);
-                
-                // add a note index to the body of the text, attached to the written text
-                const bodyElement = generateNoteLink(elt, noteIndex, targetId);
+                if (options.editorialNotes.include) {
+                    // move the content of the note to a separate div at the end of the document and count existing notes to define note index
+                    const {targetId, noteIndex} = addNoteToDiv(targetNote);
+                    
+                    // add a note index to the body of the text, attached to the written text
+                    const bodyElement = generateNoteLink(elt, noteIndex, targetId);
 
-                return bodyElement;
+                    return bodyElement;
+                }
             }],
             ["tei-seg", function (elt) {
                 // this should log segs with types that have not been catered for
