@@ -103,38 +103,9 @@ export let behaviours = function (options) {
             }]
         ],
 
-        "note": [
-            ["tei-note", function (elt) {
-                console.log(elt.getAttribute('type'));
-            }],
-            ["[type=gloss]",
-                function (elt) {
-                    if (!this.noteIndex) {
-                        this["noteIndex"] = 1;
-                    } else {
-                        this.noteIndex++;
-                    }
-                    let id = "note" + this.noteIndex;
-                    let link = document.createElement("a");
-                    link.setAttribute("id", "src" + id);
-                    link.setAttribute("href", "#" + id);
-                    link.innerHTML = this.noteIndex;
-                    let content = document.createElement("sup");
-                    content.appendChild(link);
-                    let notes = this.dom.querySelector("ol.notes");
-                    if (!notes) {
-                        notes = document.createElement("ol");
-                        notes.setAttribute("class", "notes");
-                        this.dom.appendChild(notes);
-                    }
-                    let note = document.createElement("li");
-                    note.id = id;
-                    note.innerHTML = "<a href=\"#src" + id + "\">^</a> " + elt.innerHTML
-                    notes.appendChild(note);
-                    return content;
-                }
-            ]
-        ],
+        "note": function (elt) {
+            // empty function removes default behaviour for notes
+        },
 
         "graphic": function (elt) {
             if (options.showLogs) {
@@ -249,7 +220,7 @@ export let behaviours = function (options) {
                 const targetNote = extractNotes(elt);
 
                 // move the content of the note to a separate div at the end of the document and count existing notes to define note index
-                const {targetId, noteIndex} = addNoteToDiv(targetNote.note);
+                const {targetId, noteIndex} = addNoteToDiv(targetNote);
 
                 // add a note index to the body of the text, attached to the written text
                 const bodyElement = generateNoteLink(elt, noteIndex, targetId);
@@ -261,10 +232,10 @@ export let behaviours = function (options) {
                 const targetNote = extractNotes(elt);
 
                 // move the content of the note to a separate div at the end of the document and count existing notes to define note index
-                const {targetId, noteIndex} = addNoteToDiv(targetNote.note);
+                const {targetId, noteIndex} = addNoteToDiv(targetNote);
                 
                 // add a note index to the body of the text, attached to the written text
-                const bodyElement = generateNoteLink(targetNote.target, noteIndex, targetId);
+                const bodyElement = generateNoteLink(elt, noteIndex, targetId);
 
                 return bodyElement;
             }],

@@ -102,24 +102,9 @@ export function transformNamedEntityLink(elt, dataObject, options) {
 }
 
 export function extractNotes(elt) {
-    // function should return target text and content of the note
-    let targetNote = {}
-    let noteDiv = document.createElement('span');
-    for (const note of elt.getElementsByTagName('TEI-NOTE')) {
-        noteDiv.append(note);
-        
-    }
-    // for (const child of elt.childNodes) {
-    //     // if it's a text node, nodeType == 3; second condition checks the textNode is not just empty space
-    //     if (child.nodeType === 3 && child.nodeValue.trim()!='') {
-    //         // target
-    //         targetDiv.appendChild(child);
-    //     } else if (child.tagName != 'TEI-NOTE') {
-    //         targetDiv.appendChild(child)
-    //     }
-    // }
-
-    targetNote = {note: noteDiv}
+    // function should return content of the note and remove it from the element
+    const targetNote = elt.getElementsByTagName('TEI-NOTE')[0];
+    elt.getElementsByTagName('TEI-NOTE')[0].remove();
     return targetNote;
 }
 
@@ -130,7 +115,7 @@ export function generateNoteLink(elt, noteIndex, targetId) {
     link.innerHTML = noteIndex;
 
     let bodyElement = document.createElement('span');
-    bodyElement.append(elt);
+    bodyElement.innerHTML = elt.innerHTML;
     
     let supEl = document.createElement('sup');
     supEl.append(link);
