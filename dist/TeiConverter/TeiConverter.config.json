@@ -9,11 +9,13 @@
     "notes": {
         "bibliographicNotes": {
             "include": true,
-            "render": "endnote"
+            "render": "event",
+            "structured": true
         },
         "editorialNotes": {
             "include": true,
-            "render": "endnote"
+            "render": "event",
+            "structured": true
         }
     },
     "orgData": {

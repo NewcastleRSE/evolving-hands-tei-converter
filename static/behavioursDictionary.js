@@ -1,4 +1,4 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, transformNamedEntityLink } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink } from "../src/utils/auxFunctions";
 
 export let behaviours = function (options) {
     return {
@@ -150,6 +150,7 @@ export let behaviours = function (options) {
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }
+                    elt.classList.add('event');
                 }
 
                 // pass data as element attribute
@@ -193,6 +194,7 @@ export let behaviours = function (options) {
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }
+                    elt.classList.add('event');
                 }
 
                 // pass data as element attribute
@@ -210,7 +212,7 @@ export let behaviours = function (options) {
                 if (linkedPers != undefined) {
                     return linkedPers
                 }
-                
+
             }]
         ],
 
@@ -219,36 +221,63 @@ export let behaviours = function (options) {
                 // extract and separate the content of the note from the linking text in the body of the document
                 const targetNote = extractNotes(elt);
 
-                const legalRender = ['endnote']
-                
-                if (options.bibliographicNotes.include){
+                const legalRender = ['endnote', 'inline', 'event']
+
+                if (options.bibliographicNotes.include) {
                     if (legalRender.includes(options.bibliographicNotes.render)) {
                         if (options.bibliographicNotes.render === 'endnote') {
                             // move the content of the note to a separate div at the end of the document and count existing notes to define note index
-                            const {targetId, noteIndex} = addNoteToDiv(targetNote);
-    
+                            const { targetId, noteIndex } = addNoteToDiv(targetNote);
+
                             // add a note index to the body of the text, attached to the written text
                             const bodyElement = generateNoteLink(elt, noteIndex, targetId);
-    
+
                             return bodyElement;
+                        } else if (options.bibliographicNotes.render === 'inline') {
+                            targetNote.setAttribute('class', 'note-text');
+                            elt.appendChild(targetNote);
+                        } else if (options.bibliographicNotes.render === 'event') {
+                            const dataObject = noteToEvent(targetNote, options.bibliographicNotes.structured);
+                            let event = new CustomEvent('noteHover', { detail: { ...dataObject } })
+                            elt.onmouseenter = function () {
+                                dispatchEvent(event)
+                            }
+                            elt.classList.add('event');
                         }
                     } else {
-                        throw new Error(`${options.bibliographicNotes.render} is not a valid rendering option. Valid options are: ${legalRender}`)
+                        throw new Error(`'${options.bibliographicNotes.render}' is not a valid rendering option. Valid options are: '${legalRender}'`)
                     }
                 }
             }],
             ["[type=editorialNote-target-text]", function (elt) {
                 // extract and separate the content of the note from the linking text in the body of the document
                 const targetNote = extractNotes(elt);
+                const legalRender = ['endnote', 'inline', 'event']
 
                 if (options.editorialNotes.include) {
-                    // move the content of the note to a separate div at the end of the document and count existing notes to define note index
-                    const {targetId, noteIndex} = addNoteToDiv(targetNote);
-                    
-                    // add a note index to the body of the text, attached to the written text
-                    const bodyElement = generateNoteLink(elt, noteIndex, targetId);
+                    if (legalRender.includes(options.editorialNotes.render)) {
+                        if (options.editorialNotes.render === 'endnote') {
+                            // move the content of the note to a separate div at the end of the document and count existing notes to define note index
+                            const { targetId, noteIndex } = addNoteToDiv(targetNote);
 
-                    return bodyElement;
+                            // add a note index to the body of the text, attached to the written text
+                            const bodyElement = generateNoteLink(elt, noteIndex, targetId);
+
+                            return bodyElement;
+                        } else if (options.editorialNotes.render === 'inline') {
+                            targetNote.setAttribute('class', 'note-text');
+                            elt.appendChild(targetNote);
+                        } else if (options.editorialNotes.render === 'event') {
+                            const dataObject = noteToEvent(targetNote, options.editorialNotes.structured);
+                            let event = new CustomEvent('noteHover', { detail: { ...dataObject } })
+                            elt.onmouseenter = function () {
+                                dispatchEvent(event)
+                            }
+                            elt.classList.add('event');
+                        }
+                    } else {
+                        throw new Error(`'${options.editorialNotes.render}' is not a valid rendering option. Valid options are: '${legalRender}'`)
+                    }
                 }
             }],
             ["tei-seg", function (elt) {

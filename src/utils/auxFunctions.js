@@ -150,3 +150,44 @@ export function addNoteToDiv(noteContent) {
 
     return {targetId, noteIndex}
 }
+
+export function noteToEvent(noteContent, structured = false) {
+    let dataObject = {}
+    let dataString = {}
+    let returnObject = {}
+
+    // gives the type of note (editorial or bibliographic)
+    returnObject.type = noteContent.getAttribute('type')
+    
+    // if the metadata should be returned in a structured format
+    if (structured) {
+        const structuredInfo = noteContent.children
+        // if there is a structure (i.e., a bibl inside note)
+        if (structuredInfo.length > 0) {
+            // for each new structure create an object
+            for (const struct of structuredInfo) {
+                const newStruct = {}
+                for (const tag of struct.children) {
+                    const keyName = tag.tagName.toLowerCase().split('-')[1]
+                    newStruct[keyName] = tag.innerText
+                }
+                // add the structure to the return object
+                const keyName = struct.tagName.toLowerCase().split('-')[1]
+                dataObject[keyName] = newStruct
+            }
+        // if there is no structure, add the inner text of the note (i.e., == structured being false)
+        } else {
+            dataString = noteContent.innerText
+        }
+        // depending on whether there was structured info or not, add the correct data to the return object
+        if (Object.keys(dataObject).length > 0) {
+            returnObject.note = {...dataObject}
+        } else {
+            returnObject.note = dataString
+        }
+    // if no structured information is required, return the visible text of the note
+    } else {
+        returnObject.note = noteContent.innerText
+    }
+    return returnObject;
+}
