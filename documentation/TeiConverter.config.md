@@ -50,7 +50,7 @@ Whether or not to include notes in rendering. Default is `true`. If `false`, all
 ### type: `string`
 ### values: `event | inline | endnote`
 ### scope: `global`
-Defines how to render the notes. `event` creates a new custom event `noteHover` which can be subscribed by the client and adds a class `.event` to the anchor in the body of the text; `inline` adds the content of the note immediately after the anchor in the body of the text, with a class `.note-event` for styling; `endnote` creates a `div` at the end of the text with a list of all notes and adds cross-referencing links to the body of the text.
+Defines how to render the notes. `event` creates a new custom event `noteHover` which can be subscribed by the client and adds a class `.event` to the anchor in the body of the text -- full instructions on how to do this [here](./customEvents/noteHover.md); `inline` adds the content of the note immediately after the anchor in the body of the text, with a class `.note-event` for styling; `endnote` creates a `div` at the end of the text with a list of all notes and adds cross-referencing links to the body of the text.
 
 ## notes.bibliographicNotes.structured
 ### type: `boolean`
