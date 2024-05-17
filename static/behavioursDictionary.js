@@ -1,4 +1,4 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent} from "../src/utils/auxFunctions";
 
 export let behaviours = function (options) {
     return {
@@ -102,6 +102,37 @@ export let behaviours = function (options) {
                 return content
             }]
         ],
+
+        "choice": function (elt) {
+            const legalRenders = ['inline', 'event'];
+
+            if (legalRenders.includes(options.abbreviations.render)) {
+                if (options.abbreviations.render === 'inline') {
+                    // do nothing, the rest will be taken over by abbr expan
+                } else if (options.abbreviations.render === 'event') {
+                    replaceChoiceWithEvent(elt, options.abbreviations);
+                }
+            } else {
+                throw new Error(`'${options.abbreviations.render}' is not a valid rendering option. Valid options are: '${legalRenders}'`)
+            }
+            if (legalRenders.includes(options.corrections.render)) {
+                if (options.corrections.render === 'inline') {
+                    // do nothing, the rest will be taken over by sic corr
+                } else if (options.abbreviations.render === 'event') {
+                    replaceChoiceWithEvent(elt, options.corrections);
+                }
+            } else {
+                throw new Error(`'${options.corrections.render}' is not a valid rendering option. Valid options are: '${legalRenders}'`)
+            }
+        },
+
+        "corr": function (elt) {
+            replaceChoiceEltWithMarker(elt, options.corrections)
+        },
+
+        "expan": function (elt) {
+            replaceChoiceEltWithMarker(elt, options.abbreviations);
+        },
 
         "note": function (elt) {
             // empty function removes default behaviour for notes

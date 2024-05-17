@@ -191,3 +191,44 @@ export function noteToEvent(noteContent, structured = false) {
     }
     return returnObject;
 }
+
+export function replaceChoiceEltWithMarker(elt, options) {
+    if (options.render === 'inline') {
+        if (options.marker.length === 2) {
+            elt.before(options.marker[0]);
+            elt.after(options.marker[1]);
+            elt.classList.add('intervention');
+        } else {
+            throw new Error(`You must provide a starting and an ending marker. Provided: ${options.marker}`);
+        }
+    }
+}
+
+export function replaceChoiceWithEvent(elt, options) {
+    let contracted = undefined;
+    let expanded = undefined;
+    console.log(elt.innerHTML);
+    for (const child of elt.children) {
+        if (child.tagName === 'TEI-ABBR' || child.tagName === 'TEI-SIC') {
+            contracted = child.innerText;
+        }
+        if (child.tagName === 'TEI-EXPAN' || child.tagName === 'TEI-CORR') {
+            expanded = child.innerText;
+            child.remove();
+            break;
+        }
+    }
+    if (expanded != undefined) {
+        let eventObject = {detail: {
+            original: contracted,
+            expanded: expanded
+        }};
+
+        let event = new CustomEvent('choiceHover', eventObject);
+        elt.onmouseenter = function () {
+            dispatchEvent(event)
+        }
+    } else {
+        throw new Error(`Could not find an editorial intervention for ${elt.innerText}`);
+    }
+}

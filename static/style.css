@@ -25,7 +25,7 @@
 }
 
 /* Choice elements */
-tei-choice tei-abbr+tei-expan:before,
+/* tei-choice tei-abbr+tei-expan:before,
 tei-choice tei-expan+tei-abbr:before,
 tei-choice tei-sic+tei-corr:before,
 tei-choice tei-corr+tei-sic:before,
@@ -41,7 +41,7 @@ tei-choice tei-corr+tei-sic:after,
 tei-choice tei-orig+tei-reg:after,
 tei-choice tei-reg+tei-orig:after {
     content: ")";
-}
+} */
 
 /* A */
 tei-ab {

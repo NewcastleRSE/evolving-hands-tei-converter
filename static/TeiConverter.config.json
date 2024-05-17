@@ -6,6 +6,16 @@
         "customEvents": true,
         "elementAttribute": false
     },
+    "choice": {
+        "abbreviations": {
+            "render": "event",
+            "marker": ["[", "]"]
+        },
+        "corrections": {
+            "render": "event",
+            "marker": ["[", "]"]
+        }
+    },
     "notes": {
         "bibliographicNotes": {
             "include": true,
@@ -43,6 +53,18 @@
             "options": {
             }
         },
+        "abbr": {
+            "include": true
+        },
+        "choice": {
+            "include": true
+        },
+        "corr": {
+            "include": true
+        },
+        "expan": {
+            "include": true
+        },
         "graphic" : {
             "include": true,
             "options": {
@@ -78,6 +100,9 @@
             }
         },
         "seg": {
+            "include": true
+        },
+        "sic": {
             "include": true
         },
         "standOff": {
