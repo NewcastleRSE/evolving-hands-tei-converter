@@ -31,6 +31,53 @@ Defines whether the facsimile coordinate information is passed to the client as 
 ### scope: `global`
 Defines whether the facsimile coordinate information is passed to the client as an attribute of the element that it refers to. Useful if the client prefers to control the firing of the event or needs to add additional information. The information is a JSON string included in the `line-data` attribute.
 
+## notes
+### type: `object`
+### scope: `global`
+An object containing a set of options for the various types of existing notes (editorial and bibliographic). The options are identical but can be applied independently to each type of note.
+
+## notes.bibliographicNotes
+### type: `object`
+### scope: `global`
+Options about the behaviours associated with bibliographic notes (`<seg type="bibliographicNote-target-text">`)
+
+## notes.bibligraphicNotes.include
+### type: `boolean`
+### scope: `global`
+Whether or not to include notes in rendering. Default is `true`. If `false`, all other options are ignored.
+
+## notes.bibligraphicNotes.render
+### type: `string`
+### values: `event | inline | endnote`
+### scope: `global`
+Defines how to render the notes. `event` creates a new custom event `noteHover` which can be subscribed by the client and adds a class `.event` to the anchor in the body of the text; `inline` adds the content of the note immediately after the anchor in the body of the text, with a class `.note-event` for styling; `endnote` creates a `div` at the end of the text with a list of all notes and adds cross-referencing links to the body of the text.
+
+## notes.bibliographicNotes.structured
+### type: `boolean`
+### scope: `global`
+If `true` and the content of the note is structured (for example, as in a `<bibl>`) it attempts to return the data in a structure format. If `false`, it returns only the text contents of the note. Only relevant if [`notes.bibligraphicNotes.render`](#notesbibligraphicnotesrenders) is `event`
+
+## notes.editorialNotes
+### type: `object`
+### scope: `global`
+Options about the behaviours associated with editorial notes (`<seg type="editorialNote-target-text">`)
+
+## notes.editorialNotes.include
+### type: `boolean`
+### scope: `global`
+The same as [`notes.bibliographicNotes.include`](#notesbibligraphicnotesinclude) but for editorial notes.
+
+## notes.editorialNotes.render
+### type: `string`
+### values: `event | inline | endnote`
+### scope: `global`
+The same as [`notes.bibliographicNotes.render`](#notesbibligraphicnotesrender) but for editorial notes.
+
+## notes.editorialNotes.structured
+### type: `boolean`
+### scope: `global`
+The same as [`notes.bibliographicNotes.structured`](#notesbibligraphicnotesstructured) but for editorial notes.
+
 ## orgData
 ## type: `object`
 ## scope: `global`
