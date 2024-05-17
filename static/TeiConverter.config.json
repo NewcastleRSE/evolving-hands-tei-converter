@@ -6,6 +6,18 @@
         "customEvents": true,
         "elementAttribute": false
     },
+    "notes": {
+        "bibliographicNotes": {
+            "include": true,
+            "render": "event",
+            "structured": true
+        },
+        "editorialNotes": {
+            "include": true,
+            "render": "event",
+            "structured": true
+        }
+    },
     "orgData": {
         "customEvents": true,
         "elementAttribute": false
@@ -46,7 +58,7 @@
         "listPlace": {
             "include": true
         },
-        "note": {"include": false},
+        "note": {"include": true},
         "orgName": {
             "include": true,
             "options": {
@@ -64,6 +76,9 @@
             "options": {
                 "addLink": false
             }
+        },
+        "seg": {
+            "include": true
         },
         "standOff": {
             "include": true

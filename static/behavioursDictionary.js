@@ -1,4 +1,4 @@
-import { formatPagePoints, formatPoints, getNamedEntitiesData, transformNamedEntityLink } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink } from "../src/utils/auxFunctions";
 
 export let behaviours = function (options) {
     return {
@@ -103,45 +103,13 @@ export let behaviours = function (options) {
             }]
         ],
 
-        "note": [
-            ["[type=gloss]",
-                function (elt) {
-                    if (!this.noteIndex) {
-                        this["noteIndex"] = 1;
-                    } else {
-                        this.noteIndex++;
-                    }
-                    let id = "note" + this.noteIndex;
-                    let link = document.createElement("a");
-                    link.setAttribute("id", "src" + id);
-                    link.setAttribute("href", "#" + id);
-                    link.innerHTML = this.noteIndex;
-                    let content = document.createElement("sup");
-                    content.appendChild(link);
-                    let notes = this.dom.querySelector("ol.notes");
-                    if (!notes) {
-                        notes = document.createElement("ol");
-                        notes.setAttribute("class", "notes");
-                        this.dom.appendChild(notes);
-                    }
-                    let note = document.createElement("li");
-                    note.id = id;
-                    note.innerHTML = "<a href=\"#src" + id + "\">^</a> " + elt.innerHTML
-                    notes.appendChild(note);
-                    return content;
-                }
-            ]
-        ],
+        "note": function (elt) {
+            // empty function removes default behaviour for notes
+        },
 
         "graphic": function (elt) {
             if (options.showLogs) {
                 console.log("ignoring graphics");
-            }
-        },
-
-        "listOrg": function (elt) {
-            if (!options.showOrgs) {
-                elt.hidden = true;
             }
         },
 
@@ -159,61 +127,12 @@ export let behaviours = function (options) {
             }
         },
 
-        "orgName": [
-            // this selects only organisation names that reference another, ignoring the ones in the standOff metadata
-            ["tei-orgname[ref]", function (elt) {
-
-                // get data and build object
-                let ref = undefined;
-                let dataObject = undefined;
-                if (!elt.getAttribute('ref').includes('#')) {
-                    console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
-                    ref = elt.getAttribute('ref');
-                } else {
-                    ref = elt.getAttribute('ref').substring(1);
-                }
-
-                const orgData = document.getElementById(ref);
-
-                try {
-                    dataObject = getNamedEntitiesData(orgData, ref);
-                } catch(e) {
-                    console.warn(e)
-                }
-
-                // pass data as custom event
-                if (options.customEvents) {
-                    let event = new CustomEvent('orgHover', { detail: { ...dataObject } })
-                    elt.onmouseenter = function () {
-                        dispatchEvent(event)
-                    }
-                }
-
-                // pass data as element attribute
-                if (options.elementAttribute) {
-                    elt.setAttribute('org-data', JSON.stringify(dataObject))
-                }
-
-                let orgPlace = undefined;
-                try {
-                    orgPlace = transformNamedEntityLink(elt, dataObject, options)
-                } catch (e) {
-                    console.warn(`Could not turn element with ref ${ref} into a link; dataObject has no valid URL`);
-                }
-
-                if (orgPlace != undefined) {
-                    return orgPlace
-                }
-            }]
-        ],
-
         "placeName": [
             // this selects only placenames that reference another, ignoring the ones in the standOff metadata
             ["tei-placename[ref]", function (elt) {
 
                 // get data and build object
                 let ref = undefined;
-                let dataObject = undefined;
                 if (!elt.getAttribute('ref').includes('#')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
@@ -223,11 +142,7 @@ export let behaviours = function (options) {
 
                 const placeData = document.getElementById(ref);
 
-                try {
-                    dataObject = getNamedEntitiesData(placeData, ref);
-                } catch (e) {
-                    console.warn(e)
-                }
+                const dataObject = getNamedEntitiesData(placeData);
 
                 // pass data as custom event
                 if (options.customEvents) {
@@ -235,6 +150,7 @@ export let behaviours = function (options) {
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }
+                    elt.classList.add('event');
                 }
 
                 // pass data as element attribute
@@ -261,7 +177,6 @@ export let behaviours = function (options) {
 
                 // get data and build object
                 let ref = undefined;
-                let dataObject = undefined;
                 if (!elt.getAttribute('ref').includes('#')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
@@ -271,11 +186,7 @@ export let behaviours = function (options) {
 
                 const persData = document.getElementById(ref);
 
-                try {
-                    dataObject = getNamedEntitiesData(persData, ref);
-                } catch (e) {
-                    console.warn(e)
-                }
+                const dataObject = getNamedEntitiesData(persData);
 
                 // pass data as custom event
                 if (options.customEvents) {
@@ -283,6 +194,7 @@ export let behaviours = function (options) {
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }
+                    elt.classList.add('event');
                 }
 
                 // pass data as element attribute
@@ -300,7 +212,77 @@ export let behaviours = function (options) {
                 if (linkedPers != undefined) {
                     return linkedPers
                 }
-                
+
+            }]
+        ],
+
+        "seg": [
+            ["[type=bibliographicNote-target-text]", function (elt) {
+                // extract and separate the content of the note from the linking text in the body of the document
+                const targetNote = extractNotes(elt);
+
+                const legalRender = ['endnote', 'inline', 'event']
+
+                if (options.bibliographicNotes.include) {
+                    if (legalRender.includes(options.bibliographicNotes.render)) {
+                        if (options.bibliographicNotes.render === 'endnote') {
+                            // move the content of the note to a separate div at the end of the document and count existing notes to define note index
+                            const { targetId, noteIndex } = addNoteToDiv(targetNote);
+
+                            // add a note index to the body of the text, attached to the written text
+                            const bodyElement = generateNoteLink(elt, noteIndex, targetId);
+
+                            return bodyElement;
+                        } else if (options.bibliographicNotes.render === 'inline') {
+                            targetNote.setAttribute('class', 'note-text');
+                            elt.appendChild(targetNote);
+                        } else if (options.bibliographicNotes.render === 'event') {
+                            const dataObject = noteToEvent(targetNote, options.bibliographicNotes.structured);
+                            let event = new CustomEvent('noteHover', { detail: { ...dataObject } })
+                            elt.onmouseenter = function () {
+                                dispatchEvent(event)
+                            }
+                            elt.classList.add('event');
+                        }
+                    } else {
+                        throw new Error(`'${options.bibliographicNotes.render}' is not a valid rendering option. Valid options are: '${legalRender}'`)
+                    }
+                }
+            }],
+            ["[type=editorialNote-target-text]", function (elt) {
+                // extract and separate the content of the note from the linking text in the body of the document
+                const targetNote = extractNotes(elt);
+                const legalRender = ['endnote', 'inline', 'event']
+
+                if (options.editorialNotes.include) {
+                    if (legalRender.includes(options.editorialNotes.render)) {
+                        if (options.editorialNotes.render === 'endnote') {
+                            // move the content of the note to a separate div at the end of the document and count existing notes to define note index
+                            const { targetId, noteIndex } = addNoteToDiv(targetNote);
+
+                            // add a note index to the body of the text, attached to the written text
+                            const bodyElement = generateNoteLink(elt, noteIndex, targetId);
+
+                            return bodyElement;
+                        } else if (options.editorialNotes.render === 'inline') {
+                            targetNote.setAttribute('class', 'note-text');
+                            elt.appendChild(targetNote);
+                        } else if (options.editorialNotes.render === 'event') {
+                            const dataObject = noteToEvent(targetNote, options.editorialNotes.structured);
+                            let event = new CustomEvent('noteHover', { detail: { ...dataObject } })
+                            elt.onmouseenter = function () {
+                                dispatchEvent(event)
+                            }
+                            elt.classList.add('event');
+                        }
+                    } else {
+                        throw new Error(`'${options.editorialNotes.render}' is not a valid rendering option. Valid options are: '${legalRender}'`)
+                    }
+                }
+            }],
+            ["tei-seg", function (elt) {
+                // this should log segs with types that have not been catered for
+                console.warn(`No custom behaviour for <seg> with type "${elt.getAttribute('type')}" has been defined`);
             }]
         ],
 

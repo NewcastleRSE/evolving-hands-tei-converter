@@ -1118,6 +1118,10 @@ tei-witdetail {
     display: none;
 }
 
+.event {
+    text-decoration: underline dashed;
+}
+
 /* styles for HTML shell and HTML elements in TEI (e.g.,<a> and <img>) */
 /* html and body formatting removed from component (i.e., component is likely to be used inside a container that should restrict its outer dimensions) */
 /* html>body {

@@ -9,7 +9,7 @@
     <script src="./dist/TeiConverter/tei-converter.umd.js"></script>
     <script type="text/javascript">
       addEventListener('drawBox', (event) => {
-        console.log(event.detail);
+        // console.log(event.detail);
       });
 
       addEventListener('placeHover', (event) => {
@@ -21,6 +21,10 @@
       });
 
       addEventListener('orgHover', (event) => {
+        console.log(event.detail);
+      });
+
+      addEventListener('noteHover', (event) => {
         console.log(event.detail);
       });
 
@@ -44,6 +48,7 @@
     <select name="fileName" id="fileNameSelect">  
     </select>
     <input type="submit" value="Convert"></input>
+    <button type="button" id="see-xml">See xml</button>
   </form>
   <!--  -->
 
