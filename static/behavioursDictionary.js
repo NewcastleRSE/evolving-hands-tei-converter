@@ -1,4 +1,4 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent} from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent } from "../src/utils/auxFunctions";
 
 export let behaviours = function (options) {
     return {
@@ -66,6 +66,7 @@ export let behaviours = function (options) {
                         if (options.customEvents) {
                             // create event object
                             let eventObject = {
+                                bubbles: true,
                                 detail: {
                                     ...lineObj,
                                     ...parentObj,
@@ -105,24 +106,34 @@ export let behaviours = function (options) {
 
         "choice": function (elt) {
             const legalRenders = ['inline', 'event'];
+            let expansion = undefined
 
-            if (legalRenders.includes(options.abbreviations.render)) {
-                if (options.abbreviations.render === 'inline') {
-                    // do nothing, the rest will be taken over by abbr expan
-                } else if (options.abbreviations.render === 'event') {
-                    replaceChoiceWithEvent(elt, options.abbreviations);
-                }
+            if (elt.getElementsByTagName('tei-corr').length > 0) {
+                expansion = false
             } else {
-                throw new Error(`'${options.abbreviations.render}' is not a valid rendering option. Valid options are: '${legalRenders}'`)
+                expansion = true
             }
-            if (legalRenders.includes(options.corrections.render)) {
-                if (options.corrections.render === 'inline') {
-                    // do nothing, the rest will be taken over by sic corr
-                } else if (options.abbreviations.render === 'event') {
-                    replaceChoiceWithEvent(elt, options.corrections);
+
+            if (expansion) {
+                if (legalRenders.includes(options.abbreviations.render)) {
+                    if (options.abbreviations.render === 'inline') {
+                        // do nothing, the rest will be taken over by abbr expan
+                    } else if (options.abbreviations.render === 'event' && !elt.getAttribute('behaviour-processed')) {
+                        replaceChoiceWithEvent(elt, options.abbreviations);
+                    }
+                } else {
+                    throw new Error(`'${options.abbreviations.render}' is not a valid rendering option. Valid options are: '${legalRenders}'`)
                 }
-            } else {
-                throw new Error(`'${options.corrections.render}' is not a valid rendering option. Valid options are: '${legalRenders}'`)
+            } else if (!expansion) {
+                if (legalRenders.includes(options.corrections.render)) {
+                    if (options.corrections.render === 'inline') {
+                        // do nothing, the rest will be taken over by sic corr
+                    } else if (options.corrections.render === 'event' && !elt.getAttribute('behaviour-processed')) {
+                        replaceChoiceWithEvent(elt, options.corrections);
+                    }
+                } else {
+                    throw new Error(`'${options.corrections.render}' is not a valid rendering option. Valid options are: '${legalRenders}'`)
+                }
             }
         },
 
@@ -177,7 +188,7 @@ export let behaviours = function (options) {
 
                 // pass data as custom event
                 if (options.customEvents) {
-                    let event = new CustomEvent('placeHover', { detail: { ...dataObject } })
+                    let event = new CustomEvent('placeHover', {bubbles: true, detail: { ...dataObject } })
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }
@@ -221,7 +232,7 @@ export let behaviours = function (options) {
 
                 // pass data as custom event
                 if (options.customEvents) {
-                    let event = new CustomEvent('persHover', { detail: { ...dataObject } })
+                    let event = new CustomEvent('persHover', { bubbles: true,detail: { ...dataObject } })
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }
@@ -269,7 +280,7 @@ export let behaviours = function (options) {
                             elt.appendChild(targetNote);
                         } else if (options.bibliographicNotes.render === 'event') {
                             const dataObject = noteToEvent(targetNote, options.bibliographicNotes.structured);
-                            let event = new CustomEvent('noteHover', { detail: { ...dataObject } })
+                            let event = new CustomEvent('noteHover', {bubbles: true, detail: { ...dataObject } })
                             elt.onmouseenter = function () {
                                 dispatchEvent(event)
                             }
@@ -300,7 +311,7 @@ export let behaviours = function (options) {
                             elt.appendChild(targetNote);
                         } else if (options.editorialNotes.render === 'event') {
                             const dataObject = noteToEvent(targetNote, options.editorialNotes.structured);
-                            let event = new CustomEvent('noteHover', { detail: { ...dataObject } })
+                            let event = new CustomEvent('noteHover', {bubbles: true, detail: { ...dataObject } })
                             elt.onmouseenter = function () {
                                 dispatchEvent(event)
                             }

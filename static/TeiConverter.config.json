@@ -9,11 +9,13 @@
     "choice": {
         "abbreviations": {
             "render": "event",
-            "marker": ["[", "]"]
+            "marker": ["[", "]"],
+            "useOriginal": true
         },
         "corrections": {
             "render": "event",
-            "marker": ["[", "]"]
+            "marker": ["[", "]"],
+            "useOriginal": false
         }
     },
     "notes": {
