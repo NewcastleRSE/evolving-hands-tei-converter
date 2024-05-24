@@ -181,6 +181,27 @@ export let behaviours = function (options) {
             }
         },
 
+        "date": function (elt) {
+            let markers = ['[', ']']
+            if (options.showISODate) {
+                if (options.marker.length != 2) {
+                    console.warn(`Markers for <date> are not correctly formatted, using default`);
+                } else {
+                    markers = options.marker
+                }
+
+                if (!elt.getAttribute('when')) {
+                    console.warn(`${elt.outerHTML} does not contain an ISO Date (@when) attribute`)
+                } else {
+                    const isoDate = document.createElement('span');
+                    isoDate.classList.add('iso-date');
+                    isoDate.innerText = `${markers[0]}${elt.getAttribute('when')}${markers[1]}`
+
+                    elt.appendChild(isoDate);
+                }
+            }
+        },
+
         "expan": function (elt) {
             replaceChoiceEltWithMarker(elt, options.abbreviations);
         },

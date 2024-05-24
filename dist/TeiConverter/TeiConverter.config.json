@@ -24,6 +24,10 @@
     "damage": {
         "customEvents": true
     },
+    "dates": {
+        "showISODate": true,
+        "marker": ["[", "]"]
+    },
     "notes": {
         "bibliographicNotes": {
             "include": true,
@@ -74,6 +78,9 @@
             "include": true
         },
         "damage": {
+            "include": true
+        },
+        "date": {
             "include": true
         },
         "expan": {
