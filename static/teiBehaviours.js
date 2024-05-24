@@ -35,6 +35,9 @@ export let teiBehaviours = function (config) {
             if (choice === 'choice' || choice === 'abbr' || choice === 'expan' || choice === 'sic' || choice === 'corr'){
                 options = {...options, ...config.choice}
             }
+            if (choice === 'add') {
+                options = {...options, ...config.additions}
+            }
             behavioursObject['tei'][choice] = behaviours(options)[choice];
         }
     }

@@ -31,6 +31,16 @@ Defines whether the facsimile coordinate information is passed to the client as 
 ### scope: `global`
 Defines whether the facsimile coordinate information is passed to the client as an attribute of the element that it refers to. Useful if the client prefers to control the firing of the event or needs to add additional information. The information is a JSON string included in the `line-data` attribute.
 
+## additions
+### type: `object`
+### scope: `global`
+Object containing options for elements `<add>`;
+
+## additions.customEvents
+### type: `boolean`
+### scope: `global`
+Defines whether or not additions should send a custom event ([`addHover`](/documentation/customEvents/addHover.md)) to the client.
+
 ## choice
 ### type: `object`
 ### scope: `global`

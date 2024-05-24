@@ -6,6 +6,9 @@
         "customEvents": true,
         "elementAttribute": false
     },
+    "additions": {
+        "customEvents": true
+    },
     "choice": {
         "abbreviations": {
             "render": "event",
@@ -54,6 +57,9 @@
             "include": true,
             "options": {
             }
+        },
+        "add": {
+            "include": true
         },
         "abbr": {
             "include": true

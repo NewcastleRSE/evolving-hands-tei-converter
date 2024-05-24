@@ -104,6 +104,23 @@ export let behaviours = function (options) {
             }]
         ],
 
+        "add": function(elt) {
+            if (options.customEvents) {
+                elt.classList.add('event');
+                let placement = elt.getAttribute('place');
+                if (!placement) {
+                    placement = 'not recorded'
+                }
+                const dataObject = {
+                    place: placement
+                };
+                let event = new CustomEvent('addHover', {bubbles: true, detail: { ...dataObject } })
+                    elt.onmouseenter = function () {
+                        dispatchEvent(event)
+                    }
+            }
+        },
+
         "choice": function (elt) {
             const legalRenders = ['inline', 'event'];
             let expansion = undefined
