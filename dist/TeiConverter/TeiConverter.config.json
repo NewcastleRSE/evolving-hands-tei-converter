@@ -21,6 +21,9 @@
             "useOriginal": false
         }
     },
+    "damage": {
+        "customEvents": true
+    },
     "notes": {
         "bibliographicNotes": {
             "include": true,
@@ -68,6 +71,9 @@
             "include": true
         },
         "corr": {
+            "include": true
+        },
+        "damage": {
             "include": true
         },
         "expan": {

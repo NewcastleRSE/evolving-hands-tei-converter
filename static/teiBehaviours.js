@@ -38,6 +38,9 @@ export let teiBehaviours = function (config) {
             if (choice === 'add') {
                 options = {...options, ...config.additions}
             }
+            if (choice === 'damage') {
+                options = {...options, ...config.damage};
+            }
             behavioursObject['tei'][choice] = behaviours(options)[choice];
         }
     }
