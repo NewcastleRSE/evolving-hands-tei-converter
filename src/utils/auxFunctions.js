@@ -235,8 +235,6 @@ export function replaceChoiceWithEvent(elt, options) {
         }
     }
 
-    console.log(interventionType, options.useOriginal);
-
     // remove the element that is scheduled to be removed
     if (toRemove) {
         toRemove.remove();
