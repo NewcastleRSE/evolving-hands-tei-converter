@@ -45,7 +45,7 @@ An object containing options on how to render `<choice>` elements containing abb
 ### type: `string`
 ### values: `event | inline`
 ### scope: `global`
-Defines whether abbreviations should be shown inline with the body of the document, or given as an object in custom event (`choiceHover`).
+Defines whether abbreviations should be shown inline with the body of the document, or given as an object in custom event ([`choiceHover`](/documentation/customEvents/choiceHover.md)).
 
 ## choice.abbreviations.marker
 ### type: `array | string`
@@ -66,7 +66,7 @@ An object containing options on how to render `<choice>` elements containing cor
 ### type: `string`
 ### values: `event | inline`
 ### scope: `global`
-Defines whether corrections should be shown inline with the body of the document, or given as an object in custom event (`choiceHover`).
+Defines whether corrections should be shown inline with the body of the document, or given as an object in custom event ([`choiceHover`](/documentation/customEvents/choiceHover.md)).
 
 ## choice.corrections.marker
 ### type: `array | string`
