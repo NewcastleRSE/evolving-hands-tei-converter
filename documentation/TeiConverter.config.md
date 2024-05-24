@@ -31,6 +31,53 @@ Defines whether the facsimile coordinate information is passed to the client as 
 ### scope: `global`
 Defines whether the facsimile coordinate information is passed to the client as an attribute of the element that it refers to. Useful if the client prefers to control the firing of the event or needs to add additional information. The information is a JSON string included in the `line-data` attribute.
 
+## choice
+### type: `object`
+### scope: `global`
+An object containing two objects (`abbreviations` and `corrections`) that define a set of options for how to render and transform `<choice>` elements, used when two possible readings are available.
+
+## choice.abbreviations
+### type: `object`
+### scope: `global`
+An object containing options on how to render `<choice>` elements containing abbreviations.
+
+## choice.abbreviations.render
+### type: `string`
+### values: `event | inline`
+### scope: `global`
+Defines whether abbreviations should be shown inline with the body of the document, or given as an object in custom event (`choiceHover`).
+
+## choice.abbreviations.marker
+### type: `array | string`
+### scope: `global`
+If [`choice.abbreviations.render`](#choiceabbreviationsrender) is `inline`, defines what typographical elements should mark it. The first element will appear before the expanded abbreviation, the second element will appear after it.
+
+## choice.abbreviations.useOriginal
+### type: `boolean`
+### scope: `global`
+If [`choice.abbreviations.render`](#choiceabbreviationsrender) is `event` defines which version to use in the body of the text (i.e., abbreviated or expanded version).
+
+## choice.corrections
+### type: `object`
+### scope: `global`
+An object containing options on how to render `<choice>` elements containing corrections.
+
+## choice.corrections.render
+### type: `string`
+### values: `event | inline`
+### scope: `global`
+Defines whether corrections should be shown inline with the body of the document, or given as an object in custom event (`choiceHover`).
+
+## choice.corrections.marker
+### type: `array | string`
+### scope: `global`
+If [`choice.corrections.render`](#choicecorrectionsrender) is `inline`, defines what typographical elements should mark it. The first element will appear before the expanded abbreviation, the second element will appear after it.
+
+## choice.corrections.useOriginal
+### type: `boolean`
+### scope: `global`
+If [`choice.corrections.render`](#choicecorrectionsrender) is `event` defines which version to use in the body of the text (i.e., abbreviated or expanded version).
+
 ## notes
 ### type: `object`
 ### scope: `global`
