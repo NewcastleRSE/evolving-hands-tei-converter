@@ -90,6 +90,7 @@ Copy the entire `dist/TeiConverter` folder to the root of your project (or a sui
   - [Person data](/documentation/customEvents/persHover.md);
   - [Organisation data](/documentation/customEvents/orgHover.md);
   - [Notes](/documentation/customEvents/noteHover.md);
+  - [Choice](/documentation/customEvents/choiceHover.md);
 
 ### Running Tests
 

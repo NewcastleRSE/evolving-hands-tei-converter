@@ -191,3 +191,73 @@ export function noteToEvent(noteContent, structured = false) {
     }
     return returnObject;
 }
+
+export function replaceChoiceEltWithMarker(elt, options) {
+    if (options.render === 'inline' || !options.useOriginal) {
+        if (options.marker.length === 2) {
+            elt.before(options.marker[0]);
+            elt.after(options.marker[1]);
+            elt.classList.add('intervention');
+        } else {
+            throw new Error(`You must provide a starting and an ending marker. Provided: ${options.marker}`);
+        }
+    }
+}
+
+export function replaceChoiceWithEvent(elt, options) {
+    let contracted = undefined;
+    let expanded = undefined;
+    let toRemove = undefined;
+    let interventionLabel = 'expanded'
+    let interventionType = 'expansion'
+
+    for (const child of elt.children) {
+        // if it is an expansion or correction, save the result to variable
+        if (child.tagName.toLowerCase() === 'tei-expan' || child.tagName.toLowerCase() === 'tei-corr') {
+            expanded = child.innerText;
+            // mark this to remove later if configured to show the original
+            if (options.useOriginal){
+                toRemove = child;
+            }
+            // if it is a correction, change the labels for the object
+            if (child.tagName.toLowerCase() === 'tei-corr') {
+                interventionType = 'correction'
+                interventionLabel = 'corrected'
+            }
+        }
+        // extract the corrected version from the body of the text
+        if (child.tagName.toLowerCase() === 'tei-abbr' || child.tagName.toLowerCase() === 'tei-sic') {
+            contracted = child.innerText;
+            // mark this to remove later if configured to show the correction
+            if (!options.useOriginal){
+                toRemove = child;
+            }
+        }
+    }
+
+    // remove the element that is scheduled to be removed
+    if (toRemove) {
+        toRemove.remove();
+    }
+
+    // if it successfully found the intervention, create object
+    if (expanded != undefined) {
+        let eventObject = {bubbles: true, detail: {
+            [interventionType]: {
+                original: contracted,
+                [interventionLabel]: expanded   
+            }
+        }};
+
+        let event = new CustomEvent('choiceHover', eventObject);
+        elt.onmouseenter = function () {
+            dispatchEvent(event)
+        }
+        elt.classList.add('event')
+        
+        // add a flag to avoid recursion in applying the behaviours
+        elt.setAttribute('behaviour-processed', true);
+    } else {
+        throw new Error(`Could not find an editorial intervention for ${elt.innerText}`);
+    }
+}
