@@ -6,7 +6,7 @@ Places where more than one reading is valid (abbreviations and corrections) can 
 Create an event listener for our custom event `choiceHover` as you would normally. Use the event handler to collect the data from `event.detail` trigger the host interface response. For example:
 
 ```js
-addEventListener('noteHover', (event) => {
+addEventListener('choiceHover', (event) => {
         console.log(event.detail);
         // useful code...
       })
