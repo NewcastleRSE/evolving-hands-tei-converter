@@ -164,6 +164,23 @@ export let behaviours = function (options) {
             replaceChoiceEltWithMarker(elt, options.corrections)
         },
 
+        "damage": function (elt) {
+            if (options.customEvents) {
+                elt.classList.add('event');
+                let agent = elt.getAttribute('type');
+                if (!agent) {
+                    agent = 'not recorded'
+                }
+                const dataObject = {
+                    agent: agent
+                };
+                let event = new CustomEvent('damageHover', {bubbles: true, detail: { ...dataObject } })
+                    elt.onmouseenter = function () {
+                        dispatchEvent(event)
+                    }
+            }
+        },
+
         "expan": function (elt) {
             replaceChoiceEltWithMarker(elt, options.abbreviations);
         },

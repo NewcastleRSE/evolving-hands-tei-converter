@@ -88,6 +88,16 @@ If [`choice.corrections.render`](#choicecorrectionsrender) is `inline`, defines 
 ### scope: `global`
 If [`choice.corrections.render`](#choicecorrectionsrender) is `event` defines which version to use in the body of the text (i.e., abbreviated or expanded version).
 
+## damage
+### type: `object`
+### scope: `global`
+Object containing options for elements `<damage>`;
+
+## damage.customEvents
+### type: `boolean`
+### scope: `global`
+Defines whether or not damage information should send a custom event ([`damageHover`](/documentation/customEvents/damageHover.md)) to the client.
+
 ## notes
 ### type: `object`
 ### scope: `global`
