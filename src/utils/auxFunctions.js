@@ -261,3 +261,33 @@ export function replaceChoiceWithEvent(elt, options) {
         throw new Error(`Could not find an editorial intervention for ${elt.innerText}`);
     }
 }
+
+export function removeDuplicateDatesWorkaround(div) {
+    // Workaround function to remove duplicate dates from display. Necessary because of the encoding decisions taken. See https://github.com/evolvinghands/EvolvingHandsNcl/issues/7#issue-2325171769 for more details
+    
+    // Function is called at each div (corresponding to an ab) -> goes through each line of the div and counts number of dates displayed. If there is more than one, it figures out if the dates are duplicates of each other. If they are, it removes all display dates except the last one. Changes are made to the <div> element itself, nothing is returned.
+    for (const line of div.children) {
+        const dates = line.querySelectorAll('[class="iso-date"]');
+        let repeatedDates = {}
+        if (dates.length > 1) {
+            for (const [index, date] of dates.entries()) {
+                if (Object.keys(repeatedDates).includes(date.innerText)) {
+                    repeatedDates[date.innerText] = [...repeatedDates[date.innerText], index]
+                } else {
+                    repeatedDates[date.innerText] = [index]
+                }
+            }
+            let toBeRemoved = undefined
+            for (const date of Object.keys(repeatedDates)) {
+                const _toKeep = repeatedDates[date].pop();
+                toBeRemoved = repeatedDates[date];
+            }
+            if (toBeRemoved) {
+                for (const i of toBeRemoved) {
+                    dates[i].remove();
+                }
+                console.warn('Removing duplicate dates...')
+            }
+        }
+    }
+}

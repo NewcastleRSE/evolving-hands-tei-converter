@@ -1,4 +1,4 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround } from "../src/utils/auxFunctions";
 
 export let behaviours = function (options) {
     return {
@@ -20,6 +20,7 @@ export let behaviours = function (options) {
                         }
                         // create a new span and append lb
                         newSpan = document.createElement('span');
+                        newSpan.classList.add('line-span')
                         newSpan.appendChild(child.cloneNode(true));
 
                         // get points from zone id (i.e., line)
@@ -100,11 +101,16 @@ export let behaviours = function (options) {
                     content.appendChild(node)
                 }
 
+                // Removes duplicate dates in display if option is true
+                if (options.removeDuplicatesWorkaround) {
+                    removeDuplicateDatesWorkaround(content);
+                }
+
                 return content
             }]
         ],
 
-        "add": function(elt) {
+        "add": function (elt) {
             if (options.customEvents) {
                 elt.classList.add('event');
                 let placement = elt.getAttribute('place');
@@ -114,10 +120,10 @@ export let behaviours = function (options) {
                 const dataObject = {
                     place: placement
                 };
-                let event = new CustomEvent('addHover', {bubbles: true, detail: { ...dataObject } })
-                    elt.onmouseenter = function () {
-                        dispatchEvent(event)
-                    }
+                let event = new CustomEvent('addHover', { bubbles: true, detail: { ...dataObject } })
+                elt.onmouseenter = function () {
+                    dispatchEvent(event)
+                }
             }
         },
 
@@ -131,7 +137,7 @@ export let behaviours = function (options) {
                 } else {
                     expansion = true
                 }
-    
+
                 if (expansion) {
                     if (legalRenders.includes(options.abbreviations.render)) {
                         if (options.abbreviations.render === 'inline') {
@@ -154,10 +160,10 @@ export let behaviours = function (options) {
                     }
                 }
             } else {
-                console.warn(`The element ${elt.outerHTML} contains only one child -- a choice must contain at least two.` )
+                console.warn(`The element ${elt.outerHTML} contains only one child -- a choice must contain at least two.`)
             }
 
-            
+
         },
 
         "corr": function (elt) {
@@ -174,30 +180,45 @@ export let behaviours = function (options) {
                 const dataObject = {
                     agent: agent
                 };
-                let event = new CustomEvent('damageHover', {bubbles: true, detail: { ...dataObject } })
-                    elt.onmouseenter = function () {
-                        dispatchEvent(event)
-                    }
+                let event = new CustomEvent('damageHover', { bubbles: true, detail: { ...dataObject } })
+                elt.onmouseenter = function () {
+                    dispatchEvent(event)
+                }
             }
         },
 
         "date": function (elt) {
-            let markers = ['[', ']']
-            if (options.showISODate) {
-                if (options.marker.length != 2) {
-                    console.warn(`Markers for <date> are not correctly formatted, using default`);
-                } else {
-                    markers = options.marker
+            // This standard behaviour can cause duplicate dates to be shown on display given some of the encoding decisions taken (see https://github.com/evolvinghands/EvolvingHandsNcl/issues/7#issue-2325171769 for more details); there is a workaround in place that **should** correct that without creating any extra errors. The workaround is at an <ab> block level, and works by calling the removeDuplicateDatesWorkaround auxiliar function.
+            
+            // Checks to see if it should ignore dates in bibliographies. If so, sets the flag transform to false.
+            let transform = true;
+            if (elt.parentElement) {
+                // Need to separate these two conditions otherwise we get errors accessing properties of null elements
+                if (elt.parentElement.tagName.toLowerCase() === 'tei-bibl' && options.ignoreBibliography) {
+                    // need to use a flag so that it doesn't ignore dates inside other elements that are not tei-bibl
+                    transform = false;
+                    console.warn('Ignoring date in bibliographic reference...')
                 }
+            }
 
-                if (!elt.getAttribute('when')) {
-                    console.warn(`${elt.outerHTML} does not contain an ISO Date (@when) attribute`)
-                } else {
-                    const isoDate = document.createElement('span');
-                    isoDate.classList.add('iso-date');
-                    isoDate.innerText = `${markers[0]}${elt.getAttribute('when')}${markers[1]}`
+            if (transform) {
+                let markers = ['[', ']']
+                if (options.showISODate) {
+                    if (options.marker.length != 2) {
+                        console.warn(`Markers for <date> are not correctly formatted, using default`);
+                    } else {
+                        markers = options.marker
+                    }
 
-                    elt.appendChild(isoDate);
+                    if (!elt.getAttribute('when')) {
+                        console.warn(`${elt.outerHTML} does not contain an ISO Date (@when) attribute`)
+                    } else {
+                        const isoDate = document.createElement('span');
+                        isoDate.classList.add('iso-date');
+                        isoDate.innerText = ` ${markers[0]}${elt.getAttribute('when')}${markers[1]}`
+
+                        elt.appendChild(isoDate);
+                    }
                 }
             }
         },
