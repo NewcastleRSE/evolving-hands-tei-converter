@@ -277,16 +277,16 @@ export function removeDuplicateDatesWorkaround(div) {
                     repeatedDates[date.innerText] = [index]
                 }
             }
-            let toBeRemoved = undefined
             for (const date of Object.keys(repeatedDates)) {
+                let toBeRemoved = undefined
                 const _toKeep = repeatedDates[date].pop();
                 toBeRemoved = repeatedDates[date];
-            }
-            if (toBeRemoved) {
-                for (const i of toBeRemoved) {
-                    dates[i].remove();
+                if (toBeRemoved) {
+                    for (const i of toBeRemoved) {
+                        dates[i].remove();
+                    }
+                    console.warn(`Removing duplicate dates of${date}...`)
                 }
-                console.warn('Removing duplicate dates...')
             }
         }
     }
