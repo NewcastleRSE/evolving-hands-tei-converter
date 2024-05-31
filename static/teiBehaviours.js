@@ -12,9 +12,9 @@ export let teiBehaviours = function (config) {
         if (details.include) {
             if (choice === 'ab') {
                 if (config.teiFileStructure === 'EvolvingHands') {
-                    options = {...options, ...config.facsimileCoordinates}
+                    options = {...options, ...config.facsimileCoordinates, ...config.dates}
                 } else {
-                    options = {...options, customEvents: false, elementAttribute: false}
+                    options = {...options, customEvents: false, elementAttribute: false, ...config.dates}
                 }
             }
             if (choice === 'standOff' || choice === 'listOrg' || choice === 'listPerson' || choice === 'listPlace') {
@@ -40,6 +40,9 @@ export let teiBehaviours = function (config) {
             }
             if (choice === 'damage') {
                 options = {...options, ...config.damage};
+            }
+            if (choice === 'date') {
+                options = {...options, ...config.dates};
             }
             behavioursObject['tei'][choice] = behaviours(options)[choice];
         }

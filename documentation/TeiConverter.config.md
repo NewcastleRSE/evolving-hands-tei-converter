@@ -98,6 +98,31 @@ Object containing options for elements `<damage>`;
 ### scope: `global`
 Defines whether or not damage information should send a custom event ([`damageHover`](/documentation/customEvents/damageHover.md)) to the client.
 
+## dates
+### type: `object`
+### scope: `global`
+Object containing options for elements `<date>`;
+
+## dates.showISODate
+### type: `boolean`
+### scope: `global`
+Defines whether to show the iso-date recorded in the `@when` attribute immediately after the transcription of the date.
+
+## dates.marker
+### type: `array | string`
+### scope: `global`
+If [`dates.showISODate`](#datesshowisodate) is true, defines what typographical marker is used to distinguish the ISO date from the transcription. Default is to use square brackets ('[]').
+
+## dates.ignoreBibliography
+### type: `boolean`
+### scope: `global`
+If [`dates.showISODate`](#datesshowisodate) is true, defines whether to exclude `<date>` elements that are contained by `<bibl>` elements; these usually do not contain a `@when` attribute and, therefore, produce an unwanted warning in the console. Making this `true` silences that warning.
+
+## dates.removeDuplicatesWorkaround
+### type: `boolean`
+### scope: `true`
+Given the encoding guidelines that are currently implemented, date elements are unnecessarily duplicated (see [this issue](https://github.com/evolvinghands/EvolvingHandsNcl/issues/7#issue-2325171769) for a more detailed discussion of this problem); if this option is `false`, all those duplicates will show their `@when` attribute in the display. If this option is `true`, a workaround that removes those duplicates is implemented. The workaround is, however, computationally expensive: if the encoding principles change in such a way that `<date>` duplicates do not exist, this should be set to `false`.
+
 ## notes
 ### type: `object`
 ### scope: `global`
