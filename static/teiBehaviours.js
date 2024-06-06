@@ -44,6 +44,9 @@ export let teiBehaviours = function (config) {
             if (choice === 'date') {
                 options = {...options, ...config.dates};
             }
+            if (choice === 'del') {
+                options = {...options, ...config.deletions}
+            }
             behavioursObject['tei'][choice] = behaviours(options)[choice];
         }
     }

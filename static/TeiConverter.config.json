@@ -11,12 +11,12 @@
     },
     "choice": {
         "abbreviations": {
-            "render": "event",
+            "render": "inline",
             "marker": ["[", "]"],
             "useOriginal": true
         },
         "corrections": {
-            "render": "event",
+            "render": "inline",
             "marker": ["[", "]"],
             "useOriginal": false
         }
@@ -29,6 +29,10 @@
         "marker": ["[", "]"],
         "ignoreBibliography": true,
         "removeDuplicatesWorkaround": true
+    },
+    "deletions": {
+        "render": "event",
+        "marker": ["[", "]"]
     },
     "notes": {
         "bibliographicNotes": {
@@ -83,6 +87,9 @@
             "include": true
         },
         "date": {
+            "include": true
+        },
+        "del": {
             "include": true
         },
         "expan": {

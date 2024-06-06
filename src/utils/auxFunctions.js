@@ -204,6 +204,22 @@ export function replaceChoiceEltWithMarker(elt, options) {
     }
 }
 
+export function addMarkersToElement(elt, options) {
+    if (options.marker.length === 2) {
+        elt.insertAdjacentText('afterbegin', options.marker[0]);
+        elt.insertAdjacentText('beforeend', options.marker[1]);
+        
+        // This has the same result as the solution above, but is a little less readable
+        // elt.prepend(options.marker[0]);
+        // elt.append(options.marker[1]);
+
+        elt.classList.add('intervention');
+
+    } else {
+        throw new Error(`You must provide a starting and an ending marker. Provided: ${options.marker}`);
+    }
+}
+
 export function replaceChoiceWithEvent(elt, options) {
     let contracted = undefined;
     let expanded = undefined;
