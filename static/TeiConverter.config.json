@@ -11,12 +11,12 @@
     },
     "choice": {
         "abbreviations": {
-            "render": "inline",
+            "render": "event",
             "marker": ["[", "]"],
             "useOriginal": true
         },
         "corrections": {
-            "render": "inline",
+            "render": "event",
             "marker": ["[", "]"],
             "useOriginal": false
         }
