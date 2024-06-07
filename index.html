@@ -40,6 +40,10 @@
         console.log(event.detail);
       });
 
+      addEventListener('delHover', (event) => {
+        console.log(event.detail);
+      });
+
     </script>
 
 <!-- FOR DEV TESTING ONLY -- Gets the list of files in the repo, manages form options and submit -->
@@ -56,7 +60,7 @@
 
   <!-- FORM TO SELECT FROM DIFFERENT FILES IN THE REPO - DEV TESTING ONLY -->
   <form id="fileSelectForm">
-    <label for="fileName">File: </label>
+    <label for="fileNameSelect">File: </label>
     <select name="fileName" id="fileNameSelect">  
     </select>
     <input type="submit" value="Convert"></input>

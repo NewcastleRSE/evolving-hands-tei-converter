@@ -1,4 +1,4 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement } from "../src/utils/auxFunctions";
 
 export let behaviours = function (options) {
     return {
@@ -218,6 +218,29 @@ export let behaviours = function (options) {
                         isoDate.innerText = ` ${markers[0]}${elt.getAttribute('when')}${markers[1]}`
 
                         elt.appendChild(isoDate);
+                    }
+                }
+            }
+        },
+
+        "del": function (elt) {
+            const legalRenders = ['inline', 'event'];
+
+            console.log(elt)
+
+            if(!legalRenders.includes(options.render)) {
+                console.error(`${options.render} is not a valid rendering option for <del> elements, using defaults instead`)
+            } else {
+                if (options.render === 'inline') {
+                    elt.style.textDecoration = 'line-through'
+                } else if (options.render === 'event') {
+                    // add markers
+                    addMarkersToElement(elt, options);
+                    // create custom event
+                    let event = new CustomEvent('delHover', { bubbles: true,detail: { rendition: elt.getAttribute('rend') } })
+                    elt.classList.add('event');
+                    elt.onmouseenter = function () {
+                        dispatchEvent(event)
                     }
                 }
             }
