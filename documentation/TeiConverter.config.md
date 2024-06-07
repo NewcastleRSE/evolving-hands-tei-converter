@@ -123,6 +123,22 @@ If [`dates.showISODate`](#datesshowisodate) is true, defines whether to exclude 
 ### scope: `true`
 Given the encoding guidelines that are currently implemented, date elements are unnecessarily duplicated (see [this issue](https://github.com/evolvinghands/EvolvingHandsNcl/issues/7#issue-2325171769) for a more detailed discussion of this problem); if this option is `false`, all those duplicates will show their `@when` attribute in the display. If this option is `true`, a workaround that removes those duplicates is implemented. The workaround is, however, computationally expensive: if the encoding principles change in such a way that `<date>` duplicates do not exist, this should be set to `false`.
 
+## deletions
+### type: `object`
+### scope: `global`
+An object containing options for `<del>` elements, i.e., deletions
+
+## deletions.render
+### type: `string`
+### values: `event | inline`
+### scope: `global`
+Defines whether deletions should be shown inline (styled with a `strikethrough`) in the body of the document, or given as an object in custom event ([`delHover`](/documentation/customEvents/delHover.md)).
+
+## deletions.marker
+### type: `array | string`
+### scope: `global`
+If [`deletions.render`](#deletionsrender) is `event`, defines what typographical marker is used to distinguish the deletion from the transcription. Default is to use square brackets ('[]').
+
 ## notes
 ### type: `object`
 ### scope: `global`

@@ -238,6 +238,7 @@ export let behaviours = function (options) {
                     addMarkersToElement(elt, options);
                     // create custom event
                     let event = new CustomEvent('delHover', { bubbles: true,detail: { rendition: elt.getAttribute('rend') } })
+                    elt.classList.add('event');
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }
