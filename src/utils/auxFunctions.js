@@ -307,3 +307,14 @@ export function removeDuplicateDatesWorkaround(div) {
         }
     }
 }
+
+export function getFigDesc(elt) {
+    // receives a figure element, returns what is inside its figDesc(s)
+    // returns an array of string descriptions (on the off-chance there is more than one figDesc inside figure)
+    const figDescCollection = elt.getElementsByTagName('tei-figDesc');
+    let figDescText = [];
+    for (const figD of figDescCollection) {
+        figDescText.push(figD.innerText);
+    }
+    return figDescText
+}

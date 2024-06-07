@@ -34,6 +34,12 @@
         "render": "event",
         "marker": ["[", "]"]
     },
+    "figures": {
+        "placeholder": true,
+        "placeholderType": "text",
+        "descPosition": "inline",
+        "loadImageIfAvailable": false
+    },
     "notes": {
         "bibliographicNotes": {
             "include": true,
@@ -93,6 +99,9 @@
             "include": true
         },
         "expan": {
+            "include": true
+        },
+        "figure": {
             "include": true
         },
         "graphic" : {

@@ -1,4 +1,4 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc } from "../src/utils/auxFunctions";
 
 export let behaviours = function (options) {
     return {
@@ -189,7 +189,7 @@ export let behaviours = function (options) {
 
         "date": function (elt) {
             // This standard behaviour can cause duplicate dates to be shown on display given some of the encoding decisions taken (see https://github.com/evolvinghands/EvolvingHandsNcl/issues/7#issue-2325171769 for more details); there is a workaround in place that **should** correct that without creating any extra errors. The workaround is at an <ab> block level, and works by calling the removeDuplicateDatesWorkaround auxiliar function.
-            
+
             // Checks to see if it should ignore dates in bibliographies. If so, sets the flag transform to false.
             let transform = true;
             if (elt.parentElement) {
@@ -226,9 +226,7 @@ export let behaviours = function (options) {
         "del": function (elt) {
             const legalRenders = ['inline', 'event'];
 
-            console.log(elt)
-
-            if(!legalRenders.includes(options.render)) {
+            if (!legalRenders.includes(options.render)) {
                 console.error(`${options.render} is not a valid rendering option for <del> elements, using defaults instead`)
             } else {
                 if (options.render === 'inline') {
@@ -237,7 +235,7 @@ export let behaviours = function (options) {
                     // add markers
                     addMarkersToElement(elt, options);
                     // create custom event
-                    let event = new CustomEvent('delHover', { bubbles: true,detail: { rendition: elt.getAttribute('rend') } })
+                    let event = new CustomEvent('delHover', { bubbles: true, detail: { rendition: elt.getAttribute('rend') } })
                     elt.classList.add('event');
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
@@ -248,6 +246,33 @@ export let behaviours = function (options) {
 
         "expan": function (elt) {
             replaceChoiceEltWithMarker(elt, options.abbreviations);
+        },
+
+        "figure": function (elt) {
+            if (options.placeholder) {
+                const placeholderDiv = document.createElement('div');
+                placeholderDiv.classList.add('figure-placeholder');
+                let placeholder = undefined;
+                if (options.placeholderType === 'text') {
+                    placeholder = document.createElement('span');
+                    placeholder.classList.add('text-placeholder');
+                    placeholder.appendChild(document.createTextNode('[FIGURE]'));
+                }
+                placeholderDiv.appendChild(placeholder);
+                if (options.descPosition === 'inline') {
+                    // get figDesc
+                    const figDescriptions = getFigDesc(elt);
+                    for (const desc of figDescriptions) {
+                        // for each figDesc, creates a span, adds the description, and adds it to the placeholder div
+                        const description = document.createElement('span');
+                        description.classList.add('figure-description');
+                        description.appendChild(document.createTextNode(desc))
+                        placeholderDiv.appendChild(description);
+                    }
+                }
+                return placeholderDiv
+
+            }
         },
 
         "note": function (elt) {
