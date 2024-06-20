@@ -259,25 +259,31 @@ export let behaviours = function (options) {
                     placeholder.appendChild(document.createTextNode('[FIGURE]'));
                 }
                 placeholderDiv.appendChild(placeholder);
-                if (options.descPosition === 'inline') {
-                    // get figDesc
-                    let figDescriptions = getFigDesc(elt);
-                    // get any abs
-                    figDescriptions = addFigAbs(elt, figDescriptions);
-                    for (const desc of figDescriptions) {
-                        // for each figDesc, creates a span, adds the description, and adds it to the placeholder div
-                        const description = document.createElement('span');
-                        description.classList.add('figure-description');
-                        if (typeof(desc) === 'string') {
-                            description.appendChild(document.createTextNode(desc))
-                        } else if (typeof(desc) === 'object') {
-                            Array.from(desc).forEach((el) => description.appendChild(el));
-                            // for (const el of Array.from(desc)) {
-                            //     description.appendChild(el)
-                            // }
-                        }
-                        placeholderDiv.appendChild(description);
+
+                // get figDesc
+                let figDescriptions = getFigDesc(elt);
+                // get any abs
+                figDescriptions = addFigAbs(elt, figDescriptions);
+                // for each figDesc, creates a span, adds the description, and adds it to the placeholder div
+                let descriptionSpan = document.createElement('span');
+                descriptionSpan.classList.add('figure-description-group');
+                for (const desc of figDescriptions) {
+                    const description = document.createElement('span');
+                    description.classList.add('figure-description');
+                    if (typeof(desc) === 'string') {
+                        description.appendChild(document.createTextNode(desc))
+                    } else if (typeof(desc) === 'object') {
+                        Array.from(desc).forEach((el) => description.appendChild(el));
                     }
+                    descriptionSpan.appendChild(description);
+                }
+
+                if (options.descPosition === 'inline') {                    
+                    placeholderDiv.appendChild(descriptionSpan);
+                } else if (options.descPosition === 'footnote') {
+                    // check if a footnote list exists
+                    // if so, add footnote
+                    // if not, create list then add footnote
                 }
                 return placeholderDiv
 
