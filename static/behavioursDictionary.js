@@ -1,4 +1,4 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc, addFigAbs } from "../src/utils/auxFunctions";
 
 export let behaviours = function (options) {
     return {
@@ -261,12 +261,21 @@ export let behaviours = function (options) {
                 placeholderDiv.appendChild(placeholder);
                 if (options.descPosition === 'inline') {
                     // get figDesc
-                    const figDescriptions = getFigDesc(elt);
+                    let figDescriptions = getFigDesc(elt);
+                    // get any abs
+                    figDescriptions = addFigAbs(elt, figDescriptions);
                     for (const desc of figDescriptions) {
                         // for each figDesc, creates a span, adds the description, and adds it to the placeholder div
                         const description = document.createElement('span');
                         description.classList.add('figure-description');
-                        description.appendChild(document.createTextNode(desc))
+                        if (typeof(desc) === 'string') {
+                            description.appendChild(document.createTextNode(desc))
+                        } else if (typeof(desc) === 'object') {
+                            Array.from(desc).forEach((el) => description.appendChild(el));
+                            // for (const el of Array.from(desc)) {
+                            //     description.appendChild(el)
+                            // }
+                        }
                         placeholderDiv.appendChild(description);
                     }
                 }

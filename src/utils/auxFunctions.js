@@ -318,3 +318,12 @@ export function getFigDesc(elt) {
     }
     return figDescText
 }
+
+export function addFigAbs(elt, figDescriptions) {
+    // used to collect any <ab> inside <figure> -- these seem to be annotations to the figure itself and will be treated as another figDesc
+    const figAbCollection = elt.getElementsByTagName('tei-ab');
+    for (const figAb of figAbCollection) {
+        figDescriptions.push(figAb.children);
+    }
+    return figDescriptions;
+}
