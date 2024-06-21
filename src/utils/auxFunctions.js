@@ -327,30 +327,3 @@ export function addFigAbs(elt, figDescriptions) {
     }
     return figDescriptions;
 }
-
-export function addFigDescToFootnoteDiv(noteContent) {
-    let teiContainer = document.getElementById('teiContainer');
-    let notesList = teiContainer.querySelector('#document-figdesc-list');
-    let noteIndex = 0
-    if (!notesList) {
-        notesList = document.createElement('ol')
-        notesList.setAttribute('id', 'document-figdesc-list');
-        teiContainer.append(notesList);
-    } else {
-        noteIndex = Array.from(notesList.children).length + 1
-    }
-    let note = document.createElement('li');
-    const targetId = `target-figDesc-${noteIndex}`
-    note.setAttribute('id', targetId)
-    note.append(noteContent);
-    
-    let backLink = document.createElement('a')
-    backLink.setAttribute('href', `#src-figDesc-${noteIndex}`)
-    backLink.innerHTML = ' ^ '
-
-    note.append(backLink);
-    
-    notesList.append(note);
-
-    return {targetId, noteIndex}
-}

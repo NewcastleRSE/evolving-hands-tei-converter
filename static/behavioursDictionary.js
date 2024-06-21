@@ -250,7 +250,7 @@ export let behaviours = function (options) {
 
         "figure": function (elt) {
             if (options.placeholder) {
-                const placeholderDiv = document.createElement('div');
+                let placeholderDiv = document.createElement('div');
                 placeholderDiv.classList.add('figure-placeholder');
                 let placeholder = undefined;
                 if (options.placeholderType === 'text') {
@@ -283,9 +283,11 @@ export let behaviours = function (options) {
                 if (options.descPosition === 'inline') {                    
                     placeholderDiv.appendChild(descriptionSpan);
                 } else if (options.descPosition === 'footnote') {
-                    // create list then add footnote
-                    const footnoteMarks = ["*", "†", "††", "¶", "§", "||", "#"]
-                    const { targetId, noteIndex } = addFigDescToFootnoteDiv(descriptionSpan)
+                    // Add footnote prefix
+                    descriptionSpan.prepend(document.createTextNode('Description of figure: '))
+                    
+                    const { targetId, noteIndex } = addNoteToDiv(descriptionSpan)
+                    placeholderDiv = generateNoteLink(placeholderDiv, noteIndex, targetId)
                 }
                 return placeholderDiv
 
