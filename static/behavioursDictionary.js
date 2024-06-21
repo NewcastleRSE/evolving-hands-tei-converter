@@ -1,4 +1,4 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc, addFigAbs } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc, addFigAbs, addFigDescToFootnoteDiv } from "../src/utils/auxFunctions";
 
 export let behaviours = function (options) {
     return {
@@ -283,9 +283,9 @@ export let behaviours = function (options) {
                 if (options.descPosition === 'inline') {                    
                     placeholderDiv.appendChild(descriptionSpan);
                 } else if (options.descPosition === 'footnote') {
-                    // check if a footnote list exists
-                    // if so, add footnote
-                    // if not, create list then add footnote
+                    // create list then add footnote
+                    const footnoteMarks = ["*", "†", "††", "¶", "§", "||", "#"]
+                    const { targetId, noteIndex } = addFigDescToFootnoteDiv(descriptionSpan)
                 }
                 return placeholderDiv
 
