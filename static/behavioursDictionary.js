@@ -249,6 +249,27 @@ export let behaviours = function (options) {
         },
 
         "figure": function (elt) {
+
+            // get figDesc
+            let figDescriptions = getFigDesc(elt);
+            // get any abs if the option allows it
+            if (options.showAb) {
+                figDescriptions = addFigAbs(elt, figDescriptions);
+            }
+            // for each figDesc, creates a span, adds the description, and adds it to the placeholder div
+            let descriptionSpan = document.createElement('span');
+            descriptionSpan.classList.add('figure-description-group');
+            for (const desc of figDescriptions) {
+                const description = document.createElement('span');
+                description.classList.add('figure-description');
+                if (typeof(desc) === 'string') {
+                    description.appendChild(document.createTextNode(desc))
+                } else if (typeof(desc) === 'object') {
+                    Array.from(desc).forEach((el) => description.appendChild(el));
+                }
+                descriptionSpan.appendChild(description);
+            }
+
             if (options.placeholder) {
                 let placeholderDiv = document.createElement('div');
                 placeholderDiv.classList.add('figure-placeholder');
@@ -260,25 +281,7 @@ export let behaviours = function (options) {
                 }
                 placeholderDiv.appendChild(placeholder);
 
-                // get figDesc
-                let figDescriptions = getFigDesc(elt);
-                // get any abs if the option allows it
-                if (options.showAb) {
-                    figDescriptions = addFigAbs(elt, figDescriptions);
-                }
-                // for each figDesc, creates a span, adds the description, and adds it to the placeholder div
-                let descriptionSpan = document.createElement('span');
-                descriptionSpan.classList.add('figure-description-group');
-                for (const desc of figDescriptions) {
-                    const description = document.createElement('span');
-                    description.classList.add('figure-description');
-                    if (typeof(desc) === 'string') {
-                        description.appendChild(document.createTextNode(desc))
-                    } else if (typeof(desc) === 'object') {
-                        Array.from(desc).forEach((el) => description.appendChild(el));
-                    }
-                    descriptionSpan.appendChild(description);
-                }
+                
 
                 if (options.descPosition === 'inline') {                    
                     placeholderDiv.appendChild(descriptionSpan);
@@ -291,6 +294,19 @@ export let behaviours = function (options) {
                 }
                 return placeholderDiv
 
+            } else if (!options.placeholder && options.loadImageIfAvailable) {
+                const graphicElements = elt.getElementsByTagName('tei-graphic');
+                console.log(descriptionSpan);
+                if (graphicElements.length > 0) {
+                    for (const img of graphicElements) {
+                        const imgUrl = img.getAttribute('url');
+                        const imgElt = document.createElement('img');
+                        imgElt.setAttribute('src', imgUrl);
+                        elt.appendChild(imgElt);
+                    }
+                } else {
+                    console.error('Could not find an element <graphic> inside <figure>')
+                }
             }
         },
 

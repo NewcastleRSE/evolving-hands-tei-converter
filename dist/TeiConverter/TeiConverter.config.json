@@ -35,10 +35,10 @@
         "marker": ["[", "]"]
     },
     "figures": {
-        "placeholder": true,
+        "placeholder": false,
         "placeholderType": "text",
         "descPosition": "footnote",
-        "loadImageIfAvailable": false,
+        "loadImageIfAvailable": true,
         "showAb": true
     },
     "notes": {
