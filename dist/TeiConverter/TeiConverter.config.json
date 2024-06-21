@@ -38,7 +38,8 @@
         "placeholder": true,
         "placeholderType": "text",
         "descPosition": "inline",
-        "loadImageIfAvailable": false
+        "loadImageIfAvailable": false,
+        "showAb": true
     },
     "notes": {
         "bibliographicNotes": {

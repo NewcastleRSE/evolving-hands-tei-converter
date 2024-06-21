@@ -262,8 +262,10 @@ export let behaviours = function (options) {
 
                 // get figDesc
                 let figDescriptions = getFigDesc(elt);
-                // get any abs
-                figDescriptions = addFigAbs(elt, figDescriptions);
+                // get any abs if the option allows it
+                if (options.showAb) {
+                    figDescriptions = addFigAbs(elt, figDescriptions);
+                }
                 // for each figDesc, creates a span, adds the description, and adds it to the placeholder div
                 let descriptionSpan = document.createElement('span');
                 descriptionSpan.classList.add('figure-description-group');
