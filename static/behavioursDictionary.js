@@ -256,7 +256,7 @@ export let behaviours = function (options) {
             if (options.showAb) {
                 figDescriptions = addFigAbs(elt, figDescriptions);
             }
-            // for each figDesc, creates a span, adds the description, and adds it to the placeholder div
+            // for each figDesc, creates a span, adds the description, and adds it to the figDesc span
             let descriptionSpan = document.createElement('span');
             descriptionSpan.classList.add('figure-description-group');
             for (const desc of figDescriptions) {
@@ -270,33 +270,48 @@ export let behaviours = function (options) {
                 descriptionSpan.appendChild(description);
             }
 
+            // If it's using a placeholder
             if (options.placeholder) {
                 let placeholderDiv = document.createElement('div');
                 placeholderDiv.classList.add('figure-placeholder');
                 let placeholder = undefined;
+
+                // creates a textual placeholder (i.e. '[FIGURE]')
                 if (options.placeholderType === 'text') {
                     placeholder = document.createElement('span');
                     placeholder.classList.add('text-placeholder');
                     placeholder.appendChild(document.createTextNode('[FIGURE]'));
+                } else if (options.placeholderType === 'icon') {
+                    placeholder = document.createElement('img');
+                    placeholder.setAttribute('src', './dist/TeiConverter/imgPlaceholder.png')
+                } else {
+                    console.error(`${options.placeholderType} is not a valid option; valid options are 'text' or 'icon'`)
                 }
+
                 placeholderDiv.appendChild(placeholder);
-
                 
-
-                if (options.descPosition === 'inline') {                    
-                    placeholderDiv.appendChild(descriptionSpan);
+                // depending on the position desired for the figdesc, either adds it to the placeholder div or to a notes list at the bottom of the document
+                if (options.descPosition === 'inline') {
+                    // replaces the span with a div so as to make it easier to style
+                    const descDiv = document.createElement('div')
+                    descDiv.append(...descriptionSpan.children)
+                    descriptionSpan.remove();
+                    descDiv.classList.add('figure-description-group');
+                    placeholderDiv.appendChild(descDiv);
                 } else if (options.descPosition === 'footnote') {
                     // Add footnote prefix
                     descriptionSpan.prepend(document.createTextNode('Description of figure: '))
                     
                     const { targetId, noteIndex } = addNoteToDiv(descriptionSpan)
                     placeholderDiv = generateNoteLink(placeholderDiv, noteIndex, targetId)
+                } else {
+                    console.error(`${options.descPosition} is not a valid option; valid options are 'inline' or 'footnote'`)
                 }
                 return placeholderDiv
 
             } else if (!options.placeholder && options.image.loadIfAvailable) {
+                // if the option to load the image is selected, creates a <figure> element with with <img> and <figcaption>
                 const graphicElements = elt.getElementsByTagName('tei-graphic');
-                console.log(descriptionSpan);
                 if (graphicElements.length > 0) {
                     for (const img of graphicElements) {
                         const figEl = document.createElement('figure')

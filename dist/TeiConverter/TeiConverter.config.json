@@ -35,12 +35,12 @@
         "marker": ["[", "]"]
     },
     "figures": {
-        "placeholder": false,
-        "placeholderType": "text",
-        "descPosition": "footnote",
+        "placeholder": true,
+        "placeholderType": "icon",
+        "descPosition": "inline",
         "showAb": true,
         "image": {
-            "loadIfAvailable": true,
+            "loadIfAvailable": false,
             "fitToContainer": true
         }
     },
