@@ -307,3 +307,23 @@ export function removeDuplicateDatesWorkaround(div) {
         }
     }
 }
+
+export function getFigDesc(elt) {
+    // receives a figure element, returns what is inside its figDesc(s)
+    // returns an array of string descriptions (on the off-chance there is more than one figDesc inside figure)
+    const figDescCollection = elt.getElementsByTagName('tei-figDesc');
+    let figDescText = [];
+    for (const figD of figDescCollection) {
+        figDescText.push(figD.innerText);
+    }
+    return figDescText
+}
+
+export function addFigAbs(elt, figDescriptions) {
+    // used to collect any <ab> inside <figure> -- these seem to be annotations to the figure itself and will be treated as another figDesc
+    const figAbCollection = elt.getElementsByTagName('tei-ab');
+    for (const figAb of figAbCollection) {
+        figDescriptions.push(figAb.children);
+    }
+    return figDescriptions;
+}

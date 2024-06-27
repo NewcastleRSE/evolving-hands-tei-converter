@@ -1,4 +1,4 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc, addFigAbs, addFigDescToFootnoteDiv } from "../src/utils/auxFunctions";
 
 export let behaviours = function (options) {
     return {
@@ -189,7 +189,7 @@ export let behaviours = function (options) {
 
         "date": function (elt) {
             // This standard behaviour can cause duplicate dates to be shown on display given some of the encoding decisions taken (see https://github.com/evolvinghands/EvolvingHandsNcl/issues/7#issue-2325171769 for more details); there is a workaround in place that **should** correct that without creating any extra errors. The workaround is at an <ab> block level, and works by calling the removeDuplicateDatesWorkaround auxiliar function.
-            
+
             // Checks to see if it should ignore dates in bibliographies. If so, sets the flag transform to false.
             let transform = true;
             if (elt.parentElement) {
@@ -226,9 +226,7 @@ export let behaviours = function (options) {
         "del": function (elt) {
             const legalRenders = ['inline', 'event'];
 
-            console.log(elt)
-
-            if(!legalRenders.includes(options.render)) {
+            if (!legalRenders.includes(options.render)) {
                 console.error(`${options.render} is not a valid rendering option for <del> elements, using defaults instead`)
             } else {
                 if (options.render === 'inline') {
@@ -237,7 +235,7 @@ export let behaviours = function (options) {
                     // add markers
                     addMarkersToElement(elt, options);
                     // create custom event
-                    let event = new CustomEvent('delHover', { bubbles: true,detail: { rendition: elt.getAttribute('rend') } })
+                    let event = new CustomEvent('delHover', { bubbles: true, detail: { rendition: elt.getAttribute('rend') } })
                     elt.classList.add('event');
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
@@ -248,6 +246,94 @@ export let behaviours = function (options) {
 
         "expan": function (elt) {
             replaceChoiceEltWithMarker(elt, options.abbreviations);
+        },
+
+        "figure": function (elt) {
+
+            // get figDesc
+            let figDescriptions = getFigDesc(elt);
+            // get any abs if the option allows it
+            if (options.showAb) {
+                figDescriptions = addFigAbs(elt, figDescriptions);
+            }
+            // for each figDesc, creates a span, adds the description, and adds it to the figDesc span
+            let descriptionSpan = document.createElement('span');
+            descriptionSpan.classList.add('figure-description-group');
+            for (const desc of figDescriptions) {
+                const description = document.createElement('span');
+                description.classList.add('figure-description');
+                if (typeof(desc) === 'string') {
+                    description.appendChild(document.createTextNode(desc))
+                } else if (typeof(desc) === 'object') {
+                    Array.from(desc).forEach((el) => description.appendChild(el));
+                }
+                descriptionSpan.appendChild(description);
+            }
+
+            // If it's using a placeholder
+            if (options.placeholder) {
+                let placeholderDiv = document.createElement('div');
+                placeholderDiv.classList.add('figure-placeholder');
+                let placeholder = undefined;
+
+                // creates a textual placeholder (i.e. '[FIGURE]')
+                if (options.placeholderType === 'text') {
+                    placeholder = document.createElement('span');
+                    placeholder.classList.add('text-placeholder');
+                    placeholder.appendChild(document.createTextNode('[FIGURE]'));
+                } else if (options.placeholderType === 'icon') {
+                    placeholder = document.createElement('img');
+                    placeholder.setAttribute('height', options.sizeIcon);
+                    placeholder.setAttribute('width', options.sizeIcon);
+                    placeholder.setAttribute('src', './dist/TeiConverter/imgPlaceholder.png')
+                } else {
+                    console.error(`${options.placeholderType} is not a valid option; valid options are 'text' or 'icon'`)
+                }
+
+                placeholderDiv.appendChild(placeholder);
+                
+                // depending on the position desired for the figdesc, either adds it to the placeholder div or to a notes list at the bottom of the document
+                if (options.descPosition === 'inline') {
+                    // replaces the span with a div so as to make it easier to style
+                    const descDiv = document.createElement('div')
+                    descDiv.append(...descriptionSpan.children)
+                    descriptionSpan.remove();
+                    descDiv.classList.add('figure-description-group');
+                    placeholderDiv.appendChild(descDiv);
+                } else if (options.descPosition === 'footnote') {
+                    // Add footnote prefix
+                    descriptionSpan.prepend(document.createTextNode('Description of figure: '))
+                    
+                    const { targetId, noteIndex } = addNoteToDiv(descriptionSpan)
+                    placeholderDiv = generateNoteLink(placeholderDiv, noteIndex, targetId)
+                } else {
+                    console.error(`${options.descPosition} is not a valid option; valid options are 'inline' or 'footnote'`)
+                }
+                return placeholderDiv
+
+            } else if (!options.placeholder && options.image.loadIfAvailable) {
+                // if the option to load the image is selected, creates a <figure> element with with <img> and <figcaption>
+                const graphicElements = elt.getElementsByTagName('tei-graphic');
+                if (graphicElements.length > 0) {
+                    for (const img of graphicElements) {
+                        const figEl = document.createElement('figure')
+                        figEl.classList.add('inline-figure-container')
+                        const caption = document.createElement('figcaption')
+                        caption.append(descriptionSpan);
+                        const imgUrl = img.getAttribute('url');
+                        const imgElt = document.createElement('img');
+                        imgElt.setAttribute('src', imgUrl);
+                        if (options.image.fitToContainer) {
+                            imgElt.setAttribute('style', 'width: 100%; height: 100%; object-fit: contain;')
+                        }
+                        figEl.appendChild(imgElt);
+                        figEl.appendChild(caption);
+                        return figEl;
+                    }
+                } else {
+                    console.error('Could not find an element <graphic> inside <figure>')
+                }
+            }
         },
 
         "note": function (elt) {
