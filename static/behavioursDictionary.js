@@ -283,6 +283,8 @@ export let behaviours = function (options) {
                     placeholder.appendChild(document.createTextNode('[FIGURE]'));
                 } else if (options.placeholderType === 'icon') {
                     placeholder = document.createElement('img');
+                    placeholder.setAttribute('height', options.sizeIcon);
+                    placeholder.setAttribute('width', options.sizeIcon);
                     placeholder.setAttribute('src', './dist/TeiConverter/imgPlaceholder.png')
                 } else {
                     console.error(`${options.placeholderType} is not a valid option; valid options are 'text' or 'icon'`)

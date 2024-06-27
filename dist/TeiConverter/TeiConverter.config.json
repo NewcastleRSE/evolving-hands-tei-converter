@@ -37,6 +37,7 @@
     "figures": {
         "placeholder": true,
         "placeholderType": "icon",
+        "sizeIcon": "50",
         "descPosition": "inline",
         "showAb": true,
         "image": {
