@@ -317,6 +317,7 @@ export let behaviours = function (options) {
                 if (graphicElements.length > 0) {
                     for (const img of graphicElements) {
                         const figEl = document.createElement('figure')
+                        figEl.classList.add('inline-figure-container')
                         const caption = document.createElement('figcaption')
                         caption.append(descriptionSpan);
                         const imgUrl = img.getAttribute('url');

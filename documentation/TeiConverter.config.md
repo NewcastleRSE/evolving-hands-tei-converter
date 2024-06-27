@@ -8,7 +8,7 @@ Defines whether *any* custom behaviour is applied to the transformation of the T
 ## displayInlineGraphics
 ### type: `boolean`
 ### scope: `global`
-Defines whether the transformation will attempt to render any inline graphics (i.e., `<graphic>` TEI elements). Can be used for simple page previews and displays. If `true`, uses the default behaviour in `CETEIcean`.
+Defines whether the transformation will attempt to render any inline graphics (i.e., `<graphic>` TEI elements). Can be used for simple page previews and displays. If `true`, uses the default behaviour in `CETEIcean`. This option does not apply to images in the TEI element `<figure>`: the behaviour for those is controlled by the options in [`figures`](#figures)
 
 ## teiFileStructure
 ### type: `string`
@@ -138,6 +138,53 @@ Defines whether deletions should be shown inline (styled with a `strikethrough`)
 ### type: `array | string`
 ### scope: `global`
 If [`deletions.render`](#deletionsrender) is `event`, defines what typographical marker is used to distinguish the deletion from the transcription. Default is to use square brackets ('[]').
+
+## figures
+### type: `object`
+### scope: `global`
+An object containing a series of options for `<figure>` elements.
+
+## figures.placeholder
+### type: `boolean`
+### scope: `global`
+Defines whether the figures should be replaced by a placeholder or not. If `false` and `figures.image.loadIfAvailable` is true, it will try to use the `graphic` encoded in the TEI file, and will write an error to the console if it can't find one.
+
+## figures.placeholderType
+### type: `string`
+### values: `text | icon`
+### scope: `global`
+Defines what kind of placeholder to use if [`figures.placeholder`](#figuresplaceholder) is `true`. If `text`, it will replace the figure with '\[FIGURE\]'; if `icon`, it will use a well-known image placeholder.
+
+## figures.sizeIcon
+### type: `string | int`
+### scope: `global`
+If [`figures.placeholderType`](#figuresplaceholdertype) is `icon`, defines the size in pixels of the placeholder. The placeholder icon is square, so the value of `figures.sizeIcon` applies to both height and width.
+
+## figures.descPosition
+### type: `string`
+### values: `inline | footnote`
+### scope: `global`
+Defines where to display any text contained by the TEI element `<figDesc>` -- whether inline with the placeholder, or as a footnote. If the value is `footnote` and there are other footnotes on the page, the figure description will be displayed in the same list with the prefix 'Description of figure: '.
+
+## figures.showAb
+### type `boolean`
+### scope: `global`
+Some `<figure>` elements contain annotations that are not part of `<figDesc>` and are instead isolated in their own `<ab>`. This option defines whether to include those `<ab>` or not: if the value is `true`, any `<ab>` will be joined to any `<figDesc>`, and displayed in the same manner (i.e., inline or as a footnote).
+
+## figures.image
+### type: `object`
+### scope: `global`
+An object containing a series of options to define what to do with any `<graphic>` element inside a `<figure>`
+
+## figures.image.loadIfAvailable
+### type: `boolean`
+### scope: `element`
+If [`figures.placeholder`](#figuresplaceholder) is `false` and this is `true`, it will attempt to load and render the image from the `<graphic>` element inside the `<figure>`. If successful, it will create an HTML `<figure>` element (as opposed to a `tei-figure`), and copy the contents of `<figDesc>` to the HTML element `<figcaption>`. If it can't find a `<graphic>` element, it will post an error on the console.
+
+## figures.image.fitToContainer
+### type: `boolean`
+### scope: `element`
+Resizes the figure to fit its container (the HTML element `<figure>`, which is a block-level element.) Further styling can be done directly to the container, which is identifiable by the class `.inline-figure-container`.
 
 ## notes
 ### type: `object`
