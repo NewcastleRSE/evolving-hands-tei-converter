@@ -336,14 +336,18 @@ export let behaviours = function (options) {
             }
         },
 
-        "note": function (elt) {
-            // empty function removes default behaviour for notes
-        },
-
         "graphic": function (elt) {
             if (options.showLogs) {
                 console.log("ignoring graphics");
             }
+        },
+
+        "gap": function(elt) {
+            elt.append(document.createTextNode(options.marker));
+        },
+
+        "note": function (elt) {
+            // empty function removes default behaviour for notes
         },
 
         "listOrg": function (elt) {

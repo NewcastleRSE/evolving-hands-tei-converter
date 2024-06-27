@@ -45,6 +45,10 @@
             "fitToContainer": true
         }
     },
+    "gap": {
+        "render": "event",
+        "marker": "[…]"
+    },
     "notes": {
         "bibliographicNotes": {
             "include": true,
@@ -107,6 +111,9 @@
             "include": true
         },
         "figure": {
+            "include": true
+        },
+        "gap": {
             "include": true
         },
         "graphic" : {
