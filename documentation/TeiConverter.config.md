@@ -147,7 +147,7 @@ An object containing a series of options for `<figure>` elements.
 ## figures.placeholder
 ### type: `boolean`
 ### scope: `global`
-Defines whether the figures should be replaced by a placeholder or not. If `false` and `figures.image.loadIfAvailable` is true, it will try to use the `graphic` encoded in the TEI file, and will write an error to the console if it can't find one.
+Defines whether the figures should be replaced by a placeholder or not. If `false` and [`figures.image.loadIfAvailable`](#figuresimageloadifavailable) is true, it will try to use the `graphic` encoded in the TEI file, and will write an error to the console if it can't find one.
 
 ## figures.placeholderType
 ### type: `string`
