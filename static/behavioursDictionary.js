@@ -294,15 +294,23 @@ export let behaviours = function (options) {
                 }
                 return placeholderDiv
 
-            } else if (!options.placeholder && options.loadImageIfAvailable) {
+            } else if (!options.placeholder && options.image.loadIfAvailable) {
                 const graphicElements = elt.getElementsByTagName('tei-graphic');
                 console.log(descriptionSpan);
                 if (graphicElements.length > 0) {
                     for (const img of graphicElements) {
+                        const figEl = document.createElement('figure')
+                        const caption = document.createElement('figcaption')
+                        caption.append(descriptionSpan);
                         const imgUrl = img.getAttribute('url');
                         const imgElt = document.createElement('img');
                         imgElt.setAttribute('src', imgUrl);
-                        elt.appendChild(imgElt);
+                        if (options.image.fitToContainer) {
+                            imgElt.setAttribute('style', 'width: 100%; height: 100%; object-fit: contain;')
+                        }
+                        figEl.appendChild(imgElt);
+                        figEl.appendChild(caption);
+                        return figEl;
                     }
                 } else {
                     console.error('Could not find an element <graphic> inside <figure>')

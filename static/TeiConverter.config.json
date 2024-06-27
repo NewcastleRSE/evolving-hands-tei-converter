@@ -38,8 +38,11 @@
         "placeholder": false,
         "placeholderType": "text",
         "descPosition": "footnote",
-        "loadImageIfAvailable": true,
-        "showAb": true
+        "showAb": true,
+        "image": {
+            "loadIfAvailable": true,
+            "fitToContainer": true
+        }
     },
     "notes": {
         "bibliographicNotes": {
