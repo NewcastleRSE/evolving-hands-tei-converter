@@ -21,7 +21,7 @@ event.detail: object {
 }
 ```
 
-Here is an example from `GB-1-1-1-1-30-8.xml`:
+Here is an example from `GB-1-1-2-1-17-20.xml`:
 ```json
 {
   "message": "text unclear"
