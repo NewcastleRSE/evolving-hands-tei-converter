@@ -394,6 +394,10 @@ tei-figure {
     margin-right: auto;
 }
 
+tei-foreign {
+    font-style: italic;
+}
+
 /* g */
 tei-gap[data-tei-reason="lost"]:before {
     content: "[";
@@ -493,6 +497,10 @@ tei-hi[rend~="italic"] {
 
 tei-hi[rend~="underline"] {
     text-decoration: underline;
+}
+
+tei-hi[rend~="strikethrough"] {
+    text-decoration: line-through;
 }
 
 tei-ident {
