@@ -603,7 +603,24 @@ export let behaviours = function (options) {
             } else if (options.standOffPosition === 'bottom') {
                 elt.parentNode.appendChild(elt);
             }
-            // else if top, nothing needs to be done
+
+        },
+
+        "unclear": function (elt) {
+            const legalRenders = ['event'];
+
+            if (!legalRenders.includes(options.render)) {
+                console.error(`${options.render} is not a valid rendering option for <unclear> elements, using defaults instead`)
+            } else if (options.render === 'event') {
+                // add markers
+                addMarkersToElement(elt, options);
+                // create custom event
+                let event = new CustomEvent('unclearHover', { bubbles: true, detail: { message: options.message } })
+                elt.classList.add('event');
+                elt.onmouseenter = function () {
+                    dispatchEvent(event)
+                }
+            }
         }
     }
 }
