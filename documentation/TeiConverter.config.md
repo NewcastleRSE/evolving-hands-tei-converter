@@ -325,6 +325,27 @@ Defines whether to display any list of place information included in the metadat
 ### scope: `global`
 Defines whether to append the metadata in the `<standOff>` element to the top or the bottom of the TEI container. If any other value is set for this option, the `<standOff>` element will not be rendered and an error will be thrown in the console.
 
+## unclear
+### type: `object`
+### scope: `global`
+An object containing options for `<unclear>` elements.
+
+## unclear.render
+### type: `string`
+### values: `event`
+### scope: `global`
+Defines whether unclear elements should be shown inline and given as an object in custom event ([`unclearHover`](/documentation/customEvents/unclearHover.md)). Currently available options are `event`. Any other value will not make any modifications to the text and will display an error on the console.
+
+## unclear.marker
+### type: `array | string`
+### scope: `global`
+If [`unclear.render`](#unclearrender) is `event`, defines what typographical marker is used to distinguish the unclear text from the transcription. Default is to use square brackets ('[]').
+
+## unclear.message
+### type: `string`
+### scope: `global`
+If [`unclear.render`](#unclearrender) is `event`, defines what message is passed in the event. Default is 'text unclear'.
+
 # Element options
 
 ## elementsSelected

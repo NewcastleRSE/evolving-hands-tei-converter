@@ -80,6 +80,11 @@
         "showPlaces": false,
         "standOffPosition": "top"
     },
+    "unclear": {
+        "render": "event",
+        "marker": ["[", "]"],
+        "message": "text unclear"
+    },
     "elementsSelected": {
         "ab" : {
             "include": true,
@@ -157,6 +162,9 @@
             "include": true
         },
         "standOff": {
+            "include": true
+        },
+        "unclear": {
             "include": true
         }
     },
