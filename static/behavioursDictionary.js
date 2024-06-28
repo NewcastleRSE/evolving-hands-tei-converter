@@ -262,9 +262,9 @@ export let behaviours = function (options) {
             for (const desc of figDescriptions) {
                 const description = document.createElement('span');
                 description.classList.add('figure-description');
-                if (typeof(desc) === 'string') {
+                if (typeof (desc) === 'string') {
                     description.appendChild(document.createTextNode(desc))
-                } else if (typeof(desc) === 'object') {
+                } else if (typeof (desc) === 'object') {
                     Array.from(desc).forEach((el) => description.appendChild(el));
                 }
                 descriptionSpan.appendChild(description);
@@ -291,7 +291,7 @@ export let behaviours = function (options) {
                 }
 
                 placeholderDiv.appendChild(placeholder);
-                
+
                 // depending on the position desired for the figdesc, either adds it to the placeholder div or to a notes list at the bottom of the document
                 if (options.descPosition === 'inline') {
                     // replaces the span with a div so as to make it easier to style
@@ -303,7 +303,7 @@ export let behaviours = function (options) {
                 } else if (options.descPosition === 'footnote') {
                     // Add footnote prefix
                     descriptionSpan.prepend(document.createTextNode('Description of figure: '))
-                    
+
                     const { targetId, noteIndex } = addNoteToDiv(descriptionSpan)
                     placeholderDiv = generateNoteLink(placeholderDiv, noteIndex, targetId)
                 } else {
@@ -336,14 +336,28 @@ export let behaviours = function (options) {
             }
         },
 
-        "note": function (elt) {
-            // empty function removes default behaviour for notes
-        },
-
         "graphic": function (elt) {
             if (options.showLogs) {
                 console.log("ignoring graphics");
             }
+        },
+
+        "gap": function (elt) {
+            elt.append(document.createTextNode(options.marker));
+            if (options.render === 'event') {
+                // create custom event
+                let event = new CustomEvent('gapHover', { bubbles: true, detail: { reason: elt.getAttribute('reason') } })
+                elt.classList.add('event');
+                elt.onmouseenter = function () {
+                    dispatchEvent(event)
+                }
+            } else {
+                console.error(`${options.render} is not a valid rendering option. Valid options are: 'event'.`)
+            }
+        },
+
+        "note": function (elt) {
+            // empty function removes default behaviour for notes
         },
 
         "listOrg": function (elt) {

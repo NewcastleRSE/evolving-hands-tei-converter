@@ -50,6 +50,9 @@ export let teiBehaviours = function (config) {
             if (choice === 'figure') {
                 options = {...options, ...config.figures}
             }
+            if (choice === 'gap') {
+                options = {...options, ...config.gap}
+            }
             behavioursObject['tei'][choice] = behaviours(options)[choice];
         }
     }
