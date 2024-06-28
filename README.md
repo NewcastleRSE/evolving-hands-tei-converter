@@ -119,8 +119,8 @@ TBD
 ## Roadmap
 
 - [x] Initial Research  
-- [x] Minimum viable product <-- You are Here  
-- [ ] Alpha Release  
+- [x] Minimum viable product   
+- [ ] Alpha Release  <-- You are Here
 - [ ] Feature-Complete Release  
 
 ## Contributing
