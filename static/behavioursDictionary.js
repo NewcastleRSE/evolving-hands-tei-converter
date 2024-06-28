@@ -351,6 +351,8 @@ export let behaviours = function (options) {
                 elt.onmouseenter = function () {
                     dispatchEvent(event)
                 }
+            } else {
+                console.error(`${options.render} is not a valid rendering option. Valid options are: 'event'.`)
             }
         },
 

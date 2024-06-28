@@ -186,6 +186,22 @@ If [`figures.placeholder`](#figuresplaceholder) is `false` and this is `true`, i
 ### scope: `element`
 Resizes the figure to fit its container (the HTML element `<figure>`, which is a block-level element.) Further styling can be done directly to the container, which is identifiable by the class `.inline-figure-container`.
 
+## gap
+### type: `boolean`
+### scope: `global`
+An object containing the options related to the behaviours associated with `<gap>` elements
+
+## gap.render
+### type: `string`
+### values: `event`
+### scope: `global`
+A string defining how to render the information contained in the `gap` element. The default, and currently the only available option, is a custom event [`gapHover`](./customEvents/gapHover.md).
+
+## gap.marker
+### type: `string`
+### scope: `global`
+A string that will be used to mark the place where the `<gap>` element is. Default is '[…]'
+
 ## notes
 ### type: `object`
 ### scope: `global`

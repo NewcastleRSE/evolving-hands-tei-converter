@@ -94,6 +94,7 @@ Copy the entire `dist/TeiConverter` folder to the root of your project (or a sui
   - [Additions](/documentation/customEvents/addHover.md);
   - [Damage](/documentation/customEvents/damageHover.md);
   - [Deletions](/documentation/customEvents/delHover.md);
+  - [Gaps](/documentation/customEvents/gapHover.md);
 
 ### Running Tests
 
