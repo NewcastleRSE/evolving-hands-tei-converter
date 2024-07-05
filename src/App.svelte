@@ -6,13 +6,13 @@
     import CETEI from "CETEIcean";
 
     // example behaviours file
-    import { teiBehaviours } from '../static/teiBehaviours'
+    import { teiBehaviours } from "../static/teiBehaviours";
 
     // load fallback default options
-    import defaultConfig from './../static/TeiConverter.config.json'
+    import defaultConfig from "./../static/TeiConverter.config.json";
 
     export let path = "";
-    export let configPath = 'TeiConverter/TeiConverter.config.json'
+    export let configPath = "TeiConverter/TeiConverter.config.json";
     let error = undefined;
     let loaded = false;
     let config = undefined;
@@ -20,17 +20,20 @@
     onMount(async () => {
         try {
             // Tries to load custom config file
-            config = await fetch(configPath).then(
-                (response) => response.json()
-            )
+            config = await fetch(configPath).then((response) =>
+                response.json(),
+            );
         } catch (err) {
             // If it can't, uses defaults that should be bundled in the umd
-            console.log('Could not load config file, using default values', err);
+            console.log(
+                "Could not load config file, using default values",
+                err,
+            );
             try {
                 config = defaultConfig;
             } catch (err) {
                 // If it can't read defaults, logs the error
-                console.log('Could not load default values', err)
+                console.log("Could not load default values", err);
             }
         }
         try {
@@ -42,7 +45,25 @@
                 cetei.addBehaviors(teiBehaviours(config));
             }
             cetei.getHTML5(path, function (data) {
-                document.getElementById("TEI-container").appendChild(data);
+                // pagination
+                let page_range = [0, 1];
+                const surfaces = data.getElementsByTagName("tei-surface");
+                const pages = data.getElementsByTagName("tei-pb");
+                console.log(surfaces.length, pages.length);
+                let nextSib = pages[page_range[0]];
+                const newBodyDiv = document.createElement("div");
+                while (nextSib != pages[page_range[1]]) {
+                    console.log(nextSib.nodeType)
+                    try {
+                        newBodyDiv.append(nextSib);
+                        console.log(newBodyDiv.children)
+                    } catch (e) {
+                    }
+                    nextSib = nextSib.nextSibling;
+                }
+                console.log(newBodyDiv.children);
+                const body = data.getElementsByTagName("tei-body")[0];
+                body.replaceChildren(newBodyDiv);
             });
             loaded = true;
         } catch (err) {
