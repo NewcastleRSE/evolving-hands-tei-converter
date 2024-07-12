@@ -53,12 +53,7 @@
                 let nextSib = pages[page_range[0]];
                 const newBodyDiv = document.createElement("div");
                 while (nextSib != pages[page_range[1]]) {
-                    console.log(nextSib.nodeType)
-                    try {
-                        newBodyDiv.append(nextSib);
-                        console.log(newBodyDiv.children)
-                    } catch (e) {
-                    }
+                    newBodyDiv.append(nextSib.cloneNode(true));
                     nextSib = nextSib.nextSibling;
                 }
                 console.log(newBodyDiv.children);
