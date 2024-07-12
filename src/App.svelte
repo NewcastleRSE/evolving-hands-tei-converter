@@ -45,18 +45,19 @@
                 cetei.addBehaviors(teiBehaviours(config));
             }
             cetei.getHTML5(path, function (data) {
+                // show TEI document
+                document.getElementById("TEI-container").appendChild(data);
+
                 // pagination
                 let page_range = [0, 1];
                 const surfaces = data.getElementsByTagName("tei-surface");
                 const pages = data.getElementsByTagName("tei-pb");
-                console.log(surfaces.length, pages.length);
                 let nextSib = pages[page_range[0]];
                 const newBodyDiv = document.createElement("div");
                 while (nextSib != pages[page_range[1]]) {
                     newBodyDiv.append(nextSib.cloneNode(true));
                     nextSib = nextSib.nextSibling;
                 }
-                console.log(newBodyDiv.children);
                 const body = data.getElementsByTagName("tei-body")[0];
                 body.replaceChildren(newBodyDiv);
             });
