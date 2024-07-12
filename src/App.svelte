@@ -48,20 +48,31 @@
                 // show TEI document
                 document.getElementById("TEI-container").appendChild(data);
 
-                // pagination
-                let page_range = [0, 1];
+                // pagination - needs to happen after appending the data, otherwise all the behaviours will fail (the document will be empty)
+                let page_range = [0, 1]; // this will be a variable given to the converter
+                // Needs test here to make sure it's in range
                 const surfaces = data.getElementsByTagName("tei-surface");
                 const pages = data.getElementsByTagName("tei-pb");
+                
+                // defines starting point for pagination
                 let nextSib = pages[page_range[0]];
+                
+                // creates the new div to be shown
                 const newBodyDiv = document.createElement("div");
+
+                // collects list of elements that need to be added - this collection needs to be separated from the moving of the element to avoid having to deep clone it, which will fail the custom event (though I think it shouldn't)
                 const elToAdd = []
                 while (nextSib != pages[page_range[1]]) {
                     elToAdd.push(nextSib)
                     nextSib = nextSib.nextSibling;
                 }
+
+                // creates the new body with just the required pages
                 for (const el of elToAdd) {
                     newBodyDiv.append(el);
                 }
+                
+                // replaces the entire body with only the selected pages
                 const body = data.getElementsByTagName("tei-body")[0];
                 body.replaceChildren(newBodyDiv);
             });
