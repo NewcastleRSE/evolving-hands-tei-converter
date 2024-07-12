@@ -54,9 +54,13 @@
                 const pages = data.getElementsByTagName("tei-pb");
                 let nextSib = pages[page_range[0]];
                 const newBodyDiv = document.createElement("div");
+                const elToAdd = []
                 while (nextSib != pages[page_range[1]]) {
-                    newBodyDiv.append(nextSib.cloneNode(true));
+                    elToAdd.push(nextSib)
                     nextSib = nextSib.nextSibling;
+                }
+                for (const el of elToAdd) {
+                    newBodyDiv.append(el);
                 }
                 const body = data.getElementsByTagName("tei-body")[0];
                 body.replaceChildren(newBodyDiv);
