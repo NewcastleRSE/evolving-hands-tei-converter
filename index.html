@@ -71,6 +71,8 @@
     <label for="fileNameSelect">File: </label>
     <select name="fileName" id="fileNameSelect">  
     </select>
+    <label for="pageRangeForm">Page range: </label>
+    <input type="text" name="pageRangeForm" id="pageRangeForm" placeholder="ex: 1-3. Leave empty for all pages"/>
     <input type="submit" value="Convert"></input>
     <button type="button" id="see-xml">See xml</button>
   </form>
@@ -78,7 +80,7 @@
 
   <div style="width: 85%; margin-right: auto; margin-left: auto;" id="teiContainer">
     <tei-converter
-      path="https://raw.githubusercontent.com/evolvinghands/EvolvingHandsNcl/main/GB-1-1-2-1-17-20.xml" configPath="dist/TeiConverter/TeiConverter.config.json"/>
+      path="https://raw.githubusercontent.com/evolvinghands/EvolvingHandsNcl/main/GB-1-1-2-1-17-20.xml" configPath="dist/TeiConverter/TeiConverter.config.json" pageRange = ""/>
   </div>
 </body>
 
