@@ -80,6 +80,11 @@
                         page_range = 'all'
                     }
 
+                    if (page_range[0] < 1) {
+                        console.error(`Page numbers start at 1, not ${page_range[0]+1}`);
+                        page_range = 'all'
+                    }
+
                     if (page_range === 'all') {
                         page_range = [0, pages.length - 1]
                     } 
