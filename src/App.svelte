@@ -60,7 +60,7 @@
                             console.log(page_range);
                             if (!isNaN(page_range[0]) && !isNaN(page_range[1])) {
                                 page_range[0] = parseInt(page_range[0]) - 1;
-                                page_range[1] = parseInt(page_range[1]) - 1;;
+                                page_range[1] = parseInt(page_range[1]);
                             } else {
                                 throw new Error('Page range must be in format x-y, where x and y are numbers');
                             }
@@ -75,7 +75,7 @@
 
                     // Needs test here to make sure it's in range
                     const pages = data.getElementsByTagName("tei-pb");
-                    if (page_range[1] >= pages.length) {
+                    if (page_range[1] > pages.length) {
                         console.error(`Page range is out of bounds: document only has ${pages.length} pages`);
                         page_range = 'all'
                     }
@@ -84,7 +84,7 @@
                         page_range = [0, pages.length - 1]
                     } 
                     
-                    console.log(page_range);
+                    console.log(pages.length, page_range);
 
                     // defines starting point for pagination
                     let nextSib = pages[page_range[0]];
@@ -95,6 +95,7 @@
                     // collects list of elements that need to be added - this collection needs to be separated from the moving of the element to avoid having to deep clone it, which will fail the custom event (though I think it shouldn't)
                     const elToAdd = [];
                     while (nextSib != pages[page_range[1]]) {
+                        console.log(nextSib)
                         elToAdd.push(nextSib);
                         try {
                             nextSib = nextSib.nextSibling;
