@@ -81,22 +81,23 @@ Copy the entire `dist/TeiConverter` folder to the root of your project (or a sui
 ```
 
 #### Documentation
-- [Styling](./documentation/styling.md);
-- [Configuration object](/documentation/TeiConverter.config.md);
-  - [Element level options](/documentation/ElementOptions.config.md);
-- [Adding custom behaviours](/documentation/customBehaviours.md);
+- [Styling](./documentation/styling.md)
+- [Pagination](./documentation/pagination.md)
+- [Configuration object](/documentation/TeiConverter.config.md)
+  - [Element level options](/documentation/ElementOptions.config.md)
+- [Adding custom behaviours](/documentation/customBehaviours.md)
 - Custom events:
-  - [Facsimile coordinates](/documentation/customEvents/drawBox.md);
-  - [Place data](/documentation/customEvents/placeHover.md);
-  - [Person data](/documentation/customEvents/persHover.md);
-  - [Organisation data](/documentation/customEvents/orgHover.md);
-  - [Notes](/documentation/customEvents/noteHover.md);
-  - [Choice](/documentation/customEvents/choiceHover.md);
-  - [Additions](/documentation/customEvents/addHover.md);
-  - [Damage](/documentation/customEvents/damageHover.md);
-  - [Deletions](/documentation/customEvents/delHover.md);
-  - [Gaps](/documentation/customEvents/gapHover.md);
-  - [Unclear text](/documentation/customEvents/unclearHover.md);
+  - [Facsimile coordinates](/documentation/customEvents/drawBox.md)
+  - [Place data](/documentation/customEvents/placeHover.md)
+  - [Person data](/documentation/customEvents/persHover.md)
+  - [Organisation data](/documentation/customEvents/orgHover.md)
+  - [Notes](/documentation/customEvents/noteHover.md)
+  - [Choice](/documentation/customEvents/choiceHover.md)
+  - [Additions](/documentation/customEvents/addHover.md)
+  - [Damage](/documentation/customEvents/damageHover.md)
+  - [Deletions](/documentation/customEvents/delHover.md)
+  - [Gaps](/documentation/customEvents/gapHover.md)
+  - [Unclear text](/documentation/customEvents/unclearHover.md)
 
 ### Running Tests
 

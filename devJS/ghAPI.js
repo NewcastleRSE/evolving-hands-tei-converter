@@ -37,6 +37,7 @@ fileSelectForm.addEventListener('submit', (e) => {
     // on form submission, removes pre-existent tei-converter element, and creates a new one with the new selecte file
 
     let selectedFile = document.getElementById('fileNameSelect').value;
+    let pageRange = document.getElementById('pageRangeForm').value;
 
     const teiContainer = document.getElementById('teiContainer');
 
@@ -45,6 +46,7 @@ fileSelectForm.addEventListener('submit', (e) => {
     let newTeiConverter = document.createElement('tei-converter');
     newTeiConverter.setAttribute('path', selectedFile);
     newTeiConverter.setAttribute('configPath', "dist/TeiConverter/TeiConverter.config.json");
+    newTeiConverter.setAttribute('pageRange', pageRange)
 
     const newTeiContainer = document.createElement('div');
     newTeiContainer.setAttribute('style', 'width: 85%; margin-right: auto; margin-left: auto;');
