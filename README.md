@@ -82,6 +82,7 @@ Copy the entire `dist/TeiConverter` folder to the root of your project (or a sui
 
 #### Documentation
 - [Styling](./documentation/styling.md);
+- [Pagination](./documentation/pagination.md)
 - [Configuration object](/documentation/TeiConverter.config.md);
   - [Element level options](/documentation/ElementOptions.config.md);
 - [Adding custom behaviours](/documentation/customBehaviours.md);
@@ -97,7 +98,6 @@ Copy the entire `dist/TeiConverter` folder to the root of your project (or a sui
   - [Deletions](/documentation/customEvents/delHover.md);
   - [Gaps](/documentation/customEvents/gapHover.md);
   - [Unclear text](/documentation/customEvents/unclearHover.md);
-- [Pagination](./documentation/pagination.md)
 
 ### Running Tests
 
