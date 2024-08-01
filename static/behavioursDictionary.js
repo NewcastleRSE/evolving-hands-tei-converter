@@ -80,6 +80,10 @@ export let behaviours = function (options) {
                             newSpan.onmouseenter = function () {
                                 dispatchEvent(event)
                             }
+                            newSpan.onfocus = function () {
+                                dispatchEvent(event)
+                            }
+                            newSpan.tabIndex = 0
                         }
 
                         if (options.elementAttribute) {
@@ -124,6 +128,10 @@ export let behaviours = function (options) {
                 elt.onmouseenter = function () {
                     dispatchEvent(event)
                 }
+                elt.onfocus = function () {
+                    dispatchEvent(event)
+                }
+                elt.tabIndex = 0
             }
         },
 
@@ -184,6 +192,10 @@ export let behaviours = function (options) {
                 elt.onmouseenter = function () {
                     dispatchEvent(event)
                 }
+                elt.onfocus = function () {
+                    dispatchEvent(event)
+                }
+                elt.tabIndex = 0
             }
         },
 
@@ -240,6 +252,10 @@ export let behaviours = function (options) {
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }
+                    elt.onfocus = function () {
+                        dispatchEvent(event)
+                    }
+                    elt.tabIndex = 0
                 }
             }
         },
@@ -351,6 +367,10 @@ export let behaviours = function (options) {
                 elt.onmouseenter = function () {
                     dispatchEvent(event)
                 }
+                elt.onfocus = function () {
+                    dispatchEvent(event)
+                }
+                elt.tabIndex = 0
             } else {
                 console.error(`${options.render} is not a valid rendering option. Valid options are: 'event'.`)
             }
@@ -408,6 +428,10 @@ export let behaviours = function (options) {
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }
+                    elt.onfocus = function () {
+                        dispatchEvent(event)
+                    }
+                    elt.tabIndex = 0
                 }
 
                 // pass data as element attribute
@@ -456,6 +480,10 @@ export let behaviours = function (options) {
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }
+                    elt.onfocus = function () {
+                        dispatchEvent(event)
+                    }
+                    elt.tabIndex = 0
                     elt.classList.add('event');
                 }
 
@@ -505,6 +533,10 @@ export let behaviours = function (options) {
                     elt.onmouseenter = function () {
                         dispatchEvent(event)
                     }
+                    elt.onfocus = function () {
+                        dispatchEvent(event)
+                    }
+                    elt.tabIndex = 0
                     elt.classList.add('event');
                 }
 
@@ -553,6 +585,10 @@ export let behaviours = function (options) {
                             elt.onmouseenter = function () {
                                 dispatchEvent(event)
                             }
+                            elt.onfocus = function () {
+                                dispatchEvent(event)
+                            }
+                            elt.tabIndex = 0
                             elt.classList.add('event');
                         }
                     } else {
@@ -584,6 +620,10 @@ export let behaviours = function (options) {
                             elt.onmouseenter = function () {
                                 dispatchEvent(event)
                             }
+                            elt.onfocus = function () {
+                                dispatchEvent(event)
+                            }
+                            elt.tabIndex = 0
                             elt.classList.add('event');
                         }
                     } else {
@@ -630,6 +670,10 @@ export let behaviours = function (options) {
                 elt.onmouseenter = function () {
                     dispatchEvent(event)
                 }
+                elt.onfocus = function () {
+                    dispatchEvent(event)
+                }
+                elt.tabIndex = 0
             }
         }
     }

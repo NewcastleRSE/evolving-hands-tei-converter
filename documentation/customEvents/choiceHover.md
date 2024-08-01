@@ -11,6 +11,8 @@ addEventListener('choiceHover', (event) => {
         // useful code...
       })
 ```
+# Accessibility
+All custom events are keyboard accessible, and triggered `onfocus`. If you are *not* using the event to trigger any UI component, make sure you deactivate the custom event, otherwise the element will still be keyboard accessible but without any action associated with it.
 
 # Event object
 The data for the choice element is included in the `event.detail` object, which you should capture when adding the event listener. The specific structure of the object can differ depending on the kind of data encoded on the TEI file, but it should normally be as follows:

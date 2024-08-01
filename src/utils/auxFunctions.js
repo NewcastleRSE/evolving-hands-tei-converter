@@ -269,6 +269,10 @@ export function replaceChoiceWithEvent(elt, options) {
         elt.onmouseenter = function () {
             dispatchEvent(event)
         }
+        elt.onfocus = function () {
+            dispatchEvent(event)
+        }
+        elt.tabIndex = 0
         elt.classList.add('event')
         
         // add a flag to avoid recursion in applying the behaviours
