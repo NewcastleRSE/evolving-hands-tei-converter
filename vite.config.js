@@ -30,5 +30,13 @@ export default defineConfig({
         dir: "dist/TeiConverter",
       }
     }
-  }
+  },
+  test: {
+    include: ["src/**/*.{test,spec}.{js,ts}", "tests/components/*.{test,spec}.{js,ts}", "tests/unit/*.{test,spec}.{js,ts}"],
+    environment: 'jsdom',
+    alias: [
+      { find: /^svelte$/, replacement: "svelte/internal" }
+    ],
+    hookTimeout: 25000,
+  },
 })
