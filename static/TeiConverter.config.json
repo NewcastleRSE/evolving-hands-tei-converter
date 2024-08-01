@@ -3,7 +3,7 @@
     "displayInlineGraphics": false,
     "teiFileStructure": "EvolvingHands",
     "facsimileCoordinates": {
-        "customEvents": true,
+        "customEvents": false,
         "elementAttribute": false
     },
     "additions": {

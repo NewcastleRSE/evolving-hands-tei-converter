@@ -11,6 +11,9 @@ addEventListener('gapHover', (event) => {
       });
 ```
 
+# Accessibility
+All custom events are keyboard accessible, and triggered `onfocus`. If you are *not* using the event to trigger any UI component, make sure you deactivate the custom event, otherwise the element will still be keyboard accessible but without any action associated with it.
+
 # Event object
 The data for the `<gap>` element is included in the `event.detail` object, which you should capture when adding the event listener. According to the standard document, the event should return the value of the `@reason` attribute. The specific structure should normally be as follows:
 
