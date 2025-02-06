@@ -470,7 +470,7 @@ export let behaviours = function (options) {
 
                 try {
                     dataObject = getNamedEntitiesData(placeData, ref);
-                } catch(e) {
+                } catch (e) {
                     console.warn(e)
                 }
 
@@ -507,7 +507,7 @@ export let behaviours = function (options) {
 
         "persName": [
             // this selects only personal names that reference another, ignoring the ones in the standOff metadata
-            ["tei-persName[ref]", function (elt) {
+            ["tei-persName[ref]", async function (elt) {
 
                 // get data and build object
                 let ref = undefined;
@@ -515,6 +515,29 @@ export let behaviours = function (options) {
                 if (!elt.getAttribute('ref').includes('#')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
+                } else if (elt.getAttribute('ref').includes('.xml')) {
+                    console.log(`Looks like ${elt.getAttribute('ref')} is a link to an external file. This is not supported yet.`);
+                    // separate file name from #id
+                    let refParts = undefined;
+                    try {
+                        refParts = elt.getAttribute('ref').split('#');
+                    } catch (e) {
+                        console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`)
+                        // split the string at the extension .xml and keep the extension on the left side of the split string
+                        refParts = elt.getAttribute('ref').split('.xml');
+                        refParts[0] = refParts[0] + '.xml';
+                    }
+                    // load the file
+                    if (refParts != undefined) {
+                        let xmlFile = new XMLHttpRequest();
+                        xmlFile.addEventListener('load', () => {console.log('done!')});
+                        xmlFile.open('GET', `${options.projectRoot}${refParts[0]}`, true);
+                        xmlFile.send();
+                        let xmlDoc = xmlFile.responseXML;
+                        await console.log(xmlDoc);
+                    }
+
+
                 } else {
                     ref = elt.getAttribute('ref').substring(1);
                 }

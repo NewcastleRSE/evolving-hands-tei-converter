@@ -21,13 +21,13 @@ export let teiBehaviours = function (config) {
                 options = {...options, ...config.standOffMetadata}
             }
             if (choice === 'orgName') {
-                options = {...options, ...config.orgData}
+                options = {...options, ...config.orgData, projectRoot: config.projectRoot}
             }
             if (choice === 'placeName') {
-                options = {...options, ...config.placeData}
+                options = {...options, ...config.placeData, projectRoot: config.projectRoot}
             }
             if (choice === 'persName') {
-                options = {...options, ...config.persData}
+                options = {...options, ...config.persData, projectRoot: config.projectRoot}
             }
             if (choice === 'seg') {
                 options = {...options, ...config.notes}

@@ -2,6 +2,7 @@
     "useCustomBehaviours": true,
     "displayInlineGraphics": false,
     "teiFileStructure": "EvolvingHands",
+    "projectRoot": "https://raw.githubusercontent.com/evolvinghands/EvolvingHandsNcl/refs/heads/main/",
     "facsimileCoordinates": {
         "customEvents": false,
         "elementAttribute": false
