@@ -3,6 +3,9 @@
     "displayInlineGraphics": false,
     "teiFileStructure": "EvolvingHands",
     "projectRoot": "https://raw.githubusercontent.com/evolvinghands/EvolvingHandsNcl/refs/heads/main/",
+    "metadataSeparate": {
+        "people": "metadata/people.xml"
+    },
     "facsimileCoordinates": {
         "customEvents": false,
         "elementAttribute": false

@@ -1,6 +1,8 @@
 import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc, addFigAbs } from "../src/utils/auxFunctions";
 
-export let behaviours = function (options) {
+export let metadataFile = undefined;
+
+export let behaviours = function (options, metadataFiles = undefined) {
     return {
 
         "ab": [
@@ -512,37 +514,29 @@ export let behaviours = function (options) {
                 // get data and build object
                 let ref = undefined;
                 let dataObject = undefined;
-                if (!elt.getAttribute('ref').includes('#')) {
+                let persData = undefined;
+
+                if (!elt.getAttribute('ref').includes('#') && !elt.getAttribute('ref').includes('.xml')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
                 } else if (elt.getAttribute('ref').includes('.xml')) {
                     console.log(`Looks like ${elt.getAttribute('ref')} is a link to an external file. This is not supported yet.`);
                     // separate file name from #id
                     let refParts = undefined;
-                    try {
-                        refParts = elt.getAttribute('ref').split('#');
-                    } catch (e) {
-                        console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`)
-                        // split the string at the extension .xml and keep the extension on the left side of the split string
-                        refParts = elt.getAttribute('ref').split('.xml');
-                        refParts[0] = refParts[0] + '.xml';
-                    }
-                    // load the file
-                    if (refParts != undefined) {
-                        let xmlFile = new XMLHttpRequest();
-                        xmlFile.addEventListener('load', () => {console.log('done!')});
-                        xmlFile.open('GET', `${options.projectRoot}${refParts[0]}`, true);
-                        xmlFile.send();
-                        let xmlDoc = xmlFile.responseXML;
-                        await console.log(xmlDoc);
-                    }
+                    refParts = elt.getAttribute('ref').split('#');
+                    ref = refParts[1];
 
+                    let metadataDoc = metadataFiles.people
+                    persData = metadataDoc.querySelector(`[*|id="${ref}"]`);
+                    console.log(persData)
 
                 } else {
                     ref = elt.getAttribute('ref').substring(1);
                 }
 
-                const persData = document.getElementById(ref);
+                if (persData === undefined) {
+                    persData = document.getElementById(ref);
+                }
 
                 try {
                     dataObject = getNamedEntitiesData(persData, ref);

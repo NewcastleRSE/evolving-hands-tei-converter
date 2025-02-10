@@ -1,6 +1,6 @@
 import {behaviours} from '../static/behavioursDictionary';
 
-export let teiBehaviours = function (config) {
+export let teiBehaviours = function (config, metadataFiles = undefined) {
     // declare behaviours object
     let behavioursObject = {"tei": {}}
 
@@ -56,7 +56,7 @@ export let teiBehaviours = function (config) {
             if (choice === 'unclear') {
                 options = {...options, ...config.unclear}
             }
-            behavioursObject['tei'][choice] = behaviours(options)[choice];
+            behavioursObject['tei'][choice] = behaviours(options, metadataFiles)[choice];
         }
     }
 
@@ -67,7 +67,7 @@ export let teiBehaviours = function (config) {
         if (Object.keys(config.elementsSelected).includes('graphic')) {
             options = config.elementsSelected.graphic.options
         }
-        behavioursObject['tei']['graphic'] = behaviours(options)['graphic'];
+        behavioursObject['tei']['graphic'] = behaviours(options, metadataFiles)['graphic'];
     }
 
     // Add custom behaviours
