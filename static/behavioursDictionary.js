@@ -1,4 +1,4 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc, addFigAbs } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc, addFigAbs, getNamedEntitiesDataFromExternal } from "../src/utils/auxFunctions";
 
 export let metadataFile = undefined;
 
@@ -516,20 +516,28 @@ export let behaviours = function (options, metadataFiles = undefined) {
                 let dataObject = undefined;
                 let persData = undefined;
 
+                let externalMetadata = false
+
                 if (!elt.getAttribute('ref').includes('#') && !elt.getAttribute('ref').includes('.xml')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
                 } else if (elt.getAttribute('ref').includes('.xml')) {
-                    console.log(`Looks like ${elt.getAttribute('ref')} is a link to an external file. This is not supported yet.`);
                     // separate file name from #id
                     let refParts = undefined;
-                    refParts = elt.getAttribute('ref').split('#');
-                    ref = refParts[1];
+                    try {
+                        refParts = elt.getAttribute('ref').split('#');
+                        ref = refParts[1];
+                    } catch (e) {
+                        console.warn(`Could not identify the id in ${elt.getAttribute('ref')}`);
+                        ref = undefined;
+                    }
 
                     let metadataDoc = metadataFiles.people
-                    persData = metadataDoc.querySelector(`[*|id="${ref}"]`);
-                    console.log(persData)
+                    if (ref != undefined) {
+                        persData = metadataDoc.querySelector(`[*|id="${ref}"]`);
+                    }
 
+                    externalMetadata = true
                 } else {
                     ref = elt.getAttribute('ref').substring(1);
                 }
@@ -539,7 +547,11 @@ export let behaviours = function (options, metadataFiles = undefined) {
                 }
 
                 try {
-                    dataObject = getNamedEntitiesData(persData, ref);
+                    if (!externalMetadata) {
+                        dataObject = getNamedEntitiesData(persData, ref);
+                    } else {
+                        dataObject = getNamedEntitiesDataFromExternal(persData, ref);
+                    }
                 } catch (e) {
                     console.warn(e);
                 }
