@@ -509,7 +509,7 @@ export let behaviours = function (options, metadataFiles = undefined) {
 
         "persName": [
             // this selects only personal names that reference another, ignoring the ones in the standOff metadata
-            ["tei-persName[ref]", async function (elt) {
+            ["tei-persName[ref]", function (elt) {
 
                 // get data and build object
                 let ref = undefined;
@@ -542,6 +542,7 @@ export let behaviours = function (options, metadataFiles = undefined) {
                     ref = elt.getAttribute('ref').substring(1);
                 }
 
+                
                 if (persData === undefined) {
                     persData = document.getElementById(ref);
                 }

@@ -134,6 +134,7 @@ export function transformNamedEntityLink(elt, dataObject, options) {
     let linkedEntity = undefined;
 
     // check wether the addLink option in the config is not falsy and whether the data object contains an URL;
+    console.log(dataObject, options.addLink);
     if (options.addLink != '' && options.addLink != false && options.addLink != 'none') {
         linkedEntity = document.createElement('a');
         // if object contains an authority, use that, if not and it contains another URL, use that.
@@ -154,7 +155,6 @@ export function transformNamedEntityLink(elt, dataObject, options) {
             linkedEntity.appendChild(chld.cloneNode());
         }
     }
-
     return linkedEntity;
 }
 
