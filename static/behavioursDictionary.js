@@ -461,17 +461,43 @@ export let behaviours = function (options, metadataFiles = undefined) {
                 // get data and build object
                 let ref = undefined;
                 let dataObject = undefined;
-                if (!elt.getAttribute('ref').includes('#')) {
+                let placeData = undefined;
+
+                let externalMetadata = false;
+
+                if (!elt.getAttribute('ref').includes('#') && !elt.getAttribute('ref').includes('.xml')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
+                } else if (elt.getAttribute('ref').includes('.xml')) {
+                    let refParts = undefined;
+                    try {
+                        refParts = elt.getAttribute('ref').split('#');
+                        ref = refParts[1];
+                    } catch (e) { 
+                        console.warn(`Could not identify the id in ${elt.getAttribute('ref')}`);
+                        ref = undefined;
+                    }
+
+                    let metadataDoc = metadataFiles.places
+                    if (ref != undefined) {
+                        placeData = metadataDoc.querySelector(`[*|id="${ref}"]`);
+                    }
+
+                    externalMetadata = true
                 } else {
                     ref = elt.getAttribute('ref').substring(1);
                 }
 
-                const placeData = document.getElementById(ref);
+                if (placeData === undefined) {
+                    placeData = document.getElementById(ref);
+                }
 
                 try {
-                    dataObject = getNamedEntitiesData(placeData, ref);
+                    if (!externalMetadata) {
+                        dataObject = getNamedEntitiesData(placeData, ref);
+                    } else {
+                        dataObject = getNamedEntitiesDataFromExternal(placeData, ref);
+                    }
                 } catch (e) {
                     console.warn(e)
                 }
