@@ -16,6 +16,31 @@ Defines whether the transformation will attempt to render any inline graphics (i
 ### scope: `global`
 Defines the expected structure of the TEI file being transformed. Used if the file has a particular structure that demands behaviours applied in a certain manner. For example, the `EvolvingHands` file structure encodes lines simply as an `<lb/>` element inside an `<ab>` -- in order for facsimile information to be recorded in the transformed file, these lines need to be encapsulated in a `<span>` before any information can be attached to the element. Other file structures might encode physical lines using the `<line>` element, for example, which will change the locus of the transformation (in a `line` behaviour rather than `ab`), and the need for an extra `<span>`.
 
+## projectRoot
+### type: `string`
+### scope: `global`
+The url that points to the root folder where project files are stored (i.e., the folder where the TEI file exists). If reading straight from GitHub, ensure that the root folder points to the raw files rather than the git repository, for example: `https://raw.githubusercontent.com/evolvinghands/EvolvingHandsNcl/refs/heads/main/`. URL should include the ending `/`.
+
+## metadataSeparate
+## type: `object`
+## scope: `global`
+If it exists, object containg the paths to stand-off metadata for entities in the main converted TEI file.
+
+## metadataSeparate.people
+### type: `string`
+### scope: `global`
+Contains the path to the file that stores the metadata referring to people in the main TEI file; URL should be relative to [projectRoot](#projectroot) and omit any starting `/`, i.e.: `metadata/people.xml`
+
+## metadataSeparate.places
+### type: `string`
+### scope: `global`
+Contains the path to the file that stores the metadata referring to places in the main TEI file; URL should be relative to [projectRoot](#projectroot) and omit any starting `/`, i.e.: `metadata/places.xml`
+
+## metadataSeparate.organisations
+### type: `string`
+### scope: `global`
+Contains the path to the file that stores the metadata referring to organisations in the main TEI file; URL should be relative to [projectRoot](#projectroot) and omit any starting `/`, i.e.: `metadata/organisations.xml`
+
 ## facsimileCoordinates
 ## type: `object`
 ## scope: `global`

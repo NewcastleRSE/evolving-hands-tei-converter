@@ -1,6 +1,8 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc, addFigAbs } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc, addFigAbs, getNamedEntitiesDataFromExternal } from "../src/utils/auxFunctions";
 
-export let behaviours = function (options) {
+export let metadataFile = undefined;
+
+export let behaviours = function (options, metadataFiles = undefined) {
     return {
 
         "ab": [
@@ -407,17 +409,44 @@ export let behaviours = function (options) {
                 // get data and build object
                 let ref = undefined;
                 let dataObject = undefined;
-                if (!elt.getAttribute('ref').includes('#')) {
+                let orgData = undefined;
+
+                let externalMetadata = false;
+
+                if (!elt.getAttribute('ref').includes('#') && !elt.getAttribute('ref').includes('.xml')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
+                } else if (elt.getAttribute('ref').includes('.xml')) {
+                    // separate file name from #id
+                    let refParts = undefined;
+                    try {
+                        refParts = elt.getAttribute('ref').split('#');
+                        ref = refParts[1];
+                    } catch (e) {
+                        console.warn(`Could not identify the id in ${elt.getAttribute('ref')}`);
+                        ref = undefined;
+                    }
+
+                    let metadataDoc = metadataFiles.organisations
+                    if (ref != undefined) {
+                        orgData = metadataDoc.querySelector(`[*|id="${ref}"]`);
+                    }
+
+                    externalMetadata = true;
                 } else {
                     ref = elt.getAttribute('ref').substring(1);
                 }
 
-                const orgData = document.getElementById(ref);
+                if (orgData === undefined) {
+                    orgData = document.getElementById(ref);
+                }
 
                 try {
-                    dataObject = getNamedEntitiesData(orgData, ref);
+                    if (!externalMetadata) {
+                        dataObject = getNamedEntitiesData(orgData, ref);
+                    } else {
+                        dataObject = getNamedEntitiesDataFromExternal(orgData, ref);
+                    }
                 } catch (e) {
                     console.warn(e)
                 }
@@ -459,18 +488,44 @@ export let behaviours = function (options) {
                 // get data and build object
                 let ref = undefined;
                 let dataObject = undefined;
-                if (!elt.getAttribute('ref').includes('#')) {
+                let placeData = undefined;
+
+                let externalMetadata = false;
+
+                if (!elt.getAttribute('ref').includes('#') && !elt.getAttribute('ref').includes('.xml')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
+                } else if (elt.getAttribute('ref').includes('.xml')) {
+                    let refParts = undefined;
+                    try {
+                        refParts = elt.getAttribute('ref').split('#');
+                        ref = refParts[1];
+                    } catch (e) { 
+                        console.warn(`Could not identify the id in ${elt.getAttribute('ref')}`);
+                        ref = undefined;
+                    }
+
+                    let metadataDoc = metadataFiles.places
+                    if (ref != undefined) {
+                        placeData = metadataDoc.querySelector(`[*|id="${ref}"]`);
+                    }
+
+                    externalMetadata = true
                 } else {
                     ref = elt.getAttribute('ref').substring(1);
                 }
 
-                const placeData = document.getElementById(ref);
+                if (placeData === undefined) {
+                    placeData = document.getElementById(ref);
+                }
 
                 try {
-                    dataObject = getNamedEntitiesData(placeData, ref);
-                } catch(e) {
+                    if (!externalMetadata) {
+                        dataObject = getNamedEntitiesData(placeData, ref);
+                    } else {
+                        dataObject = getNamedEntitiesDataFromExternal(placeData, ref);
+                    }
+                } catch (e) {
                     console.warn(e)
                 }
 
@@ -512,17 +567,45 @@ export let behaviours = function (options) {
                 // get data and build object
                 let ref = undefined;
                 let dataObject = undefined;
-                if (!elt.getAttribute('ref').includes('#')) {
+                let persData = undefined;
+
+                let externalMetadata = false
+
+                if (!elt.getAttribute('ref').includes('#') && !elt.getAttribute('ref').includes('.xml')) {
                     console.warn(`Looks like ${elt.getAttribute('ref')} might be missing an initial '#'. Adding '#' and trying again...`);
                     ref = elt.getAttribute('ref');
+                } else if (elt.getAttribute('ref').includes('.xml')) {
+                    // separate file name from #id
+                    let refParts = undefined;
+                    try {
+                        refParts = elt.getAttribute('ref').split('#');
+                        ref = refParts[1];
+                    } catch (e) {
+                        console.warn(`Could not identify the id in ${elt.getAttribute('ref')}`);
+                        ref = undefined;
+                    }
+
+                    let metadataDoc = metadataFiles.people
+                    if (ref != undefined) {
+                        persData = metadataDoc.querySelector(`[*|id="${ref}"]`);
+                    }
+
+                    externalMetadata = true
                 } else {
                     ref = elt.getAttribute('ref').substring(1);
                 }
 
-                const persData = document.getElementById(ref);
+                
+                if (persData === undefined) {
+                    persData = document.getElementById(ref);
+                }
 
                 try {
-                    dataObject = getNamedEntitiesData(persData, ref);
+                    if (!externalMetadata) {
+                        dataObject = getNamedEntitiesData(persData, ref);
+                    } else {
+                        dataObject = getNamedEntitiesDataFromExternal(persData, ref);
+                    }
                 } catch (e) {
                     console.warn(e);
                 }

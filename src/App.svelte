@@ -18,6 +18,8 @@
     let loaded = false;
     let config = undefined;
 
+    let metadataFiles = undefined;
+
     onMount(async () => {
         try {
             // Tries to load custom config file
@@ -41,9 +43,30 @@
             if (path === "") {
                 throw "No path specified";
             }
+
+            try {
+                if (config.metadataSeparate) {
+                    metadataFiles = {};
+                    for (let key of Object.keys(config.metadataSeparate)) {
+                        let xmlFile = await fetch(`${config.projectRoot}${config.metadataSeparate[key]}`);
+                        if (!xmlFile.ok) {
+                            throw new Error(`${config.projectRoot}${config.metadataSeparate[key]} does not exist`);
+                        } else {
+                            let metadataFile = await xmlFile.text();
+                            // parse the metadata file
+                            let parser = new DOMParser();
+                            let xmlDoc = parser.parseFromString(metadataFile, "text/xml");
+                            metadataFiles[key] = xmlDoc
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Could not read the metadata file: ', e)
+            }
+
             var cetei = new CETEI();
             if (config.useCustomBehaviours) {
-                cetei.addBehaviors(teiBehaviours(config));
+                cetei.addBehaviors(teiBehaviours(config, metadataFiles));
             }
             cetei.getHTML5(path, function (data) {
                 // show TEI document
