@@ -49,11 +49,15 @@
                     metadataFiles = {};
                     for (let key of Object.keys(config.metadataSeparate)) {
                         let xmlFile = await fetch(`${config.projectRoot}${config.metadataSeparate[key]}`);
-                        let metadataFile = await xmlFile.text();
-                        // parse the metadata file
-                        let parser = new DOMParser();
-                        let xmlDoc = parser.parseFromString(metadataFile, "text/xml");
-                        metadataFiles[key] = xmlDoc
+                        if (!xmlFile.ok) {
+                            throw new Error(`${config.projectRoot}${config.metadataSeparate[key]} does not exist`);
+                        } else {
+                            let metadataFile = await xmlFile.text();
+                            // parse the metadata file
+                            let parser = new DOMParser();
+                            let xmlDoc = parser.parseFromString(metadataFile, "text/xml");
+                            metadataFiles[key] = xmlDoc
+                        }
                     }
                 }
             } catch (e) {
