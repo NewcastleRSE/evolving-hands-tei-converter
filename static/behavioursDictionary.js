@@ -80,10 +80,10 @@ export let behaviours = function (options, metadataFiles = undefined) {
                             //  creates a custom event
                             let event = new CustomEvent('drawBox', eventObject)
                             newSpan.onmouseenter = function () {
-                                dispatchEvent(event)
+                                this.dispatchEvent(event)
                             }
                             newSpan.onfocus = function () {
-                                dispatchEvent(event)
+                                this.dispatchEvent(event)
                             }
                             newSpan.tabIndex = 0
                         }
@@ -128,10 +128,10 @@ export let behaviours = function (options, metadataFiles = undefined) {
                 };
                 let event = new CustomEvent('addHover', { bubbles: true, detail: { ...dataObject } })
                 elt.onmouseenter = function () {
-                    dispatchEvent(event)
+                    this.dispatchEvent(event)
                 }
                 elt.onfocus = function () {
-                    dispatchEvent(event)
+                    this.dispatchEvent(event)
                 }
                 elt.tabIndex = 0
             }
@@ -192,10 +192,10 @@ export let behaviours = function (options, metadataFiles = undefined) {
                 };
                 let event = new CustomEvent('damageHover', { bubbles: true, detail: { ...dataObject } })
                 elt.onmouseenter = function () {
-                    dispatchEvent(event)
+                    this.dispatchEvent(event)
                 }
                 elt.onfocus = function () {
-                    dispatchEvent(event)
+                    this.dispatchEvent(event)
                 }
                 elt.tabIndex = 0
             }
@@ -252,10 +252,10 @@ export let behaviours = function (options, metadataFiles = undefined) {
                     let event = new CustomEvent('delHover', { bubbles: true, detail: { rendition: elt.getAttribute('rend') } })
                     elt.classList.add('event');
                     elt.onmouseenter = function () {
-                        dispatchEvent(event)
+                        this.dispatchEvent(event)
                     }
                     elt.onfocus = function () {
-                        dispatchEvent(event)
+                        this.dispatchEvent(event)
                     }
                     elt.tabIndex = 0
                 }
@@ -367,10 +367,10 @@ export let behaviours = function (options, metadataFiles = undefined) {
                 let event = new CustomEvent('gapHover', { bubbles: true, detail: { reason: elt.getAttribute('reason') } })
                 elt.classList.add('event');
                 elt.onmouseenter = function () {
-                    dispatchEvent(event)
+                    this.dispatchEvent(event)
                 }
                 elt.onfocus = function () {
-                    dispatchEvent(event)
+                    this.dispatchEvent(event)
                 }
                 elt.tabIndex = 0
             } else {
@@ -455,10 +455,10 @@ export let behaviours = function (options, metadataFiles = undefined) {
                 if (options.customEvents) {
                     let event = new CustomEvent('orgHover', { detail: { ...dataObject } })
                     elt.onmouseenter = function () {
-                        dispatchEvent(event)
+                        this.dispatchEvent(event)
                     }
                     elt.onfocus = function () {
-                        dispatchEvent(event)
+                        this.dispatchEvent(event)
                     }
                     elt.tabIndex = 0
                 }
@@ -533,10 +533,10 @@ export let behaviours = function (options, metadataFiles = undefined) {
                 if (options.customEvents) {
                     let event = new CustomEvent('placeHover', { bubbles: true, detail: { ...dataObject } })
                     elt.onmouseenter = function () {
-                        dispatchEvent(event)
+                        this.dispatchEvent(event)
                     }
                     elt.onfocus = function () {
-                        dispatchEvent(event)
+                        this.dispatchEvent(event)
                     }
                     elt.tabIndex = 0
                     elt.classList.add('event');
@@ -614,10 +614,10 @@ export let behaviours = function (options, metadataFiles = undefined) {
                 if (options.customEvents) {
                     let event = new CustomEvent('persHover', { bubbles: true, detail: { ...dataObject } })
                     elt.onmouseenter = function () {
-                        dispatchEvent(event)
+                        this.dispatchEvent(event)
                     }
                     elt.onfocus = function () {
-                        dispatchEvent(event)
+                        this.dispatchEvent(event)
                     }
                     elt.tabIndex = 0
                     elt.classList.add('event');
@@ -666,10 +666,10 @@ export let behaviours = function (options, metadataFiles = undefined) {
                             const dataObject = noteToEvent(targetNote, options.bibliographicNotes.structured);
                             let event = new CustomEvent('noteHover', { bubbles: true, detail: { ...dataObject } })
                             elt.onmouseenter = function () {
-                                dispatchEvent(event)
+                                this.dispatchEvent(event)
                             }
                             elt.onfocus = function () {
-                                dispatchEvent(event)
+                                this.dispatchEvent(event)
                             }
                             elt.tabIndex = 0
                             elt.classList.add('event');
@@ -701,10 +701,10 @@ export let behaviours = function (options, metadataFiles = undefined) {
                             const dataObject = noteToEvent(targetNote, options.editorialNotes.structured);
                             let event = new CustomEvent('noteHover', { bubbles: true, detail: { ...dataObject } })
                             elt.onmouseenter = function () {
-                                dispatchEvent(event)
+                                this.dispatchEvent(event)
                             }
                             elt.onfocus = function () {
-                                dispatchEvent(event)
+                                this.dispatchEvent(event)
                             }
                             elt.tabIndex = 0
                             elt.classList.add('event');
@@ -751,10 +751,10 @@ export let behaviours = function (options, metadataFiles = undefined) {
                 let event = new CustomEvent('unclearHover', { bubbles: true, detail: { message: options.message } })
                 elt.classList.add('event');
                 elt.onmouseenter = function () {
-                    dispatchEvent(event)
+                    this.dispatchEvent(event)
                 }
                 elt.onfocus = function () {
-                    dispatchEvent(event)
+                    this.dispatchEvent(event)
                 }
                 elt.tabIndex = 0
             }

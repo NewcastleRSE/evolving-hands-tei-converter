@@ -12,13 +12,14 @@
         // console.log(event.detail);
       });
 
+      addEventListener('persHover', (event) => {
+        console.log(event.detail);
+      });
+
       addEventListener('placeHover', (event) => {
         console.log(event.detail);
       });
 
-      addEventListener('persHover', (event) => {
-        console.log(event.detail);
-      });
 
       addEventListener('orgHover', (event) => {
         console.log(event.detail);
@@ -78,10 +79,9 @@
   </form>
   <!--  -->
 
-  <div style="width: 85%; margin-right: auto; margin-left: auto;" id="teiContainer">
+  <div id="teiContainer" style="width: 85%; margin-right: auto; margin-left: auto;" >
     <tei-converter
       path="https://raw.githubusercontent.com/evolvinghands/EvolvingHandsNcl/main/GB-1-1-2-1-17-18.xml" configPath="dist/TeiConverter/TeiConverter.config.json" pageRange = ""/>
   </div>
 </body>
-
 </html>
