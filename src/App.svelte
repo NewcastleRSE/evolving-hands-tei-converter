@@ -20,7 +20,10 @@
 
     let metadataFiles = undefined;
 
+    let uniqueId = undefined;
+
     onMount(async () => {
+        uniqueId = Date.now();
         try {
             // Tries to load custom config file
             config = await fetch(configPath).then((response) =>
@@ -64,13 +67,13 @@
                 console.warn('Could not read the metadata file: ', e)
             }
 
-            var cetei = new CETEI();
+            var cetei = new CETEI({ignoreFragmentId: true});
             if (config.useCustomBehaviours) {
                 cetei.addBehaviors(teiBehaviours(config, metadataFiles));
             }
             cetei.getHTML5(path, function (data) {
                 // show TEI document
-                document.getElementById("TEI-container").appendChild(data);
+                document.getElementById(`TEI-container-${uniqueId}`).appendChild(data);
 
                 // pagination - needs to happen after appending the data, otherwise all the behaviours will fail (the document will be empty)
                 if (pageRange) {
@@ -158,7 +161,7 @@
     });
 </script>
 
-<div id="TEI-container" data-testid="TEI-container">
+<div id="TEI-container-{uniqueId}" data-testid="TEI-container">
     {#if error}
         <p data-testid="error-message">{error}</p>
     {/if}
