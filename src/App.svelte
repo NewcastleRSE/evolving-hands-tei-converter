@@ -10,6 +10,7 @@
 
     // load fallback default options
     import defaultConfig from "./../static/TeiConverter.config.json";
+    import { checkForExternalMetadata, loadMetadataFile } from "./utils/auxFunctions";
 
     export let path = "";
     export let configPath = "TeiConverter/TeiConverter.config.json";
@@ -160,45 +161,29 @@
                 throw "No path specified";
             }
 
-            try {
-                if (config.metadataSeparate) {
-                    metadataFiles = {};
-                    for (let key of Object.keys(config.metadataSeparate)) {
-                        let xmlFile = await fetch(
-                            `${config.projectRoot}${config.metadataSeparate[key]}`,
-                        );
-                        if (!xmlFile.ok) {
-                            throw new Error(
-                                `${config.projectRoot}${config.metadataSeparate[key]} does not exist`,
-                            );
-                        } else {
-                            let metadataFile = await xmlFile.text();
-                            // parse the metadata file
-                            let parser = new DOMParser();
-                            let xmlDoc = parser.parseFromString(
-                                metadataFile,
-                                "text/xml",
-                            );
-                            metadataFiles[key] = xmlDoc;
-                        }
+            
+
+            // separating the fetching from the transformation is necessary to allow for pagination
+            // fetch the TEI file
+            let metadataFiles = {};
+            let xmlDoc = await fetch(path);
+            if (xmlDoc.ok) {
+                xmlString = await xmlDoc.text();
+
+                // check for external metadata files
+                let externalMetadata = await checkForExternalMetadata(xmlString);
+                if (externalMetadata) {
+                    for (const metadataFile of externalMetadata) {
+                        metadataFiles[metadataFile] = await loadMetadataFile(config.projectRoot, metadataFile)
                     }
                 }
-            } catch (e) {
-                console.warn("Could not read the metadata file: ", e);
+            } else {
+                throw new Error(`${path} does not exist`);
             }
 
             cetei = new CETEI({ ignoreFragmentId: true });
             if (config.useCustomBehaviours) {
                 cetei.addBehaviors(teiBehaviours(config, metadataFiles));
-            }
-
-            // separating the fetching from the transformation is necessary to allow for pagination
-            // fetch the TEI file
-            let xmlDoc = await fetch(path);
-            if (xmlDoc.ok) {
-                xmlString = await xmlDoc.text();
-            } else {
-                throw new Error(`${path} does not exist`);
             }
 
             // transform the TEI file

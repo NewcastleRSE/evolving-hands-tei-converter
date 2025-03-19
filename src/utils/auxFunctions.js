@@ -387,3 +387,52 @@ export function addFigAbs(elt, figDescriptions) {
     }
     return figDescriptions;
 }
+
+export async function loadMetadataFile(projectRoot, filePath) {
+    let xmlFile = await fetch(
+        `${projectRoot}${filePath}`,
+    );
+    if (!xmlFile.ok) {
+        throw new Error(
+            `${projectRoot}${filePath} does not exist`,
+        );
+    } else {
+        let metadataFile = await xmlFile.text();
+        // parse the metadata file
+        let parser = new DOMParser();
+        let xmlDoc = parser.parseFromString(
+            metadataFile,
+            "text/xml",
+        );
+        return xmlDoc;
+    }
+}
+
+export async function checkForExternalMetadata(xmlString) {
+    // checks to see if there is metadata in external files to be added
+    let parser = new DOMParser();
+    let xmlDoc = await parser.parseFromString(xmlString, "text/xml");
+    // finds all different file names in persName, placeName, and orgName elements
+    
+    // find all persName, placeName, and orgName elements in xmlDoc
+    let persNames = xmlDoc.getElementsByTagName('persName');
+    let placeNames = xmlDoc.getElementsByTagName('placeName');
+    let orgNames = xmlDoc.getElementsByTagName('orgName');
+
+    // iterates trough all elements and looks for ref attributes that include a .xml file
+    let externalMetadata = [];
+    for (const name of [persNames, placeNames, orgNames]) {
+        for (const element of name) {
+            if (element.getAttribute('ref') && element.getAttribute('ref').includes('.xml')) {
+                // separate file name from id
+                if (element.getAttribute('ref').includes('#')) {
+                    externalMetadata.push(element.getAttribute('ref').split('#')[0]);
+                } 
+            }
+        }
+    }
+
+    // remove all duplicates from external metadata
+    externalMetadata = [...new Set(externalMetadata)];
+    return externalMetadata;
+}
