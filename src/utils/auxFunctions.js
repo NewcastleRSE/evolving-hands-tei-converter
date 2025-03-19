@@ -388,7 +388,12 @@ export function addFigAbs(elt, figDescriptions) {
     return figDescriptions;
 }
 
-export async function loadMetadataFile(projectRoot, filePath) {
+export async function loadMetadataFile(projectRoot = undefined, filePath) {
+    if (projectRoot === undefined) {
+        // assumes file path is absolute
+        projectRoot = '';
+    }
+    
     let xmlFile = await fetch(
         `${projectRoot}${filePath}`,
     );
