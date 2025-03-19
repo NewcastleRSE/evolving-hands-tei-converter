@@ -1,4 +1,4 @@
-import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc, addFigAbs, getNamedEntitiesDataFromExternal } from "../src/utils/auxFunctions";
+import { addNoteToDiv, extractNotes, formatPagePoints, formatPoints, generateNoteLink, getNamedEntitiesData, noteToEvent, transformNamedEntityLink, replaceChoiceEltWithMarker, replaceChoiceWithEvent, removeDuplicateDatesWorkaround, addMarkersToElement, getFigDesc, addFigAbs, getNamedEntitiesDataFromExternal, loadMetadataFile } from "../src/utils/auxFunctions";
 
 export let metadataFile = undefined;
 
@@ -427,7 +427,14 @@ export let behaviours = function (options, metadataFiles = undefined) {
                         ref = undefined;
                     }
 
-                    let metadataDoc = metadataFiles.organisations
+                    // check to see if the filename exists as a key in the metadataFiles object
+                    let metadataDoc = undefined;
+                    if (!Object.keys(metadataFiles).includes(refParts[0])) {
+                        console.warn(`Could not find metadata file ${refParts[0]}.xml in the metadataFiles object`);
+                    } else {
+                        metadataDoc = metadataFiles[refParts[0]];
+                    }
+                    
                     if (ref != undefined) {
                         orgData = metadataDoc.querySelector(`[*|id="${ref}"]`);
                     }
@@ -505,7 +512,14 @@ export let behaviours = function (options, metadataFiles = undefined) {
                         ref = undefined;
                     }
 
-                    let metadataDoc = metadataFiles.places
+                    // check to see if the filename exists as a key in the metadataFiles object
+                    let metadataDoc = undefined;
+                    if (!Object.keys(metadataFiles).includes(refParts[0])) {
+                        console.warn(`Could not find metadata file ${refParts[0]}.xml in the metadataFiles object`);
+                    } else {
+                        metadataDoc = metadataFiles[refParts[0]];
+                    }
+
                     if (ref != undefined) {
                         placeData = metadataDoc.querySelector(`[*|id="${ref}"]`);
                     }
@@ -585,7 +599,14 @@ export let behaviours = function (options, metadataFiles = undefined) {
                         ref = undefined;
                     }
 
-                    let metadataDoc = metadataFiles.people
+                    // check to see if the filename exists as a key in the metadataFiles object
+                    let metadataDoc = undefined;
+                    if (!Object.keys(metadataFiles).includes(refParts[0])) {
+                        console.warn(`Could not find metadata file ${refParts[0]}.xml in the metadataFiles object`);
+                    } else {
+                        metadataDoc = metadataFiles[refParts[0]];
+                    }
+
                     if (ref != undefined) {
                         persData = metadataDoc.querySelector(`[*|id="${ref}"]`);
                     }
